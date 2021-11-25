@@ -1,5 +1,6 @@
 package View;
 
+import View.panels.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,11 +11,13 @@ public class ViewFrame extends JFrame {
         this.setSize(720, 480);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GridBagLayout layout = new GridBagLayout();
+        SpringLayout layout = new SpringLayout();
         this.setLayout(layout);
 
-        this.add(new JLabel("TEST"));
+        UserCreationPanel userCreationPanel = new UserCreationPanel();
+        //JLabel title = new JLabel("Registeration screen");
 
+        this.add(userCreationPanel);
         this.setVisible(true);
     }
 }
