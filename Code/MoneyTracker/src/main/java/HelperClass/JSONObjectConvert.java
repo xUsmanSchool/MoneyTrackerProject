@@ -11,12 +11,12 @@ public class JSONObjectConvert {
     public static JSONObject JSONifyPerson(Person person) {
         Map<String,String> jsonMap = new HashMap<>();
         jsonMap.put("firstName", person.getFirstName());
-        jsonMap.put("lastName", person.getLastName() == null ? "null" : person.getLastName().toString());
-        jsonMap.put("phoneNumber", person.getPhoneNumber() == null ? "null" : person.getPhoneNumber().toString());
-        jsonMap.put("sex", person.getSex() == null ? "null" : person.getSex().toString());
-        jsonMap.put("birthDate", person.getBirthDate() == null ? "null" : person.getBirthDate().toString());
-        jsonMap.put("accountCreationDate", person.getAccountCreationDate() == null ? "null" : person.getAccountCreationDate().toString());
-        jsonMap.put("accountEditDate", person.getAccountEditDate() == null ? "null" : person.getAccountEditDate().toString());
+        jsonMap.put("lastName", person.getLastName());
+        jsonMap.put("phoneNumber", person.getPhoneNumber());
+        jsonMap.put("sex", person.getSex().toString());
+        jsonMap.put("birthDate", DateToJSONArray(person.getBirthDate()).toJSONString());
+        jsonMap.put("accountCreationDate", DateToJSONArray(person.getAccountCreationDate()).toJSONString());
+        jsonMap.put("accountEditDate", DateToJSONArray(person.getAccountEditDate()).toJSONString());
         return new JSONObject(jsonMap);
     }
 
@@ -24,5 +24,14 @@ public class JSONObjectConvert {
         JSONArray jsonObjectArrayList = new JSONArray();
         for (Person person : personsDB.getPersons()) jsonObjectArrayList.add(JSONObjectConvert.JSONifyPerson(person));
         return jsonObjectArrayList;
+    }
+
+    private static JSONArray DateToJSONArray(Date date) {
+        JSONArray temp = new JSONArray();
+        temp.add(0, date.getDay().toString());
+        temp.add(1, date.getMonth().toString());
+        temp.add(2, date.getYear().toString());
+
+        return temp;
     }
 }
