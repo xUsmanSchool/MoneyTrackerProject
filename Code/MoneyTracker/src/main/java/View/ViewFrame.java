@@ -14,13 +14,13 @@ public class ViewFrame extends JFrame {
         GridLayout experimentLayout = new GridLayout(0,2);
         this.setLayout(experimentLayout);
 
-        //JLabel title = new JLabel("Registeration screen");
-
         UserCreationPanel userCreationPanel = new UserCreationPanel();
-        UserListPanel userListPanel = new UserListPanel();
+        //UserListPanel userListPanel = new UserListPanel();
+        UserListPanelAdvanced userListPanelAdvanced = new UserListPanelAdvanced();
 
         this.add(userCreationPanel);
-        this.add(userListPanel);
+        //this.add(userListPanel);
+        this.add(userListPanelAdvanced);
         this.setVisible(true);
     }
 }
