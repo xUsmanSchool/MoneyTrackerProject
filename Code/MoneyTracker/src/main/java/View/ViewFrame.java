@@ -11,13 +11,16 @@ public class ViewFrame extends JFrame {
         this.setSize(720, 480);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        SpringLayout layout = new SpringLayout();
-        this.setLayout(layout);
+        GridLayout experimentLayout = new GridLayout(0,2);
+        this.setLayout(experimentLayout);
 
-        UserCreationPanel userCreationPanel = new UserCreationPanel();
         //JLabel title = new JLabel("Registeration screen");
 
+        UserCreationPanel userCreationPanel = new UserCreationPanel();
+        UserListPanel userListPanel = new UserListPanel();
+
         this.add(userCreationPanel);
+        this.add(userListPanel);
         this.setVisible(true);
     }
 }
