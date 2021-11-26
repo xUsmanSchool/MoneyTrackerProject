@@ -10,13 +10,13 @@ import java.util.Map;
 public class JSONObjectConvert {
     public static JSONObject JSONifyPerson(Person person) {
         Map<String,String> jsonMap = new HashMap<>();
-        jsonMap.put("firstName", person.getFirstName());
-        jsonMap.put("lastName", person.getLastName());
-        jsonMap.put("phoneNumber", person.getPhoneNumber());
-        jsonMap.put("sex", person.getSex().toString());
-        jsonMap.put("birthDate", DateToJSONArray(person.getBirthDate()).toJSONString());
-        jsonMap.put("accountCreationDate", DateToJSONArray(person.getAccountCreationDate()).toJSONString());
-        jsonMap.put("accountEditDate", DateToJSONArray(person.getAccountEditDate()).toJSONString());
+        jsonMap.put(person.getFirstNameKey(), person.getFirstNameValue());
+        jsonMap.put(person.getLastNameKey(), person.getLastNameValue());
+        jsonMap.put(person.getPhoneNumberKey(), person.getPhoneNumberValue());
+        jsonMap.put(person.getSexKey(), person.getSexValue().toString());
+        jsonMap.put(person.getBirthDateKey(), DateToJSONArray(person.getBirthDateValue()).toJSONString());
+        jsonMap.put(person.getAccountCreationDateKey(), DateToJSONArray(person.getAccountCreationDateValue()).toJSONString());
+        jsonMap.put(person.getAccountEditDateKey(), DateToJSONArray(person.getAccountEditDateValue()).toJSONString());
         return new JSONObject(jsonMap);
     }
 

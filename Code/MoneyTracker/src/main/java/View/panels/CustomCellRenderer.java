@@ -1,7 +1,6 @@
 package View.panels;
 
 import Database.Person;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,7 +11,7 @@ public class CustomCellRenderer extends JLabel implements ListCellRenderer<Objec
 
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Person person = (Person) value;
-        setText(person.getFirstName() + " " + person.getLastName());
+        setText(person.getFirstNameValue().replace("_", " ") + " " + person.getLastNameValue().replace("_", " "));
 
         // Scale down an image
         /*

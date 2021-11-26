@@ -1,12 +1,13 @@
 package Database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PersonsDB extends Database {
     private static PersonsDB databaseInstance;
-    private ArrayList<Person> personList;
+    private final ArrayList<Person> personList;
 
-    private PersonsDB() { this.personList = new ArrayList<Person>(); }
+    private PersonsDB() { this.personList = new ArrayList<>(); }
 
     public static PersonsDB getInstance(){
         if (databaseInstance == null) { databaseInstance = new PersonsDB(); }
@@ -14,6 +15,7 @@ public class PersonsDB extends Database {
     }
 
     public void add(Person person) {
+
         this.personList.add(person);
         setChanged();
         notifyObservers();
