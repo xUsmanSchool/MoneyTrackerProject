@@ -1,18 +1,22 @@
 package View.panels;
 
+import Controller.RegistrationController;
+import Database.Person;
 import Database.PersonsDB;
+import HelperClass.Date;
 import HelperClass.EnumConverter;
 import HelperClass.Gender;
-
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.*;
+import java.util.Objects;
 
 public class UserCreationPanel extends JPanel {
     private final JButton createButton;
+    JTextField firstNameTextField, lastNameTextField, phoneNumberTextField;
+    JComboBox<String> jComboBoxGender, jComboBoxD, jComboBoxM, jComboBoxY;
 
     PersonsDB personsDB = PersonsDB.getInstance();
-    // todo
+    RegistrationController registrationController = new RegistrationController(personsDB);
 
     public UserCreationPanel() {
         GroupLayout layout = new GroupLayout(this);
@@ -22,31 +26,30 @@ public class UserCreationPanel extends JPanel {
 
         JLabel firstNameLabel = new JLabel("First name: ");
         JLabel lastNameLabel = new JLabel("Last name: ");
-        JLabel phoneNumberLabel = new JLabel("Phone number: ");
-        JLabel genderLabel = new JLabel("Gender: ");
-        JLabel birthdateLabel = new JLabel("Date of birth: ");
+        JLabel phoneNumberLabel = new JLabel("Phone number*: ");
+        JLabel genderLabel = new JLabel("Gender*: ");
+        JLabel birthdateLabel = new JLabel("Date of birth*: ");
 
-        JTextField firstNameTextField = new JTextField("");
-        JTextField lastNameTextField = new JTextField("");
-        JTextField phoneNumberTextField = new JTextField("");
+        firstNameTextField = new JTextField("");
+        lastNameTextField = new JTextField("");
+        phoneNumberTextField = new JTextField("");
 
         String[] o = EnumConverter.enumToString(Gender.values());
-        JComboBox<String> jComboBoxGender = new JComboBox<>(o);
+        jComboBoxGender = new JComboBox<>(o);
 
-        int days = 31;
+        int days = 31, months = 12, years = 100;
         String[] dayOptions = new String[days];
-        for (int i=0; i<days; i++) dayOptions[i] = Integer.toString(i+1);
-        JComboBox<String> jComboBoxD = new JComboBox<>(dayOptions);
-
-        int months = 12;
         String[] monthOptions = new String[months];
-        for (int i=0; i<months; i++) monthOptions[i] = Integer.toString(i+1);
-        JComboBox<String> jComboBoxM = new JComboBox<>(monthOptions);
-
-        int years = 100;
         String[] yearOptions = new String[years];
+
+        for (int i=0; i<days; i++) dayOptions[i] = Integer.toString(i+1);
+        jComboBoxD = new JComboBox<>(dayOptions);
+
+        for (int i=0; i<months; i++) monthOptions[i] = Integer.toString(i+1);
+        jComboBoxM = new JComboBox<>(monthOptions);
+
         for (int i=0; i<years; i++) yearOptions[i] = Integer.toString(i+1960);
-        JComboBox<String> jComboBoxY = new JComboBox<>(yearOptions);
+        jComboBoxY = new JComboBox<>(yearOptions);
 
         this.createButton = new JButton("Create user");
 
@@ -106,8 +109,50 @@ public class UserCreationPanel extends JPanel {
     {
         this.createButton.addActionListener(listener ->
         {
-            System.out.println("create account -- this button doesn't do anything");
-            // todo
+            if (checkFieldsForValidity()) {
+                registrationController.register(createPerson());
+                clearForm();
+            }
         });
+    }
+
+    private Person createPerson() {
+        String firstNameText = firstNameTextField.getText();
+        String lastNameText = lastNameTextField.getText();
+        String phoneNumberText = phoneNumberTextField.getText();
+        Gender genderObject = Gender.valueOf((String)jComboBoxGender.getSelectedItem());
+        int days = Integer.parseInt((String) Objects.requireNonNull(jComboBoxD.getSelectedItem()));
+        int months = Integer.parseInt((String) Objects.requireNonNull(jComboBoxM.getSelectedItem()));
+        int years = Integer.parseInt((String) Objects.requireNonNull(jComboBoxY.getSelectedItem()));
+
+        Person p = new Person(firstNameText, lastNameText);
+        p.setPhoneNumber(phoneNumberText);
+        p.setGender(genderObject);
+        p.setBirthDate(new Date().getDate(days, months, years));
+        return p;
+    }
+
+    private boolean checkFieldsForValidity() {
+        boolean ok = true;
+
+        if (firstNameTextField.getText().length() == 0) {
+            firstNameTextField.setBorder(javax.swing.BorderFactory.createLineBorder(Color.RED)); ok = false;
+        } else firstNameTextField.setBorder(javax.swing.BorderFactory.createLineBorder(Color.GRAY));
+
+        if (lastNameTextField.getText().length() == 0) {
+            lastNameTextField.setBorder(javax.swing.BorderFactory.createLineBorder(Color.RED)); ok = false;
+        } else lastNameTextField.setBorder(javax.swing.BorderFactory.createLineBorder(Color.GRAY));
+
+        return ok;
+    }
+
+    private void clearForm() {
+        firstNameTextField.setText("");
+        lastNameTextField.setText("");
+        phoneNumberTextField.setText("");
+        jComboBoxGender.setSelectedIndex(0);
+        jComboBoxD.setSelectedIndex(0);
+        jComboBoxM.setSelectedIndex(0);
+        jComboBoxY.setSelectedIndex(0);
     }
 }

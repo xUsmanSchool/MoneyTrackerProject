@@ -1,3 +1,4 @@
+import Controller.RegistrationController;
 import Database.*;
 import Factory.*;
 import HelperClass.*;
@@ -15,6 +16,7 @@ public class Main {
     public Main() {
         PersonsDB personDatabase = PersonsDB.getInstance();                         /** Singleton pattern: databases */
         TicketsDB ticketDatabase = TicketsDB.getInstance();                         /** Singleton pattern: databases */
+        RegistrationController personRegistrationController = new RegistrationController(personDatabase);
 
         DatabaseObserver dbObserver = new DatabaseObserver();                       /** Observer pattern */
         personDatabase.addObserver(dbObserver);                                     /** Observer pattern */
@@ -25,8 +27,8 @@ public class Main {
         Person person1 = new Person("Usman,", "The Ultimate Disappointment");       // create person 1
         Person person2 = new Person("Vladimir", "Kukh");                            // create person 2
 
-        personDatabase.add(person1);                                                // add person 1 to database
-        personDatabase.add(person2);                                                // add person 2 to database
+        personRegistrationController.register(person1);                             // add person 1 to database
+        personRegistrationController.register(person2);                             // add person 2 to database
 
         System.out.println("\nTesting iterator pattern: ");                         /** Iterator pattern */
         Iterator it = personDatabase.getIterator();                                 /** Iterator pattern */

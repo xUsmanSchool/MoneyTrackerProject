@@ -2,7 +2,6 @@ package Database;
 
 import Iterator.Container;
 import Iterator.Iterator;
-
 import java.util.ArrayList;
 
 public class TicketsDB extends Database implements Container {
