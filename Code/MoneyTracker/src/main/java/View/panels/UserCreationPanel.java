@@ -7,13 +7,16 @@ import HelperClass.Date;
 import HelperClass.EnumConverter;
 import HelperClass.Gender;
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.util.Objects;
 
 public class UserCreationPanel extends JPanel {
     private final JButton createButton;
-    JTextField firstNameTextField, lastNameTextField, phoneNumberTextField;
-    JComboBox<String> jComboBoxGender, jComboBoxD, jComboBoxM, jComboBoxY;
+    private final JTextField firstNameTextField, lastNameTextField;
+    private final JFormattedTextField phoneNumberTextField;
+    private final JComboBox<String> jComboBoxGender, jComboBoxD, jComboBoxM, jComboBoxY;
+    private MaskFormatter numberFormatter = null;
 
     PersonsDB personsDB = PersonsDB.getInstance();
     RegistrationController registrationController = new RegistrationController(personsDB);
@@ -32,7 +35,16 @@ public class UserCreationPanel extends JPanel {
 
         firstNameTextField = new JTextField("");
         lastNameTextField = new JTextField("");
-        phoneNumberTextField = new JTextField("");
+
+        try {
+            numberFormatter = new MaskFormatter("####-##-##-##");
+            numberFormatter.setPlaceholderCharacter('#');
+            numberFormatter.setValidCharacters("0123456789");
+            numberFormatter.setOverwriteMode(true);
+        } catch (Exception e) { System.err.println(e.toString()); }
+
+        phoneNumberTextField = new JFormattedTextField(numberFormatter);
+        phoneNumberTextField.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
 
         String[] o = EnumConverter.enumToString(Gender.values());
         jComboBoxGender = new JComboBox<>(o);
@@ -147,6 +159,7 @@ public class UserCreationPanel extends JPanel {
     }
 
     private void clearForm() {
+        firstNameTextField.requestFocus();
         firstNameTextField.setText("");
         lastNameTextField.setText("");
         phoneNumberTextField.setText("");
