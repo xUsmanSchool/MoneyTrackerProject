@@ -9,25 +9,21 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class UserListPanelAdvanced extends JPanel implements ListSelectionListener {
-    JLabel title;
-    private JList list;
-    private DefaultListModel listModel;
-    private ArrayList<Person> personList;
-
     PersonsDB personsDB = PersonsDB.getInstance();
 
     public UserListPanelAdvanced() {
         BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layout);
 
-        personList = personsDB.getAll();
+        ArrayList<Person> personList = personsDB.getAll();
+        // todo - is this allowed without controller?
 
-        title = new JLabel("Existing user list");
+        JLabel title = new JLabel("Existing user list");
         title.setAlignmentX(CENTER_ALIGNMENT);
 
-        listModel = new DefaultListModel<>();
+        DefaultListModel<Person> listModel = new DefaultListModel<Person>();
         for (Person person : personList) listModel.addElement(person);
-        list = new JList<>(listModel);
+        JList<Person> list = new JList<Person>(listModel);
         list.setCellRenderer(new CustomCellRenderer());
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);

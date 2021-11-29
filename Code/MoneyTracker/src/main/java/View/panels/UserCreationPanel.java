@@ -16,7 +16,6 @@ public class UserCreationPanel extends JPanel {
     private final JTextField firstNameTextField, lastNameTextField;
     private final JFormattedTextField phoneNumberTextField;
     private final JComboBox<String> jComboBoxGender, jComboBoxD, jComboBoxM, jComboBoxY;
-    private MaskFormatter numberFormatter = null;
 
     PersonsDB personsDB = PersonsDB.getInstance();
     RegistrationController registrationController = new RegistrationController(personsDB);
@@ -36,6 +35,7 @@ public class UserCreationPanel extends JPanel {
         firstNameTextField = new JTextField("");
         lastNameTextField = new JTextField("");
 
+        MaskFormatter numberFormatter = null;
         try {
             numberFormatter = new MaskFormatter("####-##-##-##");
             numberFormatter.setPlaceholderCharacter('#');
