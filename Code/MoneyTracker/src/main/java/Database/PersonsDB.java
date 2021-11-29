@@ -21,7 +21,7 @@ public class PersonsDB extends Database implements Container {
             this.personList.add((Person)item);
             setChanged();
             notifyObservers();
-        } else System.err.println("PersonsDB: item does no match the correct type");
+        } else System.err.println("PersonsDB: item does not match the correct type");
     }
 
     @Override
@@ -30,7 +30,7 @@ public class PersonsDB extends Database implements Container {
             this.personList.remove((Person)item);
             setChanged();
             notifyObservers();
-        } else System.err.println("PersonsDB: item does no match the correct type");
+        } else System.err.println("PersonsDB: item does not match the correct type");
     }
 
     @Override

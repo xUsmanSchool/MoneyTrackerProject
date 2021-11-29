@@ -3,7 +3,6 @@ package Database;
 import Events.Event;
 import HelperClass.Date;
 import HelperClass.Events;
-
 import java.util.HashMap;
 
 public class Ticket extends DatabaseItem {

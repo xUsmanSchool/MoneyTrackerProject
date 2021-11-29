@@ -1,10 +1,15 @@
 package View.panels;
 
 import Database.PersonsDB;
+import HelperClass.EnumConverter;
+import HelperClass.Gender;
+
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UserCreationPanel extends JPanel {
-    private JButton createButton;
+    private final JButton createButton;
 
     PersonsDB personsDB = PersonsDB.getInstance();
     // todo
@@ -18,30 +23,30 @@ public class UserCreationPanel extends JPanel {
         JLabel firstNameLabel = new JLabel("First name: ");
         JLabel lastNameLabel = new JLabel("Last name: ");
         JLabel phoneNumberLabel = new JLabel("Phone number: ");
-        JLabel sexLabel = new JLabel("Sex: ");
+        JLabel genderLabel = new JLabel("Gender: ");
         JLabel birthdateLabel = new JLabel("Date of birth: ");
 
         JTextField firstNameTextField = new JTextField("");
         JTextField lastNameTextField = new JTextField("");
         JTextField phoneNumberTextField = new JTextField("");
 
-        String[] sexOptions = {"Male", "Female", "Rather not say"};
-        JComboBox jComboBoxSex = new JComboBox(sexOptions);
+        String[] o = EnumConverter.enumToString(Gender.values());
+        JComboBox<String> jComboBoxGender = new JComboBox<>(o);
 
         int days = 31;
         String[] dayOptions = new String[days];
         for (int i=0; i<days; i++) dayOptions[i] = Integer.toString(i+1);
-        JComboBox jComboBoxD = new JComboBox(dayOptions);
+        JComboBox<String> jComboBoxD = new JComboBox<>(dayOptions);
 
         int months = 12;
         String[] monthOptions = new String[months];
         for (int i=0; i<months; i++) monthOptions[i] = Integer.toString(i+1);
-        JComboBox jComboBoxM = new JComboBox(monthOptions);
+        JComboBox<String> jComboBoxM = new JComboBox<>(monthOptions);
 
         int years = 100;
         String[] yearOptions = new String[years];
         for (int i=0; i<years; i++) yearOptions[i] = Integer.toString(i+1960);
-        JComboBox jComboBoxY = new JComboBox(yearOptions);
+        JComboBox<String> jComboBoxY = new JComboBox<>(yearOptions);
 
         this.createButton = new JButton("Create user");
 
@@ -53,14 +58,14 @@ public class UserCreationPanel extends JPanel {
                         .addComponent(firstNameLabel)
                         .addComponent(lastNameLabel)
                         .addComponent(phoneNumberLabel)
-                        .addComponent(sexLabel)
+                        .addComponent(genderLabel)
                         .addComponent(birthdateLabel)
                 )
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(firstNameTextField)
                         .addComponent(lastNameTextField)
                         .addComponent(phoneNumberTextField)
-                        .addComponent(jComboBoxSex)
+                        .addComponent(jComboBoxGender)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(jComboBoxD)
                                 .addComponent(jComboBoxM)
@@ -83,8 +88,8 @@ public class UserCreationPanel extends JPanel {
                         .addComponent(phoneNumberTextField)
                 )
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(sexLabel)
-                        .addComponent(jComboBoxSex)
+                        .addComponent(genderLabel)
+                        .addComponent(jComboBoxGender)
                 )
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(birthdateLabel)
@@ -94,7 +99,6 @@ public class UserCreationPanel extends JPanel {
                 )
                 .addComponent(createButton)
         );
-
         addAccountCreatedActionListener();
     }
 

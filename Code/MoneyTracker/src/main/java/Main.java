@@ -36,7 +36,7 @@ public class Main {
         Event randomEvent = eventFactory.getEvent(Events.RESTAURANT);               /** Factory pattern */
 
         // write to JSON file
-        WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
+        //WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
 
         // draw JFrame
         ViewFrame view = new ViewFrame();
