@@ -13,16 +13,17 @@ public class JSONObjectConvert {
         jsonMap.put(person.getFirstNameKey(), person.getFirstNameValue());
         jsonMap.put(person.getLastNameKey(), person.getLastNameValue());
         jsonMap.put(person.getPhoneNumberKey(), person.getPhoneNumberValue());
-        jsonMap.put(person.getSexKey(), person.getSexValue().toString());
+        jsonMap.put(person.getGenderKey(), person.getGenderValue().toString());
         jsonMap.put(person.getBirthDateKey(), DateToJSONArray(person.getBirthDateValue()).toJSONString());
         jsonMap.put(person.getAccountCreationDateKey(), DateToJSONArray(person.getAccountCreationDateValue()).toJSONString());
         jsonMap.put(person.getAccountEditDateKey(), DateToJSONArray(person.getAccountEditDateValue()).toJSONString());
+        jsonMap.put(person.getIconKey(), person.getIconValue());
         return new JSONObject(jsonMap);
     }
 
     public static JSONArray JSONifyAllPersons(PersonsDB personsDB) {
         JSONArray jsonObjectArrayList = new JSONArray();
-        for (Person person : personsDB.getPersons()) jsonObjectArrayList.add(JSONObjectConvert.JSONifyPerson(person));
+        for (Person person : personsDB.getAll()) jsonObjectArrayList.add(JSONObjectConvert.JSONifyPerson(person));
         return jsonObjectArrayList;
     }
 

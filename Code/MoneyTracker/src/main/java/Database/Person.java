@@ -1,105 +1,120 @@
 package Database;
 
 import HelperClass.Date;
-import HelperClass.Sex;
+import HelperClass.Gender;
+import HelperClass.HashMep;
+
 import java.util.HashMap;
 
-public class Person {
-    private HashMap<String, String> firstName;
-    private HashMap<String, String> lastName;
-    private HashMap<String, String> phoneNumber;
-    private HashMap<String, Sex> sex;
-    private HashMap<String, Date> birthDate;
-    private HashMap<String, Date> accountCreationDate;
-    private HashMap<String, Date> accountEditDate;
+public class Person extends DatabaseItem {
+    private final HashMep<String, String> firstName;
+    private final HashMep<String, String> lastName;
+    private final HashMep<String, String> phoneNumber;
+    private final HashMep<String, Gender> gender;
+    private final HashMep<String, Date> birthDate;
+    private final HashMep<String, Date> accountCreationDate;
+    private final HashMep<String, Date> accountEditDate;
+    private final HashMep<String, String> icon;
 
-    public Person(String firstName) {
+    public Person(String firstName, String lastName) {
         // init
-        this.firstName = new HashMap<>();
-        this.lastName = new HashMap<>();
-        this.phoneNumber = new HashMap<>();
-        this.sex = new HashMap<>();
-        this.birthDate = new HashMap<>();
-        this.accountCreationDate = new HashMap<>();
-        this.accountEditDate = new HashMap<>();
+        this.firstName = new HashMep<>();
+        this.lastName = new HashMep<>();
+        this.phoneNumber = new HashMep<>();
+        this.gender = new HashMep<>();
+        this.birthDate = new HashMep<>();
+        this.accountCreationDate = new HashMep<>();
+        this.accountEditDate = new HashMep<>();
+        this.icon = new HashMep<>();
 
         // fill in values
         this.firstName.put("First_name", firstName);
-        this.lastName.put("Last_name", "");
+        this.lastName.put("Last_name", lastName);
         this.phoneNumber.put("Phone_number", "");
-        this.sex.put("Sex", Sex.NONE);
+        this.gender.put("Gender", Gender.NONE);
         this.birthDate.put("Birth_date", new Date().getDate());
         this.accountCreationDate.put("Account_creation_date", new Date().getTodaysDate());
         this.accountEditDate.put("Account_edit_date", new Date().getTodaysDate());
+        this.icon.put("Icon_url", "");
     }
 
     public String getFirstNameKey() {
-        return this.firstName.keySet().toArray()[0].toString();
+        return this.firstName.getKey();
     }
     public String getFirstNameValue() {
-        return this.firstName.get(getFirstNameKey());
+        return this.firstName.getValue();
     }
     public void setFirstName(String firstName) {
         this.firstName.put(getFirstNameKey(), firstName);
     }
 
     public String getLastNameKey() {
-        return this.lastName.keySet().toArray()[0].toString();
+        return this.lastName.getKey();
     }
     public String getLastNameValue() {
-        return this.lastName.get(getLastNameKey());
+        return this.lastName.getValue();
     }
     public void setLastName(String lastName) {
         this.lastName.put(getLastNameKey(), lastName);
     }
 
     public String getPhoneNumberKey() {
-        return this.phoneNumber.keySet().toArray()[0].toString();
+        return this.phoneNumber.getKey();
     }
     public String getPhoneNumberValue() {
-        return this.phoneNumber.get(getPhoneNumberKey());
+        return this.phoneNumber.getValue();
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber.put(getPhoneNumberKey(), phoneNumber);
     }
 
-    public String getSexKey() {
-        return this.sex.keySet().toArray()[0].toString();
+    public String getGenderKey() {
+        return this.gender.getKey();
     }
-    public Sex getSexValue() {
-        return this.sex.get(getSexKey());
+    public Gender getGenderValue() {
+        return this.gender.getValue();
     }
-    public void setSex(Sex sex) {
-        this.sex.put(getSexKey(), sex);
+    public void setGender(Gender gender) {
+        this.gender.put(getGenderKey(), gender);
     }
 
     public String getBirthDateKey() {
-        return this.birthDate.keySet().toArray()[0].toString();
+        return this.birthDate.getKey();
     }
     public Date getBirthDateValue() {
-        return this.birthDate.get(getBirthDateKey());
+        return this.birthDate.getValue();
     }
     public void setBirthDate(Date birthDate) {
         this.birthDate.put(getBirthDateKey(), birthDate);
     }
 
     public String getAccountCreationDateKey() {
-        return this.accountCreationDate.keySet().toArray()[0].toString();
+        return this.accountCreationDate.getKey();
     }
     public Date getAccountCreationDateValue() {
-        return this.accountCreationDate.get(getAccountCreationDateKey());
+        return this.accountCreationDate.getValue();
     }
     private void setAccountCreationDate(Date accountCreationDate) {
         this.accountCreationDate.put(getAccountCreationDateKey(), accountCreationDate);
     }
 
     public String getAccountEditDateKey() {
-        return this.accountEditDate.keySet().toArray()[0].toString();
+        return this.accountEditDate.getKey();
     }
     public Date getAccountEditDateValue() {
-        return this.accountEditDate.get(getAccountEditDateKey());
+        return this.accountEditDate.getValue();
     }
     public void setAccountEditDate(Date accountEditDate) {
         this.accountEditDate.put(getAccountEditDateKey(), accountEditDate);
+    }
+
+    public String getIconKey() {
+        return this.icon.getKey();
+    }
+    public String getIconValue() {
+        return this.icon.getValue();
+    }
+    public void setIcon(String iconUrl) {
+        this.icon.put(getIconKey(), iconUrl);
     }
 }

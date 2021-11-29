@@ -2,7 +2,7 @@ import Database.Person;
 import Database.PersonsDB;
 import Database.TicketsDB;
 import HelperClass.JSONObjectConvert;
-import HelperClass.Sex;
+import HelperClass.Gender;
 import HelperClass.WriteToJSONFile;
 import Observers.DatabaseObserver;
 import View.ViewFrame;
@@ -24,12 +24,12 @@ public class Main {
         personDatabase.addObserver(dbObserver);
 
         // create person 1
-        Person testPerson1 = new Person("Usman");
-        testPerson1.setSex(Sex.FEMALE);
+        Person testPerson1 = new Person("Usman,", "The Ultimate Disappointment");
+        testPerson1.setGender(Gender.FEMALE);
+        testPerson1.setIcon("testIcon.jpg");
 
         // create person 2
-        Person testPerson2 = new Person("Vlad");
-        testPerson2.setLastName("Kukh");
+        Person testPerson2 = new Person("Vlad", "Kukh");
         testPerson2.setPhoneNumber("0000000000");
 
         // add person to database

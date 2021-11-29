@@ -1,7 +1,6 @@
 package Database;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PersonsDB extends Database {
     private static PersonsDB databaseInstance;
@@ -14,20 +13,26 @@ public class PersonsDB extends Database {
         return databaseInstance;
     }
 
-    public void add(Person person) {
-
-        this.personList.add(person);
-        setChanged();
-        notifyObservers();
+    @Override
+    public void add(DatabaseItem item) {
+        if (item instanceof Person) {
+            this.personList.add((Person)item);
+            setChanged();
+            notifyObservers();
+        } else System.err.println("PersonsDB: item does no match the correct type");
     }
 
-    public void remove(Person person) {
-        this.personList.remove(person);
-        setChanged();
-        notifyObservers();
+    @Override
+    public void remove(DatabaseItem item) {
+        if (item instanceof Person) {
+            this.personList.remove((Person)item);
+            setChanged();
+            notifyObservers();
+        } else System.err.println("PersonsDB: item does no match the correct type");
     }
 
-    public ArrayList<Person> getPersons() {
+    @Override
+    public ArrayList<Person> getAll() {
         return personList;
     }
 }

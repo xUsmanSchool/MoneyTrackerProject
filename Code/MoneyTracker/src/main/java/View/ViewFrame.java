@@ -15,11 +15,9 @@ public class ViewFrame extends JFrame {
         this.setLayout(experimentLayout);
 
         UserCreationPanel userCreationPanel = new UserCreationPanel();
-        //UserListPanel userListPanel = new UserListPanel();
         UserListPanelAdvanced userListPanelAdvanced = new UserListPanelAdvanced();
 
         this.add(userCreationPanel);
-        //this.add(userListPanel);
         this.add(userListPanelAdvanced);
         this.setVisible(true);
     }

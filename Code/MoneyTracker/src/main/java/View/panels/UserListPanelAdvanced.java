@@ -2,7 +2,6 @@ package View.panels;
 
 import Database.Person;
 import Database.PersonsDB;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -21,7 +20,7 @@ public class UserListPanelAdvanced extends JPanel implements ListSelectionListen
         BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layout);
 
-        personList = personsDB.getPersons();
+        personList = personsDB.getAll();
 
         title = new JLabel("Existing user list");
         title.setAlignmentX(CENTER_ALIGNMENT);

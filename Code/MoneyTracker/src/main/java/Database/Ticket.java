@@ -1,5 +1,5 @@
 package Database;
 
-public class Ticket {
+public class Ticket extends DatabaseItem {
 
 }

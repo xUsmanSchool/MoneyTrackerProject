@@ -10,19 +10,23 @@ public class CustomCellRenderer extends JLabel implements ListCellRenderer<Objec
     }
 
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Person person = (Person) value;
-        setText(person.getFirstNameValue().replace("_", " ") + " " + person.getLastNameValue().replace("_", " "));
+        // convert object to person
+        Person personObject = (Person) value;
 
-        // Scale down an image
-        /*
-            ImageIcon imageIcon = new ImageIcon("./user_icon.png");
+        // fill in text in cell
+        setText(personObject.getFirstNameValue().replace("_", " ") + " " + personObject.getLastNameValue().replace("_", " "));
+
+        // process image or set default
+        if (personObject.getIconValue().length() == 0) {
+            ImageIcon imageIcon = new ImageIcon("src/main/icons/user_icon_small.png");
+            setIcon(imageIcon);
+        } else {
+            ImageIcon imageIcon = new ImageIcon("src/main/icons/" + personObject.getIconValue());
             Image image = imageIcon.getImage();
             Image newImg = image.getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(newImg);
-        */
-
-        ImageIcon imageIcon = new ImageIcon("./user_icon_small.png");
-        setIcon(imageIcon);
+            setIcon(imageIcon);
+        }
 
         Color background;
         Color foreground;
