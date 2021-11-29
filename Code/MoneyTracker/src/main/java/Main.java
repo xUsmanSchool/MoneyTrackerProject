@@ -4,6 +4,7 @@ import Database.TicketsDB;
 import HelperClass.JSONObjectConvert;
 import HelperClass.Gender;
 import HelperClass.WriteToJSONFile;
+import Iterator.Iterator;
 import Observers.DatabaseObserver;
 import View.ViewFrame;
 
@@ -15,11 +16,11 @@ public class Main {
     }
 
     public Main() {
-        // singleton pattern databases
+        /** Singleton pattern: databases */
         PersonsDB personDatabase = PersonsDB.getInstance();
         TicketsDB ticketDatabase = TicketsDB.getInstance();
 
-        // add observers
+        /** Observer pattern: still todo */
         DatabaseObserver dbObserver = new DatabaseObserver();
         personDatabase.addObserver(dbObserver);
 
@@ -36,8 +37,13 @@ public class Main {
         personDatabase.add(testPerson1);
         personDatabase.add(testPerson2);
 
+        /** Iterator pattern: going through a large database */
+        System.out.println("Testing iterator pattern: ");
+        Iterator it = personDatabase.getIterator();
+        while (it.hasNext()) System.out.println(it.next());
+
         // write to file
-        WriteToJSONFile.writeObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
+        WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
 
         // draw
         ViewFrame view = new ViewFrame();

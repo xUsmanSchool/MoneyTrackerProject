@@ -2,7 +2,6 @@ package HelperClass;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -14,7 +13,7 @@ public class WriteToJSONFile {
         } catch (IOException e) { System.err.printf("Unable to create file %s%s\n", fileName, e); }
     }
 
-    public static void writeObjectToFile(String fileName, JSONObject object) {
+    public static void writeSingleObjectToFile(String fileName, JSONObject object) {
         try {
             FileWriter file = new FileWriter("./" + fileName,true);
             file.write(object.toJSONString());
@@ -22,7 +21,7 @@ public class WriteToJSONFile {
         } catch (IOException e) { System.err.printf("Unable to create file %s%s\n", fileName, e); }
     }
 
-    public static void writeObjectsToFile(String fileName, JSONArray objects) {
+    public static void writeMultipleObjectsToFile(String fileName, JSONArray objects) {
         try {
             FileWriter file = new FileWriter("./" + fileName,true);
             file.write(objects.toJSONString());

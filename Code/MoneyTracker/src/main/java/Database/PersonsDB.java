@@ -1,8 +1,10 @@
 package Database;
 
+import Iterator.Container;
+import Iterator.Iterator;
 import java.util.ArrayList;
 
-public class PersonsDB extends Database {
+public class PersonsDB extends Database implements Container {
     private static PersonsDB databaseInstance;
     private final ArrayList<Person> personList;
 
@@ -35,4 +37,25 @@ public class PersonsDB extends Database {
     public ArrayList<Person> getAll() {
         return personList;
     }
+
+    @Override
+    public Iterator getIterator() {
+        return new PersonIterator();
+    }
+
+    class PersonIterator implements Iterator {
+        int index;
+
+        @Override
+        public boolean hasNext() {
+            return index < personList.size();
+        }
+
+        @Override
+        public Object next() {
+            return this.hasNext() ? personList.get(index++) : null;
+        }
+    }
 }
+
+

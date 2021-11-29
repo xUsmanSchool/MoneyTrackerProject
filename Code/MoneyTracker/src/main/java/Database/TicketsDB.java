@@ -1,8 +1,11 @@
 package Database;
 
+import Iterator.Container;
+import Iterator.Iterator;
+
 import java.util.ArrayList;
 
-public class TicketsDB extends Database {
+public class TicketsDB extends Database implements Container {
     private static TicketsDB databaseInstance;
     private final ArrayList<Ticket> ticketList;
 
@@ -34,5 +37,24 @@ public class TicketsDB extends Database {
     @Override
     public ArrayList<Ticket> getAll() {
         return ticketList;
+    }
+
+    @Override
+    public Iterator getIterator() {
+        return new TicketIterator();
+    }
+
+    class TicketIterator implements Iterator {
+        int index;
+
+        @Override
+        public boolean hasNext() {
+            return index < ticketList.size();
+        }
+
+        @Override
+        public Object next() {
+            return this.hasNext() ? ticketList.get(index++) : null;
+        }
     }
 }
