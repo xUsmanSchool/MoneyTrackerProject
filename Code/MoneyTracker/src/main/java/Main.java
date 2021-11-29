@@ -1,51 +1,44 @@
-import Database.Person;
-import Database.PersonsDB;
-import Database.TicketsDB;
-import HelperClass.JSONObjectConvert;
-import HelperClass.Gender;
-import HelperClass.WriteToJSONFile;
-import Iterator.Iterator;
-import Observers.DatabaseObserver;
+import Database.*;
+import Factory.*;
+import HelperClass.*;
+import Iterator.*;
+import Observers.*;
+import Events.*;
 import View.ViewFrame;
 
 public class Main {
-
     public static void main(String[] args) {
         Main main = new Main();
         main.run();
     }
 
     public Main() {
-        /** Singleton pattern: databases */
-        PersonsDB personDatabase = PersonsDB.getInstance();
-        TicketsDB ticketDatabase = TicketsDB.getInstance();
+        PersonsDB personDatabase = PersonsDB.getInstance();                         /** Singleton pattern: databases */
+        TicketsDB ticketDatabase = TicketsDB.getInstance();                         /** Singleton pattern: databases */
 
-        /** Observer pattern: still todo */
-        DatabaseObserver dbObserver = new DatabaseObserver();
-        personDatabase.addObserver(dbObserver);
+        DatabaseObserver dbObserver = new DatabaseObserver();                       /** Observer pattern */
+        personDatabase.addObserver(dbObserver);                                     /** Observer pattern */
+        ticketDatabase.addObserver(dbObserver);                                     /** Observer pattern */
 
-        // create person 1
-        Person testPerson1 = new Person("Usman,", "The Ultimate Disappointment");
-        testPerson1.setGender(Gender.FEMALE);
-        testPerson1.setIcon("testIcon.jpg");
+        // todo - read database.json and update the personDatabase
 
-        // create person 2
-        Person testPerson2 = new Person("Vlad", "Kukh");
-        testPerson2.setPhoneNumber("0000000000");
+        Person person1 = new Person("Usman,", "The Ultimate Disappointment");       // create person 1
+        Person person2 = new Person("Vladimir", "Kukh");                            // create person 2
 
-        // add person to database
-        personDatabase.add(testPerson1);
-        personDatabase.add(testPerson2);
+        personDatabase.add(person1);                                                // add person 1 to database
+        personDatabase.add(person2);                                                // add person 2 to database
 
-        /** Iterator pattern: going through a large database */
-        System.out.println("Testing iterator pattern: ");
-        Iterator it = personDatabase.getIterator();
-        while (it.hasNext()) System.out.println(it.next());
+        System.out.println("\nTesting iterator pattern: ");                         /** Iterator pattern */
+        Iterator it = personDatabase.getIterator();                                 /** Iterator pattern */
+        while (it.hasNext()) System.out.println(it.next());                         /** Iterator pattern */
 
-        // write to file
+        EventFactory eventFactory = new EventFactory();                             /** Factory pattern */
+        Event randomEvent = eventFactory.getEvent(Events.RESTAURANT);               /** Factory pattern */
+
+        // write to JSON file
         WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
 
-        // draw
+        // draw JFrame
         ViewFrame view = new ViewFrame();
         view.initialize();
     }

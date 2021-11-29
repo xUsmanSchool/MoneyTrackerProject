@@ -33,9 +33,11 @@ public class Person extends DatabaseItem {
         this.lastName.put("Last_name", lastName);
         this.phoneNumber.put("Phone_number", "");
         this.gender.put("Gender", Gender.NONE);
-        this.birthDate.put("Birth_date", new Date().getDate());
-        this.accountCreationDate.put("Account_creation_date", new Date().getTodaysDate());
-        this.accountEditDate.put("Account_edit_date", new Date().getTodaysDate());
+        Date tempDefaultDate = new Date().getDate();
+        Date tempTodaysDate = new Date().getTodaysDate();
+        this.birthDate.put("Birth_date", tempDefaultDate);
+        this.accountCreationDate.put("Account_creation_date", tempTodaysDate);
+        this.accountEditDate.put("Account_edit_date", tempTodaysDate);
         this.icon.put("Icon_url", "");
     }
 
@@ -47,6 +49,7 @@ public class Person extends DatabaseItem {
     }
     public void setFirstName(String firstName) {
         this.firstName.put(getFirstNameKey(), firstName);
+        this.updateAccountEditDate();
     }
 
     public String getLastNameKey() {
@@ -57,6 +60,7 @@ public class Person extends DatabaseItem {
     }
     public void setLastName(String lastName) {
         this.lastName.put(getLastNameKey(), lastName);
+        this.updateAccountEditDate();
     }
 
     public String getPhoneNumberKey() {
@@ -67,6 +71,7 @@ public class Person extends DatabaseItem {
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber.put(getPhoneNumberKey(), phoneNumber);
+        this.updateAccountEditDate();
     }
 
     public String getGenderKey() {
@@ -77,6 +82,7 @@ public class Person extends DatabaseItem {
     }
     public void setGender(Gender gender) {
         this.gender.put(getGenderKey(), gender);
+        this.updateAccountEditDate();
     }
 
     public String getBirthDateKey() {
@@ -87,26 +93,7 @@ public class Person extends DatabaseItem {
     }
     public void setBirthDate(Date birthDate) {
         this.birthDate.put(getBirthDateKey(), birthDate);
-    }
-
-    public String getAccountCreationDateKey() {
-        return this.accountCreationDate.getKey();
-    }
-    public Date getAccountCreationDateValue() {
-        return this.accountCreationDate.getValue();
-    }
-    private void setAccountCreationDate(Date accountCreationDate) {
-        this.accountCreationDate.put(getAccountCreationDateKey(), accountCreationDate);
-    }
-
-    public String getAccountEditDateKey() {
-        return this.accountEditDate.getKey();
-    }
-    public Date getAccountEditDateValue() {
-        return this.accountEditDate.getValue();
-    }
-    public void setAccountEditDate(Date accountEditDate) {
-        this.accountEditDate.put(getAccountEditDateKey(), accountEditDate);
+        this.updateAccountEditDate();
     }
 
     public String getIconKey() {
@@ -117,5 +104,25 @@ public class Person extends DatabaseItem {
     }
     public void setIcon(String iconUrl) {
         this.icon.put(getIconKey(), iconUrl);
+        this.updateAccountEditDate();
+    }
+
+    public String getAccountCreationDateKey() {
+        return this.accountCreationDate.getKey();
+    }
+    public Date getAccountCreationDateValue() {
+        return this.accountCreationDate.getValue();
+    }
+
+
+    public String getAccountEditDateKey() {
+        return this.accountEditDate.getKey();
+    }
+    public Date getAccountEditDateValue() {
+        return this.accountEditDate.getValue();
+    }
+
+    private void updateAccountEditDate() {
+        this.accountCreationDate.put("Account_creation_date", new Date().getTodaysDate());
     }
 }

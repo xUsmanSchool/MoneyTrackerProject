@@ -22,7 +22,7 @@ public class TicketsDB extends Database implements Container {
             this.ticketList.add((Ticket)item);
             setChanged();
             notifyObservers();
-        } else System.err.println("PersonsDB: item does no match the correct type");
+        } else System.err.println("TicketDB: item does no match the correct type");
     }
 
     @Override
@@ -31,7 +31,7 @@ public class TicketsDB extends Database implements Container {
             this.ticketList.remove((Ticket)item);
             setChanged();
             notifyObservers();
-        } else System.err.println("PersonsDB: item does no match the correct type");
+        } else System.err.println("TicketDB: item does no match the correct type");
     }
 
     @Override
