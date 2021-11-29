@@ -144,26 +144,32 @@ public class UserCreationPanel extends JPanel {
     {
         this.jComboBoxM.addActionListener(listener ->
         {
-            cal.set(readYears(), readMonths()-1, 1);
-            int maxDays = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
-            if (readDays() > maxDays) {
-                jComboBoxD.setModel(new DefaultComboBoxModel<>(createDayOptions(maxDays)));
-                jComboBoxD.setSelectedIndex(maxDays-1);
-            } else if (currentMaxDays != maxDays) {
-                int currentSelectedIndex = jComboBoxD.getSelectedIndex();
-                jComboBoxD.setModel(new DefaultComboBoxModel<>(createDayOptions(maxDays)));
-                jComboBoxD.setSelectedIndex(currentSelectedIndex);
-            }
-            currentMaxDays = maxDays;
+            adjustDayForMonthAndYear();
         });
     }
 
     public void yearChangedActionListener()
     {
-        this.jComboBoxM.addActionListener(listener ->
+        this.jComboBoxY.addActionListener(listener ->
         {
-            //
+            adjustDayForMonthAndYear();
         });
+    }
+
+    private void adjustDayForMonthAndYear() {
+        cal.set(readYears(), readMonths()-1, 1);
+        int maxDays = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+        System.out.println(maxDays);
+
+        if (readDays() > maxDays) {
+            jComboBoxD.setModel(new DefaultComboBoxModel<>(createDayOptions(maxDays)));
+            jComboBoxD.setSelectedIndex(maxDays -1);
+        } else if (currentMaxDays != maxDays) {
+            int currentSelectedIndex = jComboBoxD.getSelectedIndex();
+            jComboBoxD.setModel(new DefaultComboBoxModel<>(createDayOptions(maxDays)));
+            jComboBoxD.setSelectedIndex(currentSelectedIndex);
+        }
+        currentMaxDays = maxDays;
     }
 
     private Person createPerson() {
