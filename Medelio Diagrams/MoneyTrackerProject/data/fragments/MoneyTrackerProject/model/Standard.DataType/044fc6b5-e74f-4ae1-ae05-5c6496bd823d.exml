@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Hashmap&lt;String, Gender&gt;" version="4">
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="HashMep&lt;String, Gender&gt;" version="4">
   <OBJECT>
-    <ID name="Hashmap&lt;String, Gender&gt;" mc="Standard.DataType" uid="044fc6b5-e74f-4ae1-ae05-5c6496bd823d"/>
+    <ID name="HashMep&lt;String, Gender&gt;" mc="Standard.DataType" uid="044fc6b5-e74f-4ae1-ae05-5c6496bd823d"/>
     <PID name="moneytrackerproject" mc="Standard.Package" uid="eca4c47f-3b40-4313-9e20-b799069a6c29"/>
     <ATTRIBUTES>
       <ATT name="IsElementary">true</ATT>
@@ -9,7 +9,7 @@
       <ATT name="IsLeaf">false</ATT>
       <ATT name="IsRoot">false</ATT>
       <ATT name="Visibility">Public</ATT>
-      <ATT name="Name"><![CDATA[Hashmap<String, Gender>]]></ATT>
+      <ATT name="Name"><![CDATA[HashMep<String, Gender>]]></ATT>
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES></DEPENDENCIES>

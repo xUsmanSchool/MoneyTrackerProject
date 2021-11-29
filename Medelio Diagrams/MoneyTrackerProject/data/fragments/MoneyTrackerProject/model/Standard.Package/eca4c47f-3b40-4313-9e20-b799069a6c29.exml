@@ -27,11 +27,10 @@
         <COMPID name="ArrayList&lt;Person&gt;" mc="Standard.DataType" uid="e889cb52-c005-47b4-9c61-268169583f8a"/>
         <COMPID name="ArrayList&lt;?&gt;" mc="Standard.DataType" uid="99e03ede-38a8-4cf8-8c37-93026dacdea6"/>
         <COMPID name="ArrayList&lt;Ticket&gt;" mc="Standard.DataType" uid="dc871852-c19c-43db-994a-180fecd2483e"/>
-        <COMPID name="T" mc="Standard.DataType" uid="379282c2-d6c3-40da-b88c-f0824789d5d3"/>
-        <COMPID name="Hashmap&lt;String, String&gt;" mc="Standard.DataType" uid="30996b1a-fadc-4b0b-bee6-e7254d6009b5"/>
-        <COMPID name="Hashmap&lt;String, Gender&gt;" mc="Standard.DataType" uid="044fc6b5-e74f-4ae1-ae05-5c6496bd823d"/>
-        <COMPID name="Hashmap&lt;String, Date&gt;" mc="Standard.DataType" uid="879859d1-1a2f-4e4e-8935-f0ffcdaeffcf"/>
-        <COMPID name="DBItem" mc="Standard.Class" uid="5fbc3e86-9969-4abb-a4a5-d73d2737c587"/>
+        <COMPID name="HashMep&lt;String, String&gt;" mc="Standard.DataType" uid="30996b1a-fadc-4b0b-bee6-e7254d6009b5"/>
+        <COMPID name="HashMep&lt;String, Gender&gt;" mc="Standard.DataType" uid="044fc6b5-e74f-4ae1-ae05-5c6496bd823d"/>
+        <COMPID name="HashMep&lt;String, Date&gt;" mc="Standard.DataType" uid="879859d1-1a2f-4e4e-8935-f0ffcdaeffcf"/>
+        <COMPID name="DatabaseItem" mc="Standard.Class" uid="5fbc3e86-9969-4abb-a4a5-d73d2737c587"/>
         <OBJECT>
           <ID name="Gender" mc="Standard.Enumeration" uid="1b79929b-1a85-425a-a68e-6f908ea78882"/>
           <ATTRIBUTES>
@@ -72,6 +71,9 @@
             </COMP>
           </DEPENDENCIES>
         </OBJECT>
+        <COMPID name="testHashMap" mc="Standard.Class" uid="d70e007d-5e64-493a-9d4d-60c99e6b04b5"/>
+        <COMPID name="testClass" mc="Standard.Class" uid="a1be72cc-fdd2-4717-8604-63caa63348ff"/>
+        <COMPID name="Date" mc="Standard.Class" uid="0dc0c5e9-b1b2-4e2a-8714-abdceb1905d3"/>
       </COMP>
       <COMP relation="Product">
         <COMPID name="moneytrackerproject Class diagram" mc="Standard.ClassDiagram" uid="de82e533-7ede-40a5-9442-7f839cbe6dd9"/>
