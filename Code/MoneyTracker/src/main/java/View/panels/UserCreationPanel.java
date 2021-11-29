@@ -9,6 +9,7 @@ import HelperClass.Gender;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class UserCreationPanel extends JPanel {
@@ -16,25 +17,27 @@ public class UserCreationPanel extends JPanel {
     private final JTextField firstNameTextField, lastNameTextField;
     private final JFormattedTextField phoneNumberTextField;
     private final JComboBox<String> jComboBoxGender, jComboBoxD, jComboBoxM, jComboBoxY;
+    private final Calendar cal;
+    private int currentMaxDays = 31;
 
     PersonsDB personsDB = PersonsDB.getInstance();
     RegistrationController registrationController = new RegistrationController(personsDB);
 
     public UserCreationPanel() {
+        // set layout
         GroupLayout layout = new GroupLayout(this);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         this.setLayout(layout);
 
+        // fill in labels
         JLabel firstNameLabel = new JLabel("First name: ");
         JLabel lastNameLabel = new JLabel("Last name: ");
         JLabel phoneNumberLabel = new JLabel("Phone number*: ");
         JLabel genderLabel = new JLabel("Gender*: ");
         JLabel birthdateLabel = new JLabel("Date of birth*: ");
 
-        firstNameTextField = new JTextField("");
-        lastNameTextField = new JTextField("");
-
+        // create formatter for phone number field
         MaskFormatter numberFormatter = null;
         try {
             numberFormatter = new MaskFormatter("####-##-##-##");
@@ -43,31 +46,28 @@ public class UserCreationPanel extends JPanel {
             numberFormatter.setOverwriteMode(true);
         } catch (Exception e) { System.err.println(e.toString()); }
 
+        // create all other fields
+        firstNameTextField = new JTextField("");
+        lastNameTextField = new JTextField("");
         phoneNumberTextField = new JFormattedTextField(numberFormatter);
         phoneNumberTextField.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
 
         String[] o = EnumConverter.enumToString(Gender.values());
         jComboBoxGender = new JComboBox<>(o);
 
-        int days = 31, months = 12, years = 100;
-        String[] dayOptions = new String[days];
-        String[] monthOptions = new String[months];
-        String[] yearOptions = new String[years];
+        cal = Calendar.getInstance();
+        cal.set(1960, 0, 1);
+        int currentMaxMonths = 12, currentYears = 100;
 
-        for (int i=0; i<days; i++) dayOptions[i] = Integer.toString(i+1);
-        jComboBoxD = new JComboBox<>(dayOptions);
+        jComboBoxD = new JComboBox<>(createDayOptions(currentMaxDays));
+        jComboBoxM = new JComboBox<>(createMonthOptions(currentMaxMonths));
+        jComboBoxY = new JComboBox<>(createYearOptions(currentYears));
 
-        for (int i=0; i<months; i++) monthOptions[i] = Integer.toString(i+1);
-        jComboBoxM = new JComboBox<>(monthOptions);
-
-        for (int i=0; i<years; i++) yearOptions[i] = Integer.toString(i+1960);
-        jComboBoxY = new JComboBox<>(yearOptions);
-
+        // buttons
         this.createButton = new JButton("Create user");
 
-        // voor layout uitleg, zie:
+        // more layouts, for explanation see:
         // https://docs.oracle.com/javase/tutorial/uiswing/layout/groupExample.html
-
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(firstNameLabel)
@@ -114,6 +114,10 @@ public class UserCreationPanel extends JPanel {
                 )
                 .addComponent(createButton)
         );
+
+        dayChangedActionListener();
+        monthChangedActionListener();
+        yearChangedActionListener();
         addAccountCreatedActionListener();
     }
 
@@ -128,20 +132,84 @@ public class UserCreationPanel extends JPanel {
         });
     }
 
+    public void dayChangedActionListener()
+    {
+        this.jComboBoxD.addActionListener(listener ->
+        {
+            //
+        });
+    }
+
+    public void monthChangedActionListener()
+    {
+        this.jComboBoxM.addActionListener(listener ->
+        {
+            cal.set(readYears(), readMonths()-1, 1);
+            int maxDays = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+            if (readDays() > maxDays) {
+                jComboBoxD.setModel(new DefaultComboBoxModel<>(createDayOptions(maxDays)));
+                jComboBoxD.setSelectedIndex(maxDays-1);
+            } else if (currentMaxDays != maxDays) {
+                int currentSelectedIndex = jComboBoxD.getSelectedIndex();
+                jComboBoxD.setModel(new DefaultComboBoxModel<>(createDayOptions(maxDays)));
+                jComboBoxD.setSelectedIndex(currentSelectedIndex);
+            }
+            currentMaxDays = maxDays;
+        });
+    }
+
+    public void yearChangedActionListener()
+    {
+        this.jComboBoxM.addActionListener(listener ->
+        {
+            //
+        });
+    }
+
     private Person createPerson() {
         String firstNameText = firstNameTextField.getText();
         String lastNameText = lastNameTextField.getText();
         String phoneNumberText = phoneNumberTextField.getText();
         Gender genderObject = Gender.valueOf((String)jComboBoxGender.getSelectedItem());
-        int days = Integer.parseInt((String) Objects.requireNonNull(jComboBoxD.getSelectedItem()));
-        int months = Integer.parseInt((String) Objects.requireNonNull(jComboBoxM.getSelectedItem()));
-        int years = Integer.parseInt((String) Objects.requireNonNull(jComboBoxY.getSelectedItem()));
+        int days = readDays();
+        int months = readMonths();
+        int years = readYears();
 
         Person p = new Person(firstNameText, lastNameText);
         p.setPhoneNumber(phoneNumberText);
         p.setGender(genderObject);
         p.setBirthDate(new Date().getDate(days, months, years));
         return p;
+    }
+
+    private int readDays() {
+        return Integer.parseInt((String) Objects.requireNonNull(jComboBoxD.getSelectedItem()));
+    }
+
+    private String[] createDayOptions(int maxDays) {
+        String[] dayOptions = new String[maxDays];
+        for (int i=0; i<maxDays; i++) dayOptions[i] = Integer.toString(i+1);
+        return dayOptions;
+    }
+
+    private int readMonths() {
+        return Integer.parseInt((String) Objects.requireNonNull(jComboBoxM.getSelectedItem()));
+    }
+
+    private String[] createMonthOptions(int maxMonths) {
+        String[] monthOptions = new String[maxMonths];
+        for (int i=0; i<maxMonths; i++) monthOptions[i] = Integer.toString(i+1);
+        return monthOptions;
+    }
+
+    private int readYears() {
+        return Integer.parseInt((String) Objects.requireNonNull(jComboBoxY.getSelectedItem()));
+    }
+
+    private String[] createYearOptions(int years) {
+        String[] yearOptions = new String[years];
+        for (int i=0; i<years; i++) yearOptions[i] = Integer.toString(i+1960);
+        return yearOptions;
     }
 
     private boolean checkFieldsForValidity() {
