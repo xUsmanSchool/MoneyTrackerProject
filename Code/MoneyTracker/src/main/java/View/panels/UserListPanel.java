@@ -1,36 +1,42 @@
 package View.panels;
 
+import Database.Person;
+import View.others.CustomPersonCellRenderer;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class UserListPanel extends JPanel implements ListSelectionListener {
+public class UserListPanel extends JPanel {
+    private final JLabel title;
+    private final DefaultListModel<Person> listModel;
+
     public UserListPanel() {
-        BoxLayout layout = new BoxLayout(this,  BoxLayout.Y_AXIS);
+        // set layout
+        BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layout);
 
-        JLabel title = new JLabel("Existing user list");
+        // create fields
+        title = new JLabel();
         title.setAlignmentX(CENTER_ALIGNMENT);
 
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        listModel.addElement("List item 1");
-        listModel.addElement("List item 2");
-        listModel.addElement("List item 3");
-        listModel.addElement("List item 4");
-        listModel.addElement("List item 5");
-        JList<String> list = new JList<>(listModel);
+        // create list
+        listModel = new DefaultListModel<Person>();
+        JList<Person> list = new JList<Person>(listModel);
+        list.setCellRenderer(new CustomPersonCellRenderer());
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
-        list.addListSelectionListener(this);
         JScrollPane listScrollPane = new JScrollPane(list);
 
+        // add items
         this.add(title);
         add(listScrollPane, BorderLayout.CENTER);
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
+    public void setTitle(String title) {
+        this.title.setText(title);
+    }
 
+    public void addPersonToListModel(ArrayList<Person> personList) {
+        for (Person person : personList) listModel.addElement(person);
     }
 }

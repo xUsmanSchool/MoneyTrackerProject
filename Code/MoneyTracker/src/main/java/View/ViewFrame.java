@@ -1,6 +1,9 @@
 package View;
 
+import Database.PersonsDB;
+import DatabaseController.RegistrationDatabaseController;
 import View.panels.*;
+import View.viewController.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,11 +17,24 @@ public class ViewFrame extends JFrame {
         GridLayout experimentLayout = new GridLayout(0,2);
         this.setLayout(experimentLayout);
 
+        // Database
+        PersonsDB personsDB = PersonsDB.getInstance();
+        RegistrationDatabaseController registrationDatabaseController = new RegistrationDatabaseController(personsDB);
+
+        // userListPanel
+        UserListPanel userListPanel = new UserListPanel();
+        vController userListPanelController = new UserListPanelController(registrationDatabaseController, userListPanel);
+        userListPanelController.init();
+        userListPanelController.activateActionListeners();
+
+        // userCreationPanel
         UserCreationPanel userCreationPanel = new UserCreationPanel();
-        UserListPanelAdvanced userListPanelAdvanced = new UserListPanelAdvanced();
+        vController userCreationPanelController = new UserCreationPanelController(registrationDatabaseController, userCreationPanel);
+        userCreationPanelController.init();
+        userCreationPanelController.activateActionListeners();
 
         this.add(userCreationPanel);
-        this.add(userListPanelAdvanced);
+        this.add(userListPanel);
         this.setVisible(true);
     }
 }

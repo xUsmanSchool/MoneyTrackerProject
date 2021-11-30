@@ -1,11 +1,11 @@
-package View.panels;
+package View.others;
 
 import Database.Person;
 import javax.swing.*;
 import java.awt.*;
 
-public class CustomCellRenderer extends JLabel implements ListCellRenderer<Object> {
-    public CustomCellRenderer() {
+public class CustomPersonCellRenderer extends JLabel implements ListCellRenderer<Object> {
+    public CustomPersonCellRenderer() {
         setOpaque(true);
     }
 
