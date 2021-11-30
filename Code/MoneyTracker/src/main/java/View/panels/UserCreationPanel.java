@@ -9,7 +9,7 @@ public class UserCreationPanel extends JPanel {
     private final JButton createButton;
     private final JLabel firstNameLabel, lastNameLabel, phoneNumberLabel, genderLabel, birthdateLabel;
     private final JTextField firstNameTextField, lastNameTextField;
-    public JFormattedTextField phoneNumberTextField;
+    private final JFormattedTextField phoneNumberTextField;
     private final JComboBox<String> jComboBoxGender, jComboBoxD, jComboBoxM, jComboBoxY;
     private final static String[] EMPTY_STRING = new String[0];
 
