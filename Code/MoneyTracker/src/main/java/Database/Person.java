@@ -1,11 +1,13 @@
 package Database;
 
+import Balance.Balance;
 import HelperClass.Date;
 import HelperClass.Gender;
 import HelperClass.HashMep;
 
+import java.util.ArrayList;
+
 public class Person extends DatabaseItem {
-    //private final HashMep<String, String> nickName;
     private final HashMep<String, String> firstName;
     private final HashMep<String, String> lastName;
     private final HashMep<String, String> phoneNumber;
@@ -14,10 +16,10 @@ public class Person extends DatabaseItem {
     private final HashMep<String, Date> accountCreationDate;
     private final HashMep<String, Date> accountEditDate;
     private final HashMep<String, String> icon;
+    private final Balance balance;
 
     public Person(String firstName, String lastName) {
         // init
-        //this.nickName = new HashMep<>();
         this.firstName = new HashMep<>();
         this.lastName = new HashMep<>();
         this.phoneNumber = new HashMep<>();
@@ -26,9 +28,9 @@ public class Person extends DatabaseItem {
         this.accountCreationDate = new HashMep<>();
         this.accountEditDate = new HashMep<>();
         this.icon = new HashMep<>();
+        this.balance = new Balance(this);
 
         // fill in values
-        //this.nickName.put("Nickname", nickName);
         this.firstName.put("First_name", firstName);
         this.lastName.put("Last_name", lastName);
         this.phoneNumber.put("Phone_number", "");
@@ -124,5 +126,17 @@ public class Person extends DatabaseItem {
 
     private void updateAccountEditDate() {
         this.accountCreationDate.put("Account_creation_date", new Date().getTodaysDate());
+    }
+
+    public void addToBalance(double amount, Ticket ticket, Date date) {
+        balance.add(amount, ticket, date);
+    }
+
+    public double getBalance() {
+        return balance.getOutstandingAmount();
+    }
+
+    public ArrayList<String> getHistory() {
+        return balance.getHistory();
     }
 }

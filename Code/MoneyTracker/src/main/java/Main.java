@@ -37,6 +37,14 @@ public class Main {
         EventFactory eventFactory = new EventFactory();                             /** Factory pattern */
         Event randomEvent = eventFactory.getEvent(Events.RESTAURANT);               /** Factory pattern */
 
+        person1.addToBalance(20.00, new Ticket(person2, randomEvent), new Date().getTodaysDate());
+        System.out.println("Balance: " + person1.getBalance());
+        person1.addToBalance(-15.00, new Ticket(person1, randomEvent), new Date().getTodaysDate());
+        System.out.println("Balance: " + person1.getBalance());
+
+        System.out.println("History: " + person1.getHistory());
+
+
         // write to JSON file
         //WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
 
