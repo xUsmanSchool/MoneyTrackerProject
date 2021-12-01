@@ -1,11 +1,11 @@
-package Database;
+package model;
 
+import Database.DatabaseItem;
 import HelperClass.Date;
 import HelperClass.Gender;
 import HelperClass.HashMep;
 
 public class Person extends DatabaseItem {
-    //private final HashMep<String, String> nickName;
     private final HashMep<String, String> firstName;
     private final HashMep<String, String> lastName;
     private final HashMep<String, String> phoneNumber;
@@ -17,7 +17,6 @@ public class Person extends DatabaseItem {
 
     public Person(String firstName, String lastName) {
         // init
-        //this.nickName = new HashMep<>();
         this.firstName = new HashMep<>();
         this.lastName = new HashMep<>();
         this.phoneNumber = new HashMep<>();
@@ -28,7 +27,6 @@ public class Person extends DatabaseItem {
         this.icon = new HashMep<>();
 
         // fill in values
-        //this.nickName.put("Nickname", nickName);
         this.firstName.put("First_name", firstName);
         this.lastName.put("Last_name", lastName);
         this.phoneNumber.put("Phone_number", "");

@@ -1,13 +1,13 @@
 package View.viewController;
 
-import DatabaseController.DatabaseController;
+import DatabaseController.PersonRegistrationDBController;
 import View.panels.UserListPanel;
 
 public class UserListPanelController extends vController {
-    private final DatabaseController databaseController;
+    private final PersonRegistrationDBController databaseController;
     private final UserListPanel userListPanel;
 
-    public UserListPanelController(DatabaseController databaseController, UserListPanel userListPanel) {
+    public UserListPanelController(PersonRegistrationDBController databaseController, UserListPanel userListPanel) {
         this.userListPanel = userListPanel;
         this.databaseController = databaseController;
     }

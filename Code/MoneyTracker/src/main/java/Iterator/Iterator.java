@@ -1,6 +1,8 @@
 package Iterator;
 
-public interface Iterator {
+import Database.DatabaseItem;
+
+public interface Iterator<T> {
     boolean hasNext();
-    Object next();
+    T next();
 }

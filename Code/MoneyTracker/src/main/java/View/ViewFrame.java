@@ -1,7 +1,7 @@
 package View;
 
 import Database.PersonsDB;
-import DatabaseController.RegistrationDatabaseController;
+import DatabaseController.PersonRegistrationDBController;
 import View.panels.*;
 import View.viewController.*;
 import javax.swing.*;
@@ -19,17 +19,17 @@ public class ViewFrame extends JFrame {
 
         // Database
         PersonsDB personsDB = PersonsDB.getInstance();
-        RegistrationDatabaseController registrationDatabaseController = new RegistrationDatabaseController(personsDB);
+        PersonRegistrationDBController personRegistrationDBController = new PersonRegistrationDBController(personsDB);
 
         // userListPanel
         UserListPanel userListPanel = new UserListPanel();
-        vController userListPanelController = new UserListPanelController(registrationDatabaseController, userListPanel);
+        vController userListPanelController = new UserListPanelController(personRegistrationDBController, userListPanel);
         userListPanelController.init();
         userListPanelController.activateActionListeners();
 
         // userCreationPanel
         UserCreationPanel userCreationPanel = new UserCreationPanel();
-        vController userCreationPanelController = new UserCreationPanelController(registrationDatabaseController, userCreationPanel);
+        vController userCreationPanelController = new UserCreationPanelController(personRegistrationDBController, userCreationPanel);
         userCreationPanelController.init();
         userCreationPanelController.activateActionListeners();
 

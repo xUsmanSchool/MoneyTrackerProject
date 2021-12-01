@@ -1,7 +1,7 @@
 package View.viewController;
 
-import Database.Person;
-import DatabaseController.DatabaseController;
+import DatabaseController.PersonRegistrationDBController;
+import model.Person;
 import HelperClass.Date;
 import HelperClass.EnumConverter;
 import HelperClass.Gender;
@@ -10,10 +10,10 @@ import java.util.Calendar;
 import java.util.Objects;
 
 public class UserCreationPanelController extends vController {
-    private final DatabaseController databaseController;
+    private final PersonRegistrationDBController databaseController;
     private final UserCreationPanel userCreationPanel;
 
-    public UserCreationPanelController(DatabaseController databaseController, UserCreationPanel userCreationPanel) {
+    public UserCreationPanelController(PersonRegistrationDBController databaseController, UserCreationPanel userCreationPanel) {
         this.userCreationPanel = userCreationPanel;
         this.databaseController = databaseController;
     }
@@ -67,7 +67,7 @@ public class UserCreationPanelController extends vController {
             userCreationPanel.getJComboBoxDay().setModel(userCreationPanel.getDefaultComboBoxModel(createDayOptions(maxDaysInCurrentSelectedMonth)));
 
             // restore index
-            if (currentSelectedIndex > maxDaysInCurrentSelectedMonth) userCreationPanel.getJComboBoxDay().setSelectedIndex(maxDaysInCurrentSelectedMonth-1);
+            if (currentSelectedIndex >= maxDaysInCurrentSelectedMonth) userCreationPanel.getJComboBoxDay().setSelectedIndex(maxDaysInCurrentSelectedMonth-1);
             else userCreationPanel.getJComboBoxDay().setSelectedIndex(currentSelectedIndex);
         }
     }

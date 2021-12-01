@@ -1,7 +1,8 @@
 package Factory;
 
 import Events.*;
-import HelperClass.*;
+import HelperClass.Events;
+
 
 public class EventFactory {
     public Event getEvent(Events event) {
@@ -11,9 +12,7 @@ public class EventFactory {
             case RESTAURANT: return new RestaurantEvent();
             case TAXI: return new TaxiEvent();
             case THEATRE: return new TheatreEvent();
-            default:
-                System.err.println("Event type does not exist");
-                return null;
+            default: return null;
         }
     }
 }

@@ -2,6 +2,8 @@ package Database;
 
 import Iterator.Container;
 import Iterator.Iterator;
+import model.Person;
+
 import java.util.ArrayList;
 
 public class PersonsDB extends Database implements Container {
@@ -39,11 +41,11 @@ public class PersonsDB extends Database implements Container {
     }
 
     @Override
-    public Iterator getIterator() {
+    public Iterator<Person> getIterator() {
         return new PersonIterator();
     }
 
-    class PersonIterator implements Iterator {
+    class PersonIterator implements Iterator<Person> {
         int index;
 
         @Override
@@ -52,7 +54,7 @@ public class PersonsDB extends Database implements Container {
         }
 
         @Override
-        public Object next() {
+        public Person next() {
             return this.hasNext() ? personList.get(index++) : null;
         }
     }
