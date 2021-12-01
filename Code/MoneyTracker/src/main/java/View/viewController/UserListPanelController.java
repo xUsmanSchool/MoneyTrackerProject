@@ -4,6 +4,7 @@ import DatabaseController.PersonRegistrationDBController;
 import Model.Person;
 import Observers.PersonDBObservableEntry;
 import View.panels.UserListPanel;
+import javax.swing.event.ListSelectionEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -24,7 +25,7 @@ public class UserListPanelController extends vController {
 
     @Override
     public void activateActionListeners() {
-        // none
+        this.userListPanel.getJList().addListSelectionListener(this::listSelectionActionListener);
     }
 
     @Override
@@ -44,5 +45,10 @@ public class UserListPanelController extends vController {
 
     private void removePersonFromListModel(Person person) {
         userListPanel.getListModel().removeElement(person);
+    }
+
+    private void listSelectionActionListener(ListSelectionEvent e) {
+        if(e.getValueIsAdjusting()) return;
+        System.out.println(userListPanel.getJList().getSelectedValue().getFirstNameValue() + " selected.");
     }
 }

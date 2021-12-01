@@ -8,6 +8,7 @@ import java.awt.*;
 public class UserListPanel extends JPanel {
     private final JLabel title;
     private final DefaultListModel<Person> listModel;
+    private JList<Person> list;
 
     public UserListPanel() {
         // set layout
@@ -20,7 +21,7 @@ public class UserListPanel extends JPanel {
 
         // create list
         listModel = new DefaultListModel<Person>();
-        JList<Person> list = new JList<Person>(listModel);
+        list = new JList<Person>(listModel);
         list.setCellRenderer(new CustomPersonCellRenderer());
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
@@ -37,5 +38,9 @@ public class UserListPanel extends JPanel {
 
     public DefaultListModel<Person> getListModel() {
         return listModel;
+    }
+
+    public JList<Person> getJList() {
+        return list;
     }
 }
