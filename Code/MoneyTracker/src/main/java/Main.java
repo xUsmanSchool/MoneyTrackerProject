@@ -30,7 +30,12 @@ public class Main {
         //todo - read database.json and update the personDatabase
         //--------------------------------------------------------------------------------------------------------------
         Person person1 = new Person("Usman", "The Ultimate Disappointment");        // create person 1
+        person1.setGender(Gender.FEMALE);                                               // update person 1
+        person1.setPhoneNumber("1234567890");                                           // update person 1
+        person1.setIcon("testIcon.jpg");                                                // update person 1
         Person person2 = new Person("Vladimir", "Kukh");                            // create person 2
+        person2.setGender(Gender.MALE);                                                 // update person 2
+        person2.setBirthDate(new Date().getDate(1, 6, 1995));           // update person 2
         Person person3 = new Person("Dingus", "Without Lastname");                  // create person 3
 
         personRegistrationDBController.add(person1);                                // add person 1 to database
@@ -39,7 +44,7 @@ public class Main {
         //--------------------------------------------------------------------------------------------------------------
         System.out.println("\nTesting iterator pattern on Person DB: ");            /** Iterator pattern through DB */
         Iterator<Person> itP = personDatabase.getIterator();                        /** Iterator pattern through DB */
-        while (itP.hasNext()) System.out.println((itP.next().getFirstNameValue())); /** Iterator pattern through DB */
+        while (itP.hasNext()) System.out.println(itP.next().getFirstNameValue());   /** Iterator pattern through DB */
         System.out.println();                                                       /** Iterator pattern through DB */
         //--------------------------------------------------------------------------------------------------------------
         Ticket ticket1 = ticketFactory.getTicket(person1, eventFactory.getEvent(Events.RESTAURANT), SplitType.EQUAL);
@@ -62,7 +67,8 @@ public class Main {
         //--------------------------------------------------------------------------------------------------------------
         System.out.println("\nTesting iterator pattern on Ticket DB: ");            /** Iterator pattern through DB */
         Iterator<Ticket> itT = ticketDatabase.getIterator();                        /** Iterator pattern through DB */
-        while (itT.hasNext()) printTicketInfo(itT.next());                          /** Iterator pattern through DB */
+        while (itT.hasNext()) System.out.println(itT.next().getEventTypeValue().getEventName());
+        System.out.println();                                                       /** Iterator pattern through DB */
         //--------------------------------------------------------------------------------------------------------------
         // todo - better write to JSON file code
         //WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
@@ -72,15 +78,4 @@ public class Main {
     }
 
     public void run() {}
-
-    public void printTicketInfo(Ticket t) {
-        System.out.println("Ticket (Type - " + t.getSplitTypeValue().toString() + "): created by " + t.getCreatedByValue().getFirstNameValue() + " on " + t.getCreationDateValue().getDay() + "/" + t.getCreationDateValue().getMonth());
-        System.out.println("This ticket is for the " + t.getEventTypeValue().getEventName() + " with a total sum of " + t.getPayedAmount() + " which was payed by " + t.getPayedBy().getFirstNameValue());
-        System.out.print("In detail: ");
-        for (Person p:t.getPersonArrayList()) System.out.print(
-                p.getFirstNameValue() +
-                        (t.getAmountForPerson(p) > 0 ? " payed " : " owes " + t.getPayedBy().getFirstNameValue() + " ") +
-                        t.getAmountForPerson(p) + ", ");
-        System.out.println("\n");
-    }
 }

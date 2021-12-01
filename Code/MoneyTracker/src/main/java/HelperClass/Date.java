@@ -1,5 +1,7 @@
 package HelperClass;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Calendar;
 
 public class Date {
@@ -24,6 +26,12 @@ public class Date {
         return this;
     }
 
+    public int getAge(Date b) {
+        LocalDate birthDate = LocalDate.of(b.getYear(), b.getMonth(), b.getDay());
+        LocalDate currentDate = LocalDate.now();
+        return Date.calculateAge(birthDate, currentDate);
+    }
+
     public Date getDate() {
         return this;
     }
@@ -38,6 +46,15 @@ public class Date {
 
     public Integer getYear() {
         return year;
+    }
+
+    // from https://stackoverflow.com/questions/1116123/how-do-i-calculate-someones-age-in-java
+    public static int calculateAge(LocalDate birthDate, LocalDate currentDate) {
+        if ((birthDate != null) && (currentDate != null)) {
+            return Period.between(birthDate, currentDate).getYears();
+        } else {
+            return 0;
+        }
     }
 
     @Override
