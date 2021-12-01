@@ -1,22 +1,22 @@
 package HelperClass;
 
-public class HashMep<String,V> {
-    private String key;
+public class HashMep<K,V> {
+    private K key;
     private V v;
 
     public HashMep() {}
 
-    public HashMep(String key, V object) {
+    public HashMep(K key, V object) {
         this.key = key;
         this.v = object;
     }
 
-    public void put(String key, V object) {
+    public void put(K key, V object) {
         this.key = key;
         this.v = object;
     }
 
-    public String getKey() {
+    public K getKey() {
         return this.key;
     }
 
