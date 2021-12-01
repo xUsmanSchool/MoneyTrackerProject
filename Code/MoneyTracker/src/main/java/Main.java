@@ -1,13 +1,11 @@
-import DatabaseController.PersonRegistrationDBController;
+import DatabaseController.*;
 import Database.*;
-import DatabaseController.TicketRegistrationDBController;
 import Factory.*;
 import HelperClass.*;
 import Iterator.*;
 import Observers.*;
+import Model.*;
 import View.ViewFrame;
-import Model.Person;
-import Model.Ticket;
 
 public class Main {
     public static void main(String[] args) {
@@ -64,7 +62,7 @@ public class Main {
         // todo - better write to JSON file code
         //WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
         //--------------------------------------------------------------------------------------------------------------
-        ViewFrame view = new ViewFrame();
+        ViewFrame view = new ViewFrame("Money Tracker Application");
         view.initialize();
     }
 

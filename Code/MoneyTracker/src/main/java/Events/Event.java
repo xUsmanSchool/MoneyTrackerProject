@@ -1,7 +1,7 @@
 package Events;
 
 public abstract class Event {
-    private String eventName;
+    private final String eventName;
 
     public Event(String name) {
         this.eventName = name;

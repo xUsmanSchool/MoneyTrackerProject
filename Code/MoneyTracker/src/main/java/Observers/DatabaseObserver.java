@@ -1,7 +1,6 @@
 package Observers;
 
 import Database.PersonsDB;
-import Model.Person;
 import java.util.Observable;
 import java.util.Observer;
 

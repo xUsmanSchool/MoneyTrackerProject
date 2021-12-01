@@ -1,9 +1,10 @@
 package DatabaseController;
 
-/*
-public interface DatabaseController {
-    void add(Person person);
-    void remove(Person person);
-    ArrayList<Person> getAll();
+import Database.DatabaseItem;
+import java.util.ArrayList;
+
+public interface DatabaseController<T extends DatabaseItem> {
+    void add(T person);
+    void remove(T person);
+    ArrayList<T> getAll();
 }
-*/

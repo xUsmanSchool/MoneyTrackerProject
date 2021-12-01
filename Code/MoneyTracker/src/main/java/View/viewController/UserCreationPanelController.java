@@ -1,20 +1,18 @@
 package View.viewController;
 
-import DatabaseController.PersonRegistrationDBController;
-import Model.Person;
-import HelperClass.Date;
-import HelperClass.EnumConverter;
-import HelperClass.Gender;
+import DatabaseController.*;
+import HelperClass.*;
+import Model.*;
 import View.panels.UserCreationPanel;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Observable;
 
 public class UserCreationPanelController extends vController {
-    private final PersonRegistrationDBController databaseController;
+    private final DatabaseController<Person> databaseController;
     private final UserCreationPanel userCreationPanel;
 
-    public UserCreationPanelController(PersonRegistrationDBController databaseController, UserCreationPanel userCreationPanel) {
+    public UserCreationPanelController(DatabaseController<Person> databaseController, UserCreationPanel userCreationPanel) {
         this.userCreationPanel = userCreationPanel;
         this.databaseController = databaseController;
     }

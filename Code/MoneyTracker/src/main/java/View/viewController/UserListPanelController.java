@@ -1,18 +1,18 @@
 package View.viewController;
 
-import DatabaseController.PersonRegistrationDBController;
-import Model.Person;
-import Observers.PersonDBObservableEntry;
+import DatabaseController.*;
+import Observers.*;
+import Model.*;
 import View.panels.UserListPanel;
 import javax.swing.event.ListSelectionEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 
 public class UserListPanelController extends vController {
-    private final PersonRegistrationDBController databaseController;
+    private final DatabaseController<Person> databaseController;
     private final UserListPanel userListPanel;
 
-    public UserListPanelController(PersonRegistrationDBController databaseController, UserListPanel userListPanel) {
+    public UserListPanelController(DatabaseController<Person> databaseController, UserListPanel userListPanel) {
         this.userListPanel = userListPanel;
         this.databaseController = databaseController;
     }

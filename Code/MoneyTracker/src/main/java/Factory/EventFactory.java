@@ -1,8 +1,7 @@
 package Factory;
 
 import Events.*;
-import HelperClass.Events;
-
+import HelperClass.*;
 
 public class EventFactory {
     public Event getEvent(Events event) {

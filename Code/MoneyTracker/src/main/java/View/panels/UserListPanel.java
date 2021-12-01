@@ -1,7 +1,7 @@
 package View.panels;
 
-import Model.Person;
-import View.others.CustomPersonCellRenderer;
+import Model.*;
+import View.others.*;
 import javax.swing.*;
 import java.awt.*;
 

@@ -1,8 +1,8 @@
 package View.panels;
 
-import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
+import javax.swing.*;
 import java.awt.*;
 
 public class UserCreationPanel extends JPanel {
