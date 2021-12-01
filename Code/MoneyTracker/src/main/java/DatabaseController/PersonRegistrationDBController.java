@@ -1,7 +1,7 @@
 package DatabaseController;
 
 import Database.*;
-import model.Person;
+import Model.Person;
 
 import java.util.ArrayList;
 

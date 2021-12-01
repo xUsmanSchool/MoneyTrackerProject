@@ -1,11 +1,11 @@
 package Factory;
 
 import Events.Event;
-import model.EqualTicket;
-import model.Person;
-import model.Ticket;
+import Model.EqualTicket;
+import Model.Person;
+import Model.Ticket;
 import HelperClass.SplitType;
-import model.UnEqualTicket;
+import Model.UnEqualTicket;
 
 public class TicketFactory {
     public Ticket getTicket(Person createdBy, Event eventType, SplitType splitType) {

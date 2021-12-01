@@ -1,6 +1,6 @@
 package View.others;
 
-import model.Person;
+import Model.Person;
 import javax.swing.*;
 import java.awt.*;
 

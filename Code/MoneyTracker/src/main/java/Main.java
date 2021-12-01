@@ -6,8 +6,8 @@ import HelperClass.*;
 import Iterator.*;
 import Observers.*;
 import View.ViewFrame;
-import model.Person;
-import model.Ticket;
+import Model.Person;
+import Model.Ticket;
 
 public class Main {
     public static void main(String[] args) {

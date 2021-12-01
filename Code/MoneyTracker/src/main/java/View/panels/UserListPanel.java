@@ -1,10 +1,9 @@
 package View.panels;
 
-import model.Person;
+import Model.Person;
 import View.others.CustomPersonCellRenderer;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class UserListPanel extends JPanel {
     private final JLabel title;
@@ -36,7 +35,7 @@ public class UserListPanel extends JPanel {
         this.title.setText(title);
     }
 
-    public void addPersonToListModel(ArrayList<Person> personList) {
-        for (Person person : personList) listModel.addElement(person);
+    public DefaultListModel<Person> getListModel() {
+        return listModel;
     }
 }

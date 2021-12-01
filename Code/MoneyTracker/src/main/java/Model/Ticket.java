@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 import Database.DatabaseItem;
 import Events.Event;

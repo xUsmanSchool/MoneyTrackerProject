@@ -33,6 +33,10 @@ public class ViewFrame extends JFrame {
         userCreationPanelController.init();
         userCreationPanelController.activateActionListeners();
 
+        // added observers
+        personsDB.addObserver(userListPanelController);
+        personsDB.addObserver(userCreationPanelController);
+
         this.add(userCreationPanel);
         this.add(userListPanel);
         this.setVisible(true);

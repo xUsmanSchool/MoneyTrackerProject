@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 import Events.Event;
 import HelperClass.SplitType;

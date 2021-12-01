@@ -1,13 +1,14 @@
 package View.viewController;
 
 import DatabaseController.PersonRegistrationDBController;
-import model.Person;
+import Model.Person;
 import HelperClass.Date;
 import HelperClass.EnumConverter;
 import HelperClass.Gender;
 import View.panels.UserCreationPanel;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.Observable;
 
 public class UserCreationPanelController extends vController {
     private final PersonRegistrationDBController databaseController;
@@ -141,5 +142,10 @@ public class UserCreationPanelController extends vController {
         userCreationPanel.getJComboBoxDay().setSelectedIndex(0);
         userCreationPanel.getJComboBoxMonth().setSelectedIndex(0);
         userCreationPanel.getJComboBoxYear().setSelectedIndex(0);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        // todo - toast?
     }
 }

@@ -1,6 +1,6 @@
 package HelperClass;
 
-import model.Person;
+import Model.Person;
 import Database.PersonsDB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

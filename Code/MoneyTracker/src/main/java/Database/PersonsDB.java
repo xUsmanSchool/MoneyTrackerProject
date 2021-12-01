@@ -2,8 +2,8 @@ package Database;
 
 import Iterator.Container;
 import Iterator.Iterator;
-import model.Person;
-
+import Model.Person;
+import Observers.PersonDBObservableEntry;
 import java.util.ArrayList;
 
 public class PersonsDB extends Database implements Container {
@@ -22,7 +22,7 @@ public class PersonsDB extends Database implements Container {
         if (item instanceof Person) {
             this.personList.add((Person)item);
             setChanged();
-            notifyObservers();
+            notifyObservers(new PersonDBObservableEntry((Person)item, true));
         } else System.err.println("PersonsDB: item does not match the correct type");
     }
 
@@ -31,7 +31,7 @@ public class PersonsDB extends Database implements Container {
         if (item instanceof Person) {
             this.personList.remove((Person)item);
             setChanged();
-            notifyObservers();
+            notifyObservers(new PersonDBObservableEntry((Person)item, false));
         } else System.err.println("PersonsDB: item does not match the correct type");
     }
 

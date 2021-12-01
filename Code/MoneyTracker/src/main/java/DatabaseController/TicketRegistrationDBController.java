@@ -1,7 +1,7 @@
 package DatabaseController;
 
 import Database.TicketsDB;
-import model.Ticket;
+import Model.Ticket;
 
 import java.util.ArrayList;
 
