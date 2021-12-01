@@ -1,5 +1,6 @@
 package Database;
 
+import Model.*;
 import java.util.ArrayList;
 import java.util.Observable;
 

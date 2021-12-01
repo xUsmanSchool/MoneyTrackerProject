@@ -1,0 +1,32 @@
+[
+  {
+    "Phone_number": "",
+    "First_name": "Usman",
+    "Birth_date": "[\"1\",\"1\",\"1960\"]",
+    "Account_edit_date": "[\"1\",\"12\",\"2021\"]",
+    "Icon_url": "",
+    "Last_name": "The Ultimate Disappointment",
+    "Gender": "NONE",
+    "Account_creation_date": "[\"1\",\"12\",\"2021\"]"
+  },
+  {
+    "Phone_number": "",
+    "First_name": "Vladimir",
+    "Birth_date": "[\"1\",\"1\",\"1960\"]",
+    "Account_edit_date": "[\"1\",\"12\",\"2021\"]",
+    "Icon_url": "",
+    "Last_name": "Kukh",
+    "Gender": "NONE",
+    "Account_creation_date": "[\"1\",\"12\",\"2021\"]"
+  },
+  {
+    "Phone_number": "",
+    "First_name": "Dingus",
+    "Birth_date": "[\"1\",\"1\",\"1960\"]",
+    "Account_edit_date": "[\"1\",\"12\",\"2021\"]",
+    "Icon_url": "",
+    "Last_name": "Without lastname",
+    "Gender": "NONE",
+    "Account_creation_date": "[\"1\",\"12\",\"2021\"]"
+  }
+]

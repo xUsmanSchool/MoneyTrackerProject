@@ -1,9 +1,6 @@
 package Model;
 
-import Database.DatabaseItem;
-import HelperClass.Date;
-import HelperClass.Gender;
-import HelperClass.HashMep;
+import HelperClass.*;
 
 public class Person extends DatabaseItem {
     private final HashMep<String, String> firstName;
@@ -11,9 +8,6 @@ public class Person extends DatabaseItem {
     private final HashMep<String, String> phoneNumber;
     private final HashMep<String, Gender> gender;
     private final HashMep<String, Date> birthDate;
-    private final HashMep<String, Date> accountCreationDate;
-    private final HashMep<String, Date> accountEditDate;
-    private final HashMep<String, String> icon;
 
     public Person(String firstName, String lastName) {
         // init
@@ -22,20 +16,19 @@ public class Person extends DatabaseItem {
         this.phoneNumber = new HashMep<>();
         this.gender = new HashMep<>();
         this.birthDate = new HashMep<>();
-        this.accountCreationDate = new HashMep<>();
-        this.accountEditDate = new HashMep<>();
-        this.icon = new HashMep<>();
+
+        // get dates
+        Date tempDefaultDate = new Date().getDate();
+        Date tempTodaysDate = new Date().getTodaysDate();
 
         // fill in values
         this.firstName.put("First_name", firstName);
         this.lastName.put("Last_name", lastName);
         this.phoneNumber.put("Phone_number", "");
         this.gender.put("Gender", Gender.NONE);
-        Date tempDefaultDate = new Date().getDate();
-        Date tempTodaysDate = new Date().getTodaysDate();
         this.birthDate.put("Birth_date", tempDefaultDate);
-        this.accountCreationDate.put("Account_creation_date", tempTodaysDate);
-        this.accountEditDate.put("Account_edit_date", tempTodaysDate);
+        this.creationDate.put("Account_creation_date", tempTodaysDate);
+        this.editDate.put("Account_edit_date", tempTodaysDate);
         this.icon.put("Icon_url", "");
     }
 
@@ -94,33 +87,14 @@ public class Person extends DatabaseItem {
         this.updateAccountEditDate();
     }
 
-    public String getIconKey() {
-        return this.icon.getKey();
-    }
-    public String getIconValue() {
-        return this.icon.getValue();
-    }
+    @Override
     public void setIcon(String iconUrl) {
         this.icon.put(getIconKey(), iconUrl);
         this.updateAccountEditDate();
     }
 
-    public String getAccountCreationDateKey() {
-        return this.accountCreationDate.getKey();
-    }
-    public Date getAccountCreationDateValue() {
-        return this.accountCreationDate.getValue();
-    }
-
-
-    public String getAccountEditDateKey() {
-        return this.accountEditDate.getKey();
-    }
-    public Date getAccountEditDateValue() {
-        return this.accountEditDate.getValue();
-    }
-
-    private void updateAccountEditDate() {
-        this.accountCreationDate.put("Account_creation_date", new Date().getTodaysDate());
+    @Override
+    public void updateAccountEditDate() {
+        this.creationDate.put(creationDate.getKey(), new Date().getTodaysDate());
     }
 }

@@ -29,4 +29,10 @@ public class EqualTicket extends Ticket {
         if (payedAmount == null) System.err.println("Output is ignored, please add 'addPayedBy' first.");
         return payedAmount == null;
     }
+
+    @Override
+    public void setIcon(String iconUrl) {
+        this.icon.put(getIconKey(), iconUrl);
+        updateAccountEditDate();
+    }
 }

@@ -1,7 +1,7 @@
 package Database;
 
 import Iterator.*;
-import Model.Ticket;
+import Model.*;
 import Observers.TicketDBObservableEntry;
 import java.util.ArrayList;
 

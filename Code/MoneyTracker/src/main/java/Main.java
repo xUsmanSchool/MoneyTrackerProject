@@ -20,44 +20,49 @@ public class Main {
         PersonRegistrationDBController personRegistrationDBController = new PersonRegistrationDBController(personDatabase);
         TicketRegistrationDBController ticketRegistrationDBController = new TicketRegistrationDBController(ticketDatabase);
         //--------------------------------------------------------------------------------------------------------------
-        DatabaseObserver dbObserver = new DatabaseObserver();                       /** Observer pattern */
-        personDatabase.addObserver(dbObserver);                                     /** Observer pattern */
-        ticketDatabase.addObserver(dbObserver);                                     /** Observer pattern */
+        DatabaseObserver dbObserver = new DatabaseObserver();                       /** Observer pattern: cmd & view */
+        personDatabase.addObserver(dbObserver);                                     /** Observer pattern: cmd & view */
+        ticketDatabase.addObserver(dbObserver);                                     /** Observer pattern: cmd & view */
+        //--------------------------------------------------------------------------------------------------------------
+        EventFactory eventFactory = new EventFactory();                             /** Factory pattern: events */
+        TicketFactory ticketFactory = new TicketFactory();                          /** Factory pattern: tickets */
         //--------------------------------------------------------------------------------------------------------------
         //todo - read database.json and update the personDatabase
         //--------------------------------------------------------------------------------------------------------------
         Person person1 = new Person("Usman", "The Ultimate Disappointment");        // create person 1
         Person person2 = new Person("Vladimir", "Kukh");                            // create person 2
-        Person person3 = new Person("Dingus", "Without lastname");                  // create person 3
+        Person person3 = new Person("Dingus", "Without Lastname");                  // create person 3
 
         personRegistrationDBController.add(person1);                                // add person 1 to database
         personRegistrationDBController.add(person2);                                // add person 2 to database
         personRegistrationDBController.add(person3);                                // add person 2 to database
         //--------------------------------------------------------------------------------------------------------------
-        Iterator<Person> it = personDatabase.getIterator();                         /** Iterator pattern */
-        while (it.hasNext()) System.out.println((it.next().getFirstNameValue()));   /** Iterator pattern */
-        System.out.println();                                                       /** Iterator pattern */
+        System.out.println("\nTesting iterator pattern on Person DB: ");            /** Iterator pattern through DB */
+        Iterator<Person> itP = personDatabase.getIterator();                        /** Iterator pattern through DB */
+        while (itP.hasNext()) System.out.println((itP.next().getFirstNameValue())); /** Iterator pattern through DB */
+        System.out.println();                                                       /** Iterator pattern through DB */
         //--------------------------------------------------------------------------------------------------------------
-        EventFactory eventFactory = new EventFactory();                             /** Factory pattern */
-        TicketFactory ticketFactory = new TicketFactory();                          /** Factory pattern */
+        Ticket ticket1 = ticketFactory.getTicket(person1, eventFactory.getEvent(Events.RESTAURANT), SplitType.EQUAL);
+        ticket1.addPayedBy(person3, 30.00);                                  // create ticket 1
+        ticket1.autoCalculate(personRegistrationDBController.getAll());             // create ticket 1
+
+        Ticket ticket2 = ticketFactory.getTicket(person2, eventFactory.getEvent(Events.AIRPLANE), SplitType.UNEQUAL);
+        ticket2.addPayedBy(person2, 10.00);                                 // create ticket 2
+        ticket2.addSCashSplit(person1, -2.00);                              // create ticket 2
+        ticket2.addSCashSplit(person3, -8.00);                              // create ticket 2
+
+        Ticket ticket3 = ticketFactory.getTicket(person3, eventFactory.getEvent(Events.TAXI), SplitType.UNEQUAL);
+        ticket3.addPayedBy(person1, 3.33);                                  // create ticket 3
+        ticket3.addPercentageSplit(person2, 0.38);                        // create ticket 3
+        ticket3.addPercentageSplit(person3, 0.62);                        // create ticket 3
         //--------------------------------------------------------------------------------------------------------------
-        Ticket ticket = null;
-        ticket = ticketFactory.getTicket(person1, eventFactory.getEvent(Events.RESTAURANT), SplitType.EQUAL);
-        ticket.addPayedBy(person3, 30.00);
-        ticket.autoCalculate(personRegistrationDBController.getAll());
-        printTicketInfo(ticket);
-
-        ticket = ticketFactory.getTicket(person2, eventFactory.getEvent(Events.AIRPLANE), SplitType.UNEQUAL);
-        ticket.addPayedBy(person2, 10.00);
-        ticket.addSCashSplit(person1, -2.00);
-        ticket.addSCashSplit(person3, -8.00);
-        printTicketInfo(ticket);
-
-        ticket = ticketFactory.getTicket(person3, eventFactory.getEvent(Events.TAXI), SplitType.UNEQUAL);
-        ticket.addPayedBy(person1, 3.33);
-        ticket.addPercentageSplit(person2, 0.38);
-        ticket.addPercentageSplit(person3, 0.62);
-        printTicketInfo(ticket);
+        ticketRegistrationDBController.add(ticket1);                                // add ticket 1 to database
+        ticketRegistrationDBController.add(ticket2);                                // add ticket 2 to database
+        ticketRegistrationDBController.add(ticket3);                                // add ticket 3 to database
+        //--------------------------------------------------------------------------------------------------------------
+        System.out.println("\nTesting iterator pattern on Ticket DB: ");            /** Iterator pattern through DB */
+        Iterator<Ticket> itT = ticketDatabase.getIterator();                        /** Iterator pattern through DB */
+        while (itT.hasNext()) printTicketInfo(itT.next());                          /** Iterator pattern through DB */
         //--------------------------------------------------------------------------------------------------------------
         // todo - better write to JSON file code
         //WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
@@ -69,8 +74,8 @@ public class Main {
     public void run() {}
 
     public void printTicketInfo(Ticket t) {
-        System.out.println("Ticket (Type - " + t.getSplitType().toString() + "): created by " + t.getCreatedBy().getFirstNameValue() + " on " + t.getCreationDate().getDay() + "/" + t.getCreationDate().getMonth());
-        System.out.println("This ticket is for the " + t.getEventType().getEventName() + " with a total sum of " + t.getPayedAmount() + " which was payed by " + t.getPayedBy().getFirstNameValue());
+        System.out.println("Ticket (Type - " + t.getSplitTypeValue().toString() + "): created by " + t.getCreatedByValue().getFirstNameValue() + " on " + t.getCreationDateValue().getDay() + "/" + t.getCreationDateValue().getMonth());
+        System.out.println("This ticket is for the " + t.getEventTypeValue().getEventName() + " with a total sum of " + t.getPayedAmount() + " which was payed by " + t.getPayedBy().getFirstNameValue());
         System.out.print("In detail: ");
         for (Person p:t.getPersonArrayList()) System.out.print(
                 p.getFirstNameValue() +

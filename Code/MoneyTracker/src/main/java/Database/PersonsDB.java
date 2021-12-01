@@ -1,7 +1,7 @@
 package Database;
 
 import Iterator.*;
-import Model.Person;
+import Model.*;
 import Observers.PersonDBObservableEntry;
 import java.util.ArrayList;
 

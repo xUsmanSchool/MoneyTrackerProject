@@ -1,6 +1,6 @@
 package DatabaseController;
 
-import Database.DatabaseItem;
+import Model.DatabaseItem;
 import java.util.ArrayList;
 
 public interface DatabaseController<T extends DatabaseItem> {
