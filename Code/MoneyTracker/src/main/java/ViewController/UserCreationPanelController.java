@@ -1,4 +1,4 @@
-package View.viewController;
+package ViewController;
 
 import DatabaseController.*;
 import HelperClass.*;
@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Objects;
 import java.util.Observable;
 
-public class UserCreationPanelController extends vController {
+public class UserCreationPanelController extends ViewController {
     private final DatabaseController<Person> databaseController;
     private final UserCreationPanel userCreationPanel;
 
@@ -41,7 +41,7 @@ public class UserCreationPanelController extends vController {
 
     private void addAccountCreatedActionListener() {
         if (checkFieldsForValidity()) {
-            databaseController.add(createPerson());
+            databaseController.add(readFormAndCreateUser());
             clearForm();
         }
     }
@@ -89,7 +89,7 @@ public class UserCreationPanelController extends vController {
         return yearOptions;
     }
 
-    private Person createPerson() {
+    private Person readFormAndCreateUser() {
         String firstNameText = userCreationPanel.getFirstNameTextField().getText();
         String lastNameText = userCreationPanel.getLastNameTextField().getText();
         String phoneNumberText = userCreationPanel.getPhoneNumberTextField().getText();

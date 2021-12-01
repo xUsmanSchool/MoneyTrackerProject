@@ -4,7 +4,7 @@ import Database.*;
 import DatabaseController.*;
 import Model.*;
 import View.panels.*;
-import View.viewController.*;
+import ViewController.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -43,13 +43,13 @@ public class ViewFrame extends JFrame {
 
         // create panel: userListPanel
         UserListPanel userListPanel = new UserListPanel();
-        vController userListPanelController = new UserListPanelController(personDatabaseController, userListPanel);
+        ViewController userListPanelController = new UserListPanelController(personDatabaseController, userListPanel);
         userListPanelController.init();
         userListPanelController.activateActionListeners();
 
         // create panel: userCreationPanel
         UserCreationPanel userCreationPanel = new UserCreationPanel();
-        vController userCreationPanelController = new UserCreationPanelController(personDatabaseController, userCreationPanel);
+        ViewController userCreationPanelController = new UserCreationPanelController(personDatabaseController, userCreationPanel);
         userCreationPanelController.init();
         userCreationPanelController.activateActionListeners();
 

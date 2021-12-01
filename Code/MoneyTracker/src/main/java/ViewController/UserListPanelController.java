@@ -1,4 +1,4 @@
-package View.viewController;
+package ViewController;
 
 import DatabaseController.*;
 import Observers.*;
@@ -8,7 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 
-public class UserListPanelController extends vController {
+public class UserListPanelController extends ViewController {
     private final DatabaseController<Person> databaseController;
     private final UserListPanel userListPanel;
 
