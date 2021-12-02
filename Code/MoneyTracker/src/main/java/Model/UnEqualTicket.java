@@ -5,25 +5,24 @@ import HelperClass.SplitType;
 import java.util.ArrayList;
 
 public class UnEqualTicket extends Ticket {
-    public UnEqualTicket(Person createdBy, Event eventType) {
-        super(createdBy, eventType, SplitType.UNEQUAL);
+    public UnEqualTicket(Person payedBy, Double totalSum, Event eventType) {
+        super(payedBy, totalSum, eventType, SplitType.UNEQUAL);
     }
 
     @Override
     public void autoCalculate(ArrayList<Person> personArrayList) {
-        System.err.println("Output is ignored, autoCalculate cannot be applied to this type of ticket");
+        // autoCalculate cannot be applied to this type of ticket
     }
 
     @Override
     public void addSCashSplit(Person person, Double amount) {
-        if (addPayByWarning(getPayedAmount())) return;
-
-        super.addSCashSplit(person, amount);
+        if (person.equals(getPayedByValue())) super.addSCashSplit(person, amount);
+        else super.addSCashSplit(person, amount*-1);
     }
 
-    private boolean addPayByWarning(Double payedAmount) {
-        if (payedAmount == null) System.err.println("Output is ignored, please add 'addPayedBy' first.");
-        return payedAmount == null;
+    @Override
+    public void addPercentageSplit(Person person, Double amount) {
+        super.addPercentageSplit(person, amount);
     }
 
     @Override

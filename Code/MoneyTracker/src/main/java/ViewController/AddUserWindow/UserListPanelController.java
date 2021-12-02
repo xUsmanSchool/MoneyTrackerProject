@@ -5,29 +5,33 @@ import Observers.*;
 import Model.*;
 import View.panels.UserListPanel;
 import ViewController.ViewController;
-
 import javax.swing.event.ListSelectionEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 
 public class UserListPanelController extends ViewController {
-    private final DatabaseController<Person> databaseController;
+    private final PersonsDBController personsDatabaseController;
     private final UserListPanel userListPanel;
 
-    public UserListPanelController(DatabaseController<Person> databaseController, UserListPanel userListPanel) {
+    public UserListPanelController(PersonsDBController personsDatabaseController, UserListPanel userListPanel) {
         this.userListPanel = userListPanel;
-        this.databaseController = databaseController;
+        this.personsDatabaseController = personsDatabaseController;
     }
 
     @Override
     public void init() {
         this.userListPanel.setTitle("Existing user list");
-        addPersonListToListModel(databaseController.getAll());
+        addPersonListToListModel(personsDatabaseController.getAll());
     }
 
     @Override
     public void activateActionListeners() {
         this.userListPanel.getJList().addListSelectionListener(this::listSelectionActionListener);
+    }
+
+    private void listSelectionActionListener(ListSelectionEvent e) {
+        if(e.getValueIsAdjusting()) return;
+        System.out.println(userListPanel.getJList().getSelectedValue().getFirstNameValue() + " selected.");
     }
 
     @Override
@@ -47,10 +51,5 @@ public class UserListPanelController extends ViewController {
 
     private void removePersonFromListModel(Person person) {
         userListPanel.getListModel().removeElement(person);
-    }
-
-    private void listSelectionActionListener(ListSelectionEvent e) {
-        if(e.getValueIsAdjusting()) return;
-        System.out.println(userListPanel.getJList().getSelectedValue().getFirstNameValue() + " selected.");
     }
 }

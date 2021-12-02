@@ -8,48 +8,34 @@ import java.util.HashMap;
 
 public abstract class Ticket extends DatabaseItem {
     private final HashMep<String, HashMap<Person, Double>> paymentSplits;
-    private final HashMep<String, Person> createdBy;
     private final HashMep<String, Event>  eventType;
     private final HashMep<String, SplitType> splitType;
+    private final HashMep<String, Person> payedBy;
+    private final Double totalSum;
 
-    // for quick access
-    private Person payedBy;
-    private Double payedAmount;
-
-    public Ticket(Person createdBy, Event eventType, SplitType splitType) {
+    public Ticket(Person payedBy, Double totalSum, Event forEventType, SplitType splitType) {
         // init
-        this.payedAmount = null;
-        this.payedBy = null;
-        this.createdBy = new HashMep<>();
+        this.paymentSplits = new HashMep<>();
         this.eventType = new HashMep<>();
         this.splitType = new HashMep<>();
-        this.paymentSplits = new HashMep<>();
+        this.payedBy = new HashMep<>();
+        this.totalSum = totalSum;
 
         // get dates
         LocalDate tempTodaysDate = Date.getTodaysDate();
 
         // fill in values
-        this.createdBy.put("Created_by", createdBy);
-        this.eventType.put("EventType", eventType);
-        this.splitType.put("SplitType", splitType);
         this.paymentSplits.put("Payment_splits", new HashMap<>());
+        this.eventType.put("EventType", forEventType);
+        this.splitType.put("SplitType", splitType);
+        this.payedBy.put("Payed_by", payedBy);
         this.creationDate.put("Account_creation_date", tempTodaysDate);
         this.editDate.put("Account_edit_date", tempTodaysDate);
         this.icon.put("Icon_url", "");
     }
 
-    public void addPayedBy(Person person, Double amount) {
-        if (payedBy == null) {
-            payedBy = person;
-            payedAmount = amount;
-            addSCashSplit(person, amount);
-            updateAccountEditDate();
-        }
-    }
-
     public void addPercentageSplit(Person person, Double percentage) {
-        addSCashSplit(person, payedAmount*percentage*(-1));
-        updateAccountEditDate();
+        addSCashSplit(person, totalSum*percentage);
     }
 
     // will be overridden
@@ -59,9 +45,7 @@ public abstract class Ticket extends DatabaseItem {
     }
 
     // will be overridden
-    public void autoCalculate(ArrayList<Person> personArrayList) {
-        //
-    };
+    public abstract void autoCalculate(ArrayList<Person> personArrayList);
 
     public String getPersonArrayListKey() {
         return paymentSplits.getKey();
@@ -75,16 +59,16 @@ public abstract class Ticket extends DatabaseItem {
         return paymentSplits.getValue().get(person);
     }
 
-    public Double getPayedAmount() {
-        return payedAmount;
+    public Double getTotalSum() {
+        return totalSum;
     }
 
-    public Person getPayedBy() {
-        return payedBy;
+    public String getPayedByKey() {
+        return payedBy.getKey();
     }
-
-    public String getCreatedByKey() { return createdBy.getKey(); }
-    public Person getCreatedByValue() { return createdBy.getValue(); }
+    public Person getPayedByValue() {
+        return payedBy.getValue();
+    }
 
     public String getSplitTypeKey() { return splitType.getKey(); }
     public SplitType getSplitTypeValue() { return splitType.getValue(); }

@@ -3,20 +3,19 @@ package ViewController.AddUserWindow;
 import DatabaseController.*;
 import HelperClass.*;
 import Model.*;
-import View.panels.UserCreationPanel;
-import ViewController.ViewController;
-
+import View.panels.*;
+import ViewController.*;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Observable;
 
 public class UserCreationPanelController extends ViewController {
-    private final DatabaseController<Person> databaseController;
+    private final PersonsDBController personsDatabaseController;
     private final UserCreationPanel userCreationPanel;
 
-    public UserCreationPanelController(DatabaseController<Person> databaseController, UserCreationPanel userCreationPanel) {
+    public UserCreationPanelController(PersonsDBController personsDatabaseController, UserCreationPanel userCreationPanel) {
         this.userCreationPanel = userCreationPanel;
-        this.databaseController = databaseController;
+        this.personsDatabaseController = personsDatabaseController;
     }
 
     @Override
@@ -43,7 +42,7 @@ public class UserCreationPanelController extends ViewController {
 
     private void addAccountCreatedActionListener() {
         if (checkFieldsForValidity()) {
-            databaseController.add(readFormAndCreateUser());
+            personsDatabaseController.add(readFormAndCreateUser());
             clearForm();
         }
     }
@@ -72,6 +71,9 @@ public class UserCreationPanelController extends ViewController {
             else userCreationPanel.getJComboBoxDay().setSelectedIndex(currentSelectedIndex);
         }
     }
+
+    @Override
+    public void update(Observable o, Object arg) {}
 
     private String[] createDayOptions(int maxDays) {
         String[] dayOptions = new String[maxDays];
@@ -142,10 +144,5 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getJComboBoxDay().setSelectedIndex(0);
         userCreationPanel.getJComboBoxMonth().setSelectedIndex(0);
         userCreationPanel.getJComboBoxYear().setSelectedIndex(0);
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        // todo - toast?
     }
 }

@@ -2,7 +2,6 @@ package View;
 
 import Database.*;
 import DatabaseController.*;
-import Model.*;
 import View.panels.*;
 import ViewController.*;
 import ViewController.AddUserWindow.UserCreationPanelController;
@@ -41,8 +40,8 @@ public class ViewFrame extends JFrame {
         TicketsDB ticketsDB = TicketsDB.getInstance();
 
         // Create database controllers
-        DatabaseController<Person> personDatabaseController = new PersonRegistrationDBController(personsDB);
-        DatabaseController<Ticket> ticketDatabaseControllers = new TicketRegistrationDBController(ticketsDB);
+        PersonsDBController personDatabaseController = new PersonsDBController(personsDB);
+        TicketsDBController ticketDatabaseControllers = new TicketsDBController(ticketsDB);
 
         // create panel: userListPanel
         UserListPanel userListPanel = new UserListPanel();
