@@ -15,6 +15,7 @@ public class PersonRegistrationDBController implements DatabaseController<Person
     @Override
     public void add(Person person) {
         db.add(person);
+        //Write to JSON file here
     }
 
     @Override
