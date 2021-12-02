@@ -1,9 +1,11 @@
-package ViewController;
+package ViewController.AddUserWindow;
 
 import DatabaseController.*;
 import HelperClass.*;
 import Model.*;
 import View.panels.UserCreationPanel;
+import ViewController.ViewController;
+
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Observable;

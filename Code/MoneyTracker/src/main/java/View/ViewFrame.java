@@ -5,6 +5,9 @@ import DatabaseController.*;
 import Model.*;
 import View.panels.*;
 import ViewController.*;
+import ViewController.AddUserWindow.UserCreationPanelController;
+import ViewController.AddUserWindow.UserListPanelController;
+
 import javax.swing.*;
 import java.awt.*;
 

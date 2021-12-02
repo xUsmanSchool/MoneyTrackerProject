@@ -1,9 +1,11 @@
-package ViewController;
+package ViewController.AddUserWindow;
 
 import DatabaseController.*;
 import Observers.*;
 import Model.*;
 import View.panels.UserListPanel;
+import ViewController.ViewController;
+
 import javax.swing.event.ListSelectionEvent;
 import java.util.ArrayList;
 import java.util.Observable;
