@@ -2,6 +2,7 @@ package Model;
 
 import Events.*;
 import HelperClass.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,7 +26,7 @@ public abstract class Ticket extends DatabaseItem {
         this.paymentSplits = new HashMep<>();
 
         // get dates
-        Date tempTodaysDate = new Date().getTodaysDate();
+        LocalDate tempTodaysDate = Date.getTodaysDate();
 
         // fill in values
         this.createdBy.put("Created_by", createdBy);
@@ -93,7 +94,7 @@ public abstract class Ticket extends DatabaseItem {
 
     @Override
     protected void updateAccountEditDate() {
-        this.creationDate.put(creationDate.getKey(), new Date().getTodaysDate());
+        this.creationDate.put(creationDate.getKey(), Date.getTodaysDate());
     }
 
     private void updatePaymentSplitsHashMap(String outerKey, Person innerKey, Double innerValue) {

@@ -35,7 +35,7 @@ public class Main {
         person1.setIcon("testIcon.jpg");                                                // update person 1
         Person person2 = new Person("Vladimir", "Kukh");                            // create person 2
         person2.setGender(Gender.MALE);                                                 // update person 2
-        person2.setBirthDate(new Date().getDate(1, 6, 1995));           // update person 2
+        person2.setBirthDate(1,6,1995);                                 // update person 2
         Person person3 = new Person("Dingus", "Without Lastname");                  // create person 3
 
         personRegistrationDBController.add(person1);                                // add person 1 to database

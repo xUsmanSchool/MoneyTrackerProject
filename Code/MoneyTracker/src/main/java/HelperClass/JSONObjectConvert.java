@@ -4,6 +4,7 @@ import Model.Person;
 import Database.PersonsDB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,11 +28,11 @@ public class JSONObjectConvert {
         return jsonObjectArrayList;
     }
 
-    private static JSONArray DateToJSONArray(Date date) {
+    private static JSONArray DateToJSONArray(LocalDate date) {
         JSONArray temp = new JSONArray();
-        temp.add(0, date.getDay().toString());
+        temp.add(0, Integer.valueOf(date.getDayOfMonth()));
         temp.add(1, date.getMonth().toString());
-        temp.add(2, date.getYear().toString());
+        temp.add(2, Integer.valueOf(date.getYear()));
 
         return temp;
     }

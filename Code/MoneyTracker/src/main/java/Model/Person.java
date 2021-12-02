@@ -1,13 +1,14 @@
 package Model;
 
 import HelperClass.*;
+import java.time.LocalDate;
 
 public class Person extends DatabaseItem {
     private final HashMep<String, String> firstName;
     private final HashMep<String, String> lastName;
     private final HashMep<String, String> phoneNumber;
     private final HashMep<String, Gender> gender;
-    private final HashMep<String, Date> birthDate;
+    private final HashMep<String, LocalDate> birthDate;
 
     public Person(String firstName, String lastName) {
         // init
@@ -18,8 +19,8 @@ public class Person extends DatabaseItem {
         this.birthDate = new HashMep<>();
 
         // get dates
-        Date tempDefaultDate = new Date().getDate();
-        Date tempTodaysDate = new Date().getTodaysDate();
+        LocalDate tempDefaultDate = Date.getLocalDate(1960,1,1);
+        LocalDate tempTodaysDate = Date.getLocalDate(1960,1,1);
 
         // fill in values
         this.firstName.put("First_name", firstName);
@@ -79,10 +80,15 @@ public class Person extends DatabaseItem {
     public String getBirthDateKey() {
         return this.birthDate.getKey();
     }
-    public Date getBirthDateValue() {
+    public LocalDate getBirthDateValue() {
         return this.birthDate.getValue();
     }
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(int day, int month, int year) {
+        this.birthDate.put(getBirthDateKey(), Date.getLocalDate(year, month, day));
+        this.updateAccountEditDate();
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate.put(getBirthDateKey(), birthDate);
         this.updateAccountEditDate();
     }
@@ -95,6 +101,6 @@ public class Person extends DatabaseItem {
 
     @Override
     public void updateAccountEditDate() {
-        this.creationDate.put(creationDate.getKey(), new Date().getTodaysDate());
+        this.creationDate.put(creationDate.getKey(), Date.getTodaysDate());
     }
 }

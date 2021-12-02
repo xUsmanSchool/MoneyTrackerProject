@@ -2,10 +2,11 @@ package Model;
 
 import HelperClass.Date;
 import HelperClass.HashMep;
+import java.time.LocalDate;
 
 public abstract class DatabaseItem {
-    protected final HashMep<String, Date> creationDate;
-    protected final HashMep<String, Date> editDate;
+    protected final HashMep<String, LocalDate> creationDate;
+    protected final HashMep<String, LocalDate> editDate;
     protected final HashMep<String, String> icon;
 
     protected DatabaseItem() {
@@ -17,14 +18,14 @@ public abstract class DatabaseItem {
     public String getCreationDateKey() {
         return this.creationDate.getKey();
     }
-    public Date getCreationDateValue() {
+    public LocalDate getCreationDateValue() {
         return this.creationDate.getValue();
     }
 
     public String getEditDateKey() {
         return this.editDate.getKey();
     }
-    public Date getEditDateValue() {
+    public LocalDate getEditDateValue() {
         return this.editDate.getValue();
     }
 
