@@ -28,22 +28,19 @@ public class CustomPersonCellRenderer extends JLabel implements ListCellRenderer
             setIcon(imageIcon);
         }
 
-        Color background;
+        Color background = CustomColors.getDarkGrey();
         Color foreground;
 
         JList.DropLocation dropLocation = list.getDropLocation();
         if (dropLocation != null
                 && !dropLocation.isInsert()
                 && dropLocation.getIndex() == index) {
-
-            background = Color.BLUE;
             foreground = Color.WHITE;
         } else if (isSelected) {
-            background = Color.GRAY;
+            background = Color.lightGray;
             foreground = Color.WHITE;
         } else {
-            background = Color.WHITE;
-            foreground = Color.BLACK;
+            foreground = Color.WHITE;
         }
 
         setBackground(background);

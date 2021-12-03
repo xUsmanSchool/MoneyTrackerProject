@@ -3,7 +3,7 @@ package ViewController.AddUserWindow;
 import DatabaseController.*;
 import Observers.*;
 import Model.*;
-import View.panels.UserListPanel;
+import View.panels.AddUserWindow.UserListPanel;
 import ViewController.ViewController;
 import javax.swing.event.ListSelectionEvent;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class UserListPanelController extends ViewController {
 
     @Override
     public void init() {
-        this.userListPanel.setTitle("Existing user list");
+        this.userListPanel.setTitle("Members");
         addPersonListToListModel(personsDatabaseController.getAll());
     }
 

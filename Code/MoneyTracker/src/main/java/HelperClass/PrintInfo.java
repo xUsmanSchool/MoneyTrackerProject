@@ -6,7 +6,7 @@ import Model.Ticket;
 public class PrintInfo {
     public static void printPersonInfo(Person p) {
         System.out.println(p.getFirstNameValue() + " " +  p.getLastNameValue() + " is born on " + p.getBirthDateValue().getDayOfMonth() + "/" + p.getBirthDateValue().getMonth() + "/" + p.getBirthDateValue().getYear() + " and is currently " + (Date.getAge(p.getBirthDateValue()) < 0 ? "living in the future. " : (Date.getAge(p.getBirthDateValue()) + " years old. ")) + p.getFirstNameValue() + "s additional info is: ");
-        System.out.println("Gender: " + p.getGenderValue().toString() + ", phone number: " + p.getPhoneNumberValue() + ". He has " + (p.getIconValue().length() == 0 ? "no custom icon" : "a custom icon") + ".");
+        System.out.println("Gender: " + p.getGenderValue().toString() + ", phone number: " + p.getPhoneNumberValue() + ". " + (p.getGenderValue() == Gender.FEMALE ? "She has " : p.getGenderValue() == Gender.MALE ? "He has " : "They have ") + (p.getIconValue().length() == 0 ? "no custom icon" : "a custom icon") + ".");
         System.out.println();
     }
 

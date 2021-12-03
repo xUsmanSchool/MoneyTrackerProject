@@ -5,7 +5,7 @@ import HelperClass.*;
 import Iterator.*;
 import Observers.*;
 import Model.*;
-import View.ViewFrame;
+import View.frames.MainViewFrame;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,14 +29,13 @@ public class Main {
         //--------------------------------------------------------------------------------------------------------------
         //todo - read database.json and update the personDatabase
         //--------------------------------------------------------------------------------------------------------------
-        Person person1 = new Person("Usman", "The Ultimate Disappointment");        // create person 1
-        person1.setGender(Gender.FEMALE);                                               // update person 1
-        person1.setPhoneNumber("1234567890");                                           // update person 1
-        person1.setIcon("testIcon.jpg");                                                // update person 1
-        Person person2 = new Person("Vladimir", "Kukh");                            // create person 2
+        Person person1 = new Person("Usman", "The Admin");                          // create person 1
+        person1.setGender(Gender.MALE);                                                 // update person 1
+        Person person2 = new Person("Vladimir", "The Admin");                       // create person 2
         person2.setGender(Gender.MALE);                                                 // update person 2
         person2.setBirthDate(1,6,1995);                                 // update person 2
-        Person person3 = new Person("Dingus", "Without Lastname");                  // create person 3
+        Person person3 = new Person("Homeless", "Dingus");                          // create person 3
+        person3.setIcon("user_icon6.png");                                              // update person 3
 
         personsDBController.add(person1);                                // add person 1 to database
         personsDBController.add(person2);                                // add person 2 to database
@@ -77,7 +76,7 @@ public class Main {
         // todo - better write to JSON file code
         //WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
         //--------------------------------------------------------------------------------------------------------------
-        ViewFrame view = new ViewFrame("Money Tracker Application");
+        MainViewFrame view = new MainViewFrame("Money Tracker Application");
         view.initialize();
     }
 
