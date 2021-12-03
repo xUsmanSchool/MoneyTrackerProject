@@ -13,6 +13,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 public class MainViewFrame extends JFrame {
+    private FinalJLayeredPane finalJLayeredPane;
+
     public MainViewFrame(String title) {
         super(title);
     }
@@ -78,11 +80,12 @@ public class MainViewFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        this.addComponentListener(new ComponentAdapter()
-        {
+        this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent evt) {
                 Component c = (Component)evt.getSource();
                 combinedWithBanner.setBounds(0, 0, c.getWidth(), c.getHeight());
+                finalJLayeredPane.setBoundsMainIcon(35, 35, combinedWithBanner.getBanner().getHeight(), combinedWithBanner.getBanner().getHeight());
+                finalJLayeredPane.setBoundsMainLabel(45, 30, 200, 50);
             }
         });
     }

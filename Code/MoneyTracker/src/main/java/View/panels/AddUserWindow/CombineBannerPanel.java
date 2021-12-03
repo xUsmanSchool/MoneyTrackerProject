@@ -5,12 +5,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CombineBannerPanel extends JPanel {
+    private JLabel banner;
+
     public CombineBannerPanel(JPanel mainPanel) {
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
 
         GridBagConstraints c = new GridBagConstraints();
-        JLabel banner = createLabel("", CustomColors.getYellow());
+        banner = createLabel("", CustomColors.getYellow());
 
         c.ipady = 60;
         c.gridx = 0;
@@ -41,5 +43,9 @@ public class CombineBannerPanel extends JPanel {
         label.setOpaque(true);
         label.setBackground(bg);
         return label;
+    }
+
+    public JLabel getBanner() {
+        return banner;
     }
 }

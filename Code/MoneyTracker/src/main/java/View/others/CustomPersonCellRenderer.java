@@ -43,6 +43,7 @@ public class CustomPersonCellRenderer extends JLabel implements ListCellRenderer
             foreground = Color.WHITE;
         }
 
+
         setBackground(background);
         setForeground(foreground);
 
