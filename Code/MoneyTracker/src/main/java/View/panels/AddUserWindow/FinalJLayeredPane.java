@@ -40,6 +40,6 @@ public class FinalJLayeredPane extends JLayeredPane {
     }
 
     public void updateScaling(int w, int h) {
-        mainIcon.setIcon(new ImageIcon(image.getScaledInstance(w, h,  java.awt.Image.SCALE_SMOOTH)));
+        if (w != 0 && h != 0) mainIcon.setIcon(new ImageIcon(image.getScaledInstance(w, h,  java.awt.Image.SCALE_SMOOTH)));
     }
 }

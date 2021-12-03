@@ -44,10 +44,6 @@ public class UserListPanel extends JPanel {
         return listModel;
     }
 
-    public JList<Person> getList() {
-        return list;
-    }
-
     public JList<Person> getJList() {
         return list;
     }

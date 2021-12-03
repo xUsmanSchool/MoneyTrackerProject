@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UserCreationPanel extends JPanel {
-    private final JButton createButton;
+    private final JButton createButton, gotoGlobalBillButton;
     private final JLabel firstNameLabel, lastNameLabel, phoneNumberLabel, genderLabel, birthdateLabel;
     private final JTextField firstNameTextField, lastNameTextField;
     public JFormattedTextField phoneNumberTextField;
@@ -52,6 +52,7 @@ public class UserCreationPanel extends JPanel {
 
         // buttons
         this.createButton = new JButton();
+        this.gotoGlobalBillButton = new JButton();
 
         // more layouts, for explanation see: https://docs.oracle.com/javase/tutorial/uiswing/layout/groupExample.html
         layout.setHorizontalGroup(layout.createSequentialGroup()
@@ -72,7 +73,10 @@ public class UserCreationPanel extends JPanel {
                                 .addComponent(jComboBoxD)
                                 .addComponent(jComboBoxM)
                                 .addComponent(jComboBoxY))
-                        .addComponent(createButton)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(createButton)
+                                .addComponent(gotoGlobalBillButton)
+                        )
                 )
         );
 
@@ -100,7 +104,10 @@ public class UserCreationPanel extends JPanel {
                         .addComponent(jComboBoxM)
                         .addComponent(jComboBoxY)
                 )
-                .addComponent(createButton)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(createButton)
+                        .addComponent(gotoGlobalBillButton)
+                )
         );
     }
 
@@ -135,6 +142,10 @@ public class UserCreationPanel extends JPanel {
 
     public DefaultComboBoxModel<String> getDefaultComboBoxModel(String[] options) {
         return new DefaultComboBoxModel<String>(options);
+    }
+
+    public JButton getGotoGlobalBillButton() {
+        return gotoGlobalBillButton;
     }
 
     public Border getRedBorder() {
