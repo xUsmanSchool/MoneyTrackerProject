@@ -1,6 +1,7 @@
 package DatabaseController;
 
 import Database.*;
+import HelperClass.WriteToJSONFile;
 import Model.*;
 import java.util.ArrayList;
 
@@ -13,8 +14,8 @@ public class PersonsDBController {
     }
 
     public void add(Person person) {
-        db.add(person);
-        //Write to JSON file here
+        this.db.add(person);
+        WriteToJSONFile.updatePersonFile(this.db);
     }
 
     public void remove(Person person) {
@@ -25,3 +26,4 @@ public class PersonsDBController {
         return new ArrayList<>(db.getAll());
     }
 }
+it
