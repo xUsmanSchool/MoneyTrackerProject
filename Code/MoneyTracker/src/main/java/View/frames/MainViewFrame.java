@@ -49,7 +49,7 @@ public class MainViewFrame extends JFrame {
         userListPanelController.activateActionListeners();
 
         // extra styling for userListPanel
-        userListPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 15));
+        userListPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 15));
         userListPanel.getTitleLabel().setForeground(Color.WHITE);
         userListPanel.getTitleLabel().setFont(new Font("", Font.PLAIN, 16));
         userListPanel.getJList().setBackground(CustomColors.getDarkGrey());
@@ -82,8 +82,9 @@ public class MainViewFrame extends JFrame {
         this.getContentPane().setBackground(CustomColors.getMidGrey());
 
         // create panels
-        CenteredUserCreationPanel centeredUserCreationPanel = new CenteredUserCreationPanel(userCreationPanel);
-        CombineJPanelGridLayoutPanel combinedUserList_and_userCreationPanel = new CombineJPanelGridLayoutPanel(centeredUserCreationPanel, userListPanel);
+        AlignPanelSouth alignPanelSouth = new AlignPanelSouth(userListPanel);
+        AlignPanelCenter alignPanelCenter = new AlignPanelCenter(userCreationPanel);
+        CombineJPanelGridLayoutPanel combinedUserList_and_userCreationPanel = new CombineJPanelGridLayoutPanel(alignPanelCenter, alignPanelSouth);
         CombineBannerPanel combinedWithBanner = new CombineBannerPanel(combinedUserList_and_userCreationPanel);
         finalJLayeredPane = new FinalJLayeredPane(combinedWithBanner);
 
@@ -125,7 +126,7 @@ public class MainViewFrame extends JFrame {
         recentTicketPanelController.init();
         recentTicketPanelController.activateActionListeners();
 
-        recentTicketsPanel.setBorder(BorderFactory.createEmptyBorder(8, 20, 15, 5));
+        recentTicketsPanel.setBorder(BorderFactory.createEmptyBorder(80, 20, 15, 5));
         recentTicketsPanel.getTextButtonContainer().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         recentTicketsPanel.getTitleLabel().setForeground(Color.WHITE);
         recentTicketsPanel.getTitleLabel().setFont(new Font("", Font.PLAIN, 16));
@@ -140,6 +141,7 @@ public class MainViewFrame extends JFrame {
         recentTicketsPanel.getCheckoutButton().setBorder(BorderFactory.createEmptyBorder(5,6,5,6));
         recentTicketsPanel.getTextButtonContainer().setBackground(CustomColors.getMidGrey());
         recentTicketsPanel.getAddTicketButton().addActionListener(e -> createTicketActionListener());
+        recentTicketsPanel.getJList().setFixedCellHeight(50);
 
         UserListPanel userListPanel2 = new UserListPanel();
         UserListPanelController userListPanelController2 = new UserListPanelController(personDatabaseController, userListPanel2);
@@ -147,16 +149,17 @@ public class MainViewFrame extends JFrame {
         userListPanelController2.activateActionListeners();
 
         // extra styling for userListPanel2
-        userListPanel2.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 15));
+        userListPanel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 15));
         userListPanel2.getTitleLabel().setForeground(Color.WHITE);
         userListPanel2.getTitleLabel().setFont(new Font("", Font.PLAIN, 16));
         userListPanel2.getJList().setBackground(CustomColors.getDarkGrey());
         userListPanel2.setBackground(CustomColors.getMidGrey());
         userListPanel2.getJList().setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        CombineJPanelGridLayoutPanel combinedNothing_and_userCreationPanel = new CombineJPanelGridLayoutPanel(recentTicketsPanel, userListPanel2);
-        CombineBannerPanel combinedSomePanelWithBanner = new CombineBannerPanel(combinedNothing_and_userCreationPanel);
-        finalJLayeredPaneWithSomePanel = new FinalJLayeredPane(combinedSomePanelWithBanner);
+        AlignPanelSouth alignPanelSouth = new AlignPanelSouth(userListPanel2);
+        CombineJPanelGridLayoutPanel combinedRecentTicket_and_userCreationPanel = new CombineJPanelGridLayoutPanel(recentTicketsPanel, alignPanelSouth);
+        CombineBannerPanel combinedRecentTicketUserCreationWithBanner = new CombineBannerPanel(combinedRecentTicket_and_userCreationPanel);
+        finalJLayeredPaneWithSomePanel = new FinalJLayeredPane(combinedRecentTicketUserCreationWithBanner);
 
         return finalJLayeredPaneWithSomePanel;
     }

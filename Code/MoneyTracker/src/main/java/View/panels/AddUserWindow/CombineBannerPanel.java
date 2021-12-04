@@ -14,23 +14,23 @@ public class CombineBannerPanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         banner = createLabel("", CustomColors.getYellow());
 
-        c.ipady = 60;
+        c.ipady = 65;
         c.gridx = 0;
         c.gridy = 0;
-        c.weightx = 1.5;
-        c.weighty = 3;
-        c.gridheight = 1;
-        c.gridwidth = 3;
+        c.weightx = 1;
+        c.weighty = 5;
+        c.gridheight = 0;
+        c.gridwidth = 1;
         c.anchor = GridBagConstraints.NORTH;
-        c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(banner, c);
 
         c.ipady = 0;
         c.gridx = 0;
-        c.gridy = 10;
-        c.weightx = 10;
-        c.weighty = 10;
-        c.gridheight = 1;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 80;
+        c.gridheight = 0;
         c.gridwidth = 1;
         c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.BOTH;
