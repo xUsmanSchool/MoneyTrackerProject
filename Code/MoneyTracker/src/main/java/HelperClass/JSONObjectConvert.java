@@ -18,7 +18,7 @@ public class JSONObjectConvert {
         jsonMap.put(person.getLastNameKey(), person.getLastNameValue());
         jsonMap.put(person.getPhoneNumberKey(), person.getPhoneNumberValue());
         jsonMap.put(person.getGenderKey(), person.getGenderValue().toString());
-        jsonMap.put(person.getBirthDateKey(), DateToJSONArray(person.getBirthDateValue()).toJSONString());
+        jsonMap.put(person.getBirthDateKey(), DateToJSONArray(person.getBirthDateValue()));
         jsonMap.put(person.getCreationDateKey(), DateToJSONArray(person.getCreationDateValue()).toJSONString());
         jsonMap.put(person.getEditDateKey(), DateToJSONArray(person.getEditDateValue()).toJSONString());
         jsonMap.put(person.getIconKey(), person.getIconValue());

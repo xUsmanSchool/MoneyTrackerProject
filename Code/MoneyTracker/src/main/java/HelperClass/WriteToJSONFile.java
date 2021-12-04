@@ -34,7 +34,6 @@ public class WriteToJSONFile {
     }
 
     public static void updatePersonFile(PersonsDB db){
-        //todo: convert to JsonArray ofzo en write naar die file
         System.out.println("writing changes to file: persons.json");
         try {
             FileWriter file = new FileWriter("./persons.json",false);
@@ -44,7 +43,6 @@ public class WriteToJSONFile {
     }
 
     public static void updateTicketFile(TicketsDB db){
-        //todo: convert to JsonArray ofzo en write naar die file
         System.out.println("writing changes to file: tickets.json");
         try {
             FileWriter file = new FileWriter("./tickets.json",false);

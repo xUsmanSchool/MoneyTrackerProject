@@ -28,6 +28,7 @@ public class Main {
         TicketFactory ticketFactory = new TicketFactory();                          /** Factory pattern: tickets */
         //--------------------------------------------------------------------------------------------------------------
         //todo - read database.json and update the personDatabase
+        ReadFromJSONFile.readPersonFile(personDatabase);
         //--------------------------------------------------------------------------------------------------------------
         Person person1 = new Person("Usman", "The Ultimate Disappointment");        // create person 1
         person1.setGender(Gender.FEMALE);                                               // update person 1
