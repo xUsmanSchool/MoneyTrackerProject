@@ -1,6 +1,7 @@
 package HelperClass;
 
 import Database.PersonsDB;
+import Database.TicketsDB;
 import Model.Person;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,11 +35,21 @@ public class WriteToJSONFile {
 
     public static void updatePersonFile(PersonsDB db){
         //todo: convert to JsonArray ofzo en write naar die file
-
+        System.out.println("writing changes to file: persons.json");
         try {
-            FileWriter file = new FileWriter("./person",true);
+            FileWriter file = new FileWriter("./persons.json",false);
             file.write(JSONObjectConvert.JSONifyAllPersons(db).toJSONString());
             file.close();
         } catch (IOException e) { System.err.printf("Unable to create file %s%s person.json\n", e); }
+    }
+
+    public static void updateTicketFile(TicketsDB db){
+        //todo: convert to JsonArray ofzo en write naar die file
+        System.out.println("writing changes to file: tickets.json");
+        try {
+            FileWriter file = new FileWriter("./tickets.json",false);
+            file.write(JSONObjectConvert.JSONifyAllTickets(db).toJSONString());
+            file.close();
+        } catch (IOException e) { System.err.printf("Unable to create file %s%s tickets.json\n", e); }
     }
 }

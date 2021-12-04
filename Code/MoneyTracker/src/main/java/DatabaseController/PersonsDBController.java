@@ -20,10 +20,10 @@ public class PersonsDBController {
 
     public void remove(Person person) {
         db.remove(person);
+        WriteToJSONFile.updatePersonFile(this.db);
     }
 
     public ArrayList<Person> getAll() {
         return new ArrayList<>(db.getAll());
     }
 }
-it

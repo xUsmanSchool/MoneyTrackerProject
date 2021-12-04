@@ -1,6 +1,7 @@
 package DatabaseController;
 
 import Database.*;
+import HelperClass.WriteToJSONFile;
 import Model.*;
 import java.util.ArrayList;
 
@@ -14,10 +15,12 @@ public class TicketsDBController {
 
     public void add(Ticket ticket) {
         db.add(ticket);
+        WriteToJSONFile.updateTicketFile(this.db);
     }
 
     public void remove(Ticket ticket) {
         db.remove(ticket);
+        WriteToJSONFile.updateTicketFile(this.db);
     }
 
     public ArrayList<Ticket> getAll() {
