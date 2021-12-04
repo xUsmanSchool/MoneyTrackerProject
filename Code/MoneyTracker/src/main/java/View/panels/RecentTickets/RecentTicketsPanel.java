@@ -1,20 +1,19 @@
-package View.panels.GlobalBill;
+package View.panels.RecentTickets;
 
-import Model.Person;
 import Model.Ticket;
 import View.others.CustomTicketCellRenderer;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GlobalBillPanel extends JPanel {
+public class RecentTicketsPanel extends JPanel {
     private JLabel title;
     private JPanel textButtonContainer;
-    private JButton addTicketButton;
+    private JButton addTicketButton, checkout;
     private DefaultListModel<Ticket> listModel;
     private JList<Ticket> list;
 
-    public GlobalBillPanel() {
+    public RecentTicketsPanel() {
         // set layout
         BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layout);
@@ -24,9 +23,11 @@ public class GlobalBillPanel extends JPanel {
         textButtonContainer.setLayout(new FlowLayout(FlowLayout.TRAILING));
 
         title = new JLabel();
+        checkout = new JButton();
         addTicketButton = new JButton();
 
         textButtonContainer.add(title);
+        textButtonContainer.add(checkout);
         textButtonContainer.add(addTicketButton);
 
         // create list
@@ -52,6 +53,10 @@ public class GlobalBillPanel extends JPanel {
 
     public JButton getAddTicketButton() {
         return addTicketButton;
+    }
+
+    public JButton getCheckoutButton() {
+        return checkout;
     }
 
     public JPanel getTextButtonContainer() {

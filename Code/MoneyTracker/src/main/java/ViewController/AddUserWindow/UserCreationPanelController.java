@@ -39,7 +39,7 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getPhoneNumberLabel().setText("Phone number*: ");
         userCreationPanel.getGenderLabel().setText("Gender*: ");
         userCreationPanel.getBirthdateLabel().setText("Date of birth*: ");
-        userCreationPanel.getCreateButton().setText("Create user");
+        userCreationPanel.getCreateButton().setText("Add user");
     }
 
     @Override

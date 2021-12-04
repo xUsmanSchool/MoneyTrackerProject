@@ -14,7 +14,16 @@ public class CustomTicketCellRenderer extends JLabel implements ListCellRenderer
     public Component getListCellRendererComponent(JList<? extends Ticket> list, Ticket value, int index, boolean isSelected, boolean cellHasFocus) {
         // fill in text in cell
         setVerticalTextPosition(CENTER);
-        setText(value.getEventTypeValue().getEventName() + " " + value.getAmountForPerson(value.getPayedByValue()));
+        String textLine1 = value.getEventTypeValue().getEventName();
+        String textLine2 = value.getTotalSum() + "$ was payed by " + value.getPayedByValue().getFirstNameValue() + " on " + value.getCreationDateValue().getDayOfMonth() + "/" + value.getCreationDateValue().getMonthValue();
+        setText("<html><b><font size=+1>" +
+                textLine1 +
+                "</font></b><br/>" +
+                "<font color=#FFD369>" +
+                textLine2 +
+                "</font></html>");
+
+        //<html>textLine1<br/><font color=#FFD369>textLine2</font></html>
 
         // process image or set default
         if (value.getIconValue().length() == 0) {

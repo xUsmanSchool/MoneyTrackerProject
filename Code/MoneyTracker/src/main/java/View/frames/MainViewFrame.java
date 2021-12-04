@@ -4,11 +4,11 @@ import Database.*;
 import DatabaseController.*;
 import View.others.CustomColors;
 import View.panels.AddUserWindow.*;
-import View.panels.GlobalBill.GlobalBillPanel;
+import View.panels.RecentTickets.RecentTicketsPanel;
 import ViewController.*;
 import ViewController.AddUserWindow.UserCreationPanelController;
 import ViewController.AddUserWindow.UserListPanelController;
-import ViewController.GlobalBill.GlobalBillPanelController;
+import ViewController.RecentTickets.RecentTicketPanelController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,7 +72,7 @@ public class MainViewFrame extends JFrame {
         userCreationPanel.getCreateButton().setBackground(CustomColors.getYellow());
         userCreationPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
         userCreationPanel.getGotoGlobalBillButton().setBackground(CustomColors.getYellow());
-        userCreationPanel.getGotoGlobalBillButton().setText("Go to BILL");
+        userCreationPanel.getGotoGlobalBillButton().setText("View tickets");
         userCreationPanel.getGotoGlobalBillButton().addActionListener(e -> goToBillPanelActionListener());
 
         // add observers
@@ -86,10 +86,6 @@ public class MainViewFrame extends JFrame {
         CombineJPanelGridLayoutPanel combinedUserList_and_userCreationPanel = new CombineJPanelGridLayoutPanel(centeredUserCreationPanel, userListPanel);
         CombineBannerPanel combinedWithBanner = new CombineBannerPanel(combinedUserList_and_userCreationPanel);
         finalJLayeredPane = new FinalJLayeredPane(combinedWithBanner);
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
         this.add(finalJLayeredPane);
         //this.add(finalJLayeredPaneWithSomePanel);
@@ -124,22 +120,26 @@ public class MainViewFrame extends JFrame {
     }
 
     private FinalJLayeredPane getGlobalBillPanel() {
-        GlobalBillPanel globalBillPanel = new GlobalBillPanel();
-        GlobalBillPanelController globalBillPanelController = new GlobalBillPanelController(ticketDatabaseController, globalBillPanel);
-        globalBillPanelController.init();
-        globalBillPanelController.activateActionListeners();
+        RecentTicketsPanel recentTicketsPanel = new RecentTicketsPanel();
+        RecentTicketPanelController recentTicketPanelController = new RecentTicketPanelController(ticketDatabaseController, recentTicketsPanel);
+        recentTicketPanelController.init();
+        recentTicketPanelController.activateActionListeners();
 
-        globalBillPanel.setBorder(BorderFactory.createEmptyBorder(8, 20, 15, 5));
-        globalBillPanel.getTextButtonContainer().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        globalBillPanel.getTitleLabel().setForeground(Color.WHITE);
-        globalBillPanel.getTitleLabel().setFont(new Font("", Font.PLAIN, 16));
-        globalBillPanel.getJList().setBackground(CustomColors.getDarkGrey());
-        globalBillPanel.setBackground(CustomColors.getMidGrey());
-        globalBillPanel.getJList().setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-        globalBillPanel.getAddTicketButton().setBackground(CustomColors.getYellow());
-        globalBillPanel.getAddTicketButton().setText("Add ticket");
-        globalBillPanel.getTextButtonContainer().setBackground(CustomColors.getMidGrey());
-        globalBillPanel.getAddTicketButton().addActionListener(e -> createTicketActionListener());
+        recentTicketsPanel.setBorder(BorderFactory.createEmptyBorder(8, 20, 15, 5));
+        recentTicketsPanel.getTextButtonContainer().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        recentTicketsPanel.getTitleLabel().setForeground(Color.WHITE);
+        recentTicketsPanel.getTitleLabel().setFont(new Font("", Font.PLAIN, 16));
+        recentTicketsPanel.getJList().setBackground(CustomColors.getDarkGrey());
+        recentTicketsPanel.setBackground(CustomColors.getMidGrey());
+        recentTicketsPanel.getJList().setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        recentTicketsPanel.getAddTicketButton().setBackground(CustomColors.getYellow());
+        recentTicketsPanel.getCheckoutButton().setBackground(CustomColors.getYellow());
+        recentTicketsPanel.getAddTicketButton().setText("Add");
+        recentTicketsPanel.getCheckoutButton().setText("Checkout");
+        recentTicketsPanel.getAddTicketButton().setBorder(BorderFactory.createEmptyBorder(5,6,5,6));
+        recentTicketsPanel.getCheckoutButton().setBorder(BorderFactory.createEmptyBorder(5,6,5,6));
+        recentTicketsPanel.getTextButtonContainer().setBackground(CustomColors.getMidGrey());
+        recentTicketsPanel.getAddTicketButton().addActionListener(e -> createTicketActionListener());
 
         UserListPanel userListPanel2 = new UserListPanel();
         UserListPanelController userListPanelController2 = new UserListPanelController(personDatabaseController, userListPanel2);
@@ -154,7 +154,7 @@ public class MainViewFrame extends JFrame {
         userListPanel2.setBackground(CustomColors.getMidGrey());
         userListPanel2.getJList().setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        CombineJPanelGridLayoutPanel combinedNothing_and_userCreationPanel = new CombineJPanelGridLayoutPanel(globalBillPanel, userListPanel2);
+        CombineJPanelGridLayoutPanel combinedNothing_and_userCreationPanel = new CombineJPanelGridLayoutPanel(recentTicketsPanel, userListPanel2);
         CombineBannerPanel combinedSomePanelWithBanner = new CombineBannerPanel(combinedNothing_and_userCreationPanel);
         finalJLayeredPaneWithSomePanel = new FinalJLayeredPane(combinedSomePanelWithBanner);
 
