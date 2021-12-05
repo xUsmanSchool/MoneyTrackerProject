@@ -1,46 +1,83 @@
-import Database.Person;
-import Database.PersonsDB;
-import Database.TicketsDB;
-import HelperClass.JSONObjectConvert;
-import HelperClass.Sex;
-import HelperClass.WriteToJSONFile;
-import Observers.DatabaseObserver;
-import View.ViewFrame;
+import DatabaseController.*;
+import Database.*;
+import Factory.*;
+import HelperClass.*;
+import Iterator.*;
+import Observers.*;
+import Model.*;
+import View.frames.MainViewFrame;
 
 public class Main {
-
     public static void main(String[] args) {
         Main main = new Main();
         main.run();
     }
 
     public Main() {
-        // singleton pattern databases
-        PersonsDB personDatabase = PersonsDB.getInstance();
-        TicketsDB ticketDatabase = TicketsDB.getInstance();
+        PersonsDB personDatabase = PersonsDB.getInstance();                         /** Singleton pattern: databases */
+        TicketsDB ticketDatabase = TicketsDB.getInstance();                         /** Singleton pattern: databases */
+        //--------------------------------------------------------------------------------------------------------------
+        PersonsDBController personsDBController = new PersonsDBController(personDatabase);
+        TicketsDBController ticketsDBController = new TicketsDBController(ticketDatabase);
+        //--------------------------------------------------------------------------------------------------------------
+        DatabaseObserver dbObserver = new DatabaseObserver();                       /** Observer pattern: cmd & view */
+        personDatabase.addObserver(dbObserver);                                     /** Observer pattern: cmd & view */
+        ticketDatabase.addObserver(dbObserver);                                     /** Observer pattern: cmd & view */
+        //--------------------------------------------------------------------------------------------------------------
+        EventFactory eventFactory = new EventFactory();                             /** Factory pattern: events */
+        TicketFactory ticketFactory = new TicketFactory();                          /** Factory pattern: tickets */
+        //--------------------------------------------------------------------------------------------------------------
+        //todo - read database.json and update the personDatabase
+        ReadFromJSONFile.readPersonFile(personDatabase);
+        //--------------------------------------------------------------------------------------------------------------
+        Person person1 = new Person("Usman", "The Admin");                          // create person 1
+        person1.setGender(Gender.MALE);                                                 // update person 1
+        Person person2 = new Person("Vladimir", "The Admin");                       // create person 2
+        person2.setGender(Gender.MALE);                                                 // update person 2
+        person2.setBirthDate(1,6,1995);                                 // update person 2
+        Person person3 = new Person("Homeless", "Dingus");                          // create person 3
+        person3.setIcon("user_icon6.png");                                              // update person 3
 
-        // add observers
-        DatabaseObserver dbObserver = new DatabaseObserver();
-        personDatabase.addObserver(dbObserver);
+        //personsDBController.add(person1);                                // add person 1 to database
+        //personsDBController.add(person2);                                // add person 2 to database
+        //personsDBController.add(person3);                                // add person 2 to database
+        //--------------------------------------------------------------------------------------------------------------
+        System.out.println("\nTesting iterator pattern on Person DB: ");            /** Iterator pattern through DB */
+        Iterator<Person> itP = personDatabase.getIterator();                        /** Iterator pattern through DB */
+        while (itP.hasNext()) System.out.println(itP.next().getFirstNameValue());   /** Iterator pattern through DB */
+        System.out.println();                                                       /** Iterator pattern through DB */
+        //--------------------------------------------------------------------------------------------------------------
+        Ticket ticket1 = ticketFactory.getTicket(person1, 30.00, eventFactory.getEvent(Events.RESTAURANT), SplitType.EQUAL);
+        ticket1.autoCalculate(personsDBController.getAll());                // create ticket 1
+        ticket1.addSCashSplit(null, 0.00);                    // fake add
+        ticket1.addSCashSplit(null, 0.00);                    // fake add
+        ticket1.addSCashSplit(null, 0.00);                    // fake add
 
-        // create person 1
-        Person testPerson1 = new Person("Usman");
-        testPerson1.setSex(Sex.FEMALE);
+        Ticket ticket2 = ticketFactory.getTicket(person2, 10.00, eventFactory.getEvent(Events.AIRPLANE), SplitType.UNEQUAL);
+        ticket2.autoCalculate(null);                           // fake add
+        ticket2.addSCashSplit(person1, 1.50);                       // create ticket 2
+        ticket2.addSCashSplit(person2, 2.00);                       // create ticket 2
+        ticket2.addSCashSplit(person3, 8.50);                       // create ticket 2
 
-        // create person 2
-        Person testPerson2 = new Person("Vlad");
-        testPerson2.setLastName("Kukh");
-        testPerson2.setPhoneNumber("0000000000");
-
-        // add person to database
-        personDatabase.add(testPerson1);
-        personDatabase.add(testPerson2);
-
-        // write to file
-        WriteToJSONFile.writeObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
-
-        // draw
-        ViewFrame view = new ViewFrame();
+        Ticket ticket3 = ticketFactory.getTicket(person3, 5.00, eventFactory.getEvent(Events.TAXI), SplitType.UNEQUAL);
+        ticket3.autoCalculate(null);                             // fake add
+        ticket3.addPercentageSplit(person1, 0.10);                  // create ticket 3
+        ticket3.addPercentageSplit(person2, 0.10);                  // create ticket 3
+        ticket3.addPercentageSplit(person3, 0.80);                  // create ticket 3
+        //--------------------------------------------------------------------------------------------------------------
+        ticketsDBController.add(ticket1);                                // add ticket 1 to database
+        ticketsDBController.add(ticket2);                                // add ticket 2 to database
+        ticketsDBController.add(ticket3);                                // add ticket 3 to database
+        //--------------------------------------------------------------------------------------------------------------
+        System.out.println("\nTesting iterator pattern on Ticket DB: ");            /** Iterator pattern through DB */
+        Iterator<Ticket> itT = ticketDatabase.getIterator();                        /** Iterator pattern through DB */
+        while (itT.hasNext()) System.out.println(itT.next().getEventTypeValue().getEventName());
+        System.out.println();                                                       /** Iterator pattern through DB */
+        //--------------------------------------------------------------------------------------------------------------
+        // todo - better write to JSON file code
+        //WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
+        //--------------------------------------------------------------------------------------------------------------
+        MainViewFrame view = new MainViewFrame("Money Tracker Application");
         view.initialize();
     }
 

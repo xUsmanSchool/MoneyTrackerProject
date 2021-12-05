@@ -1,31 +1,62 @@
 package Database;
 
+import Iterator.*;
+import Model.*;
+import Observers.PersonDBObservableEntry;
 import java.util.ArrayList;
 
-public class PersonsDB extends Database {
+public class PersonsDB extends Database implements Container {
     private static PersonsDB databaseInstance;
-    private ArrayList<Person> personList;
+    private final ArrayList<Person> personList;
 
-    private PersonsDB() { this.personList = new ArrayList<Person>(); }
+    private PersonsDB() { this.personList = new ArrayList<>(); }
 
     public static PersonsDB getInstance(){
         if (databaseInstance == null) { databaseInstance = new PersonsDB(); }
         return databaseInstance;
     }
 
-    public void add(Person person) {
-        this.personList.add(person);
-        setChanged();
-        notifyObservers();
+    @Override
+    public void add(DatabaseItem item) {
+        if (item instanceof Person) {
+            this.personList.add((Person)item);
+            setChanged();
+            notifyObservers(new PersonDBObservableEntry((Person)item, true));
+        } else System.err.println("PersonsDB: item does not match the correct type");
     }
 
-    public void remove(Person person) {
-        this.personList.remove(person);
-        setChanged();
-        notifyObservers();
+    @Override
+    public void remove(DatabaseItem item) {
+        if (item instanceof Person) {
+            this.personList.remove((Person)item);
+            setChanged();
+            notifyObservers(new PersonDBObservableEntry((Person)item, false));
+        } else System.err.println("PersonsDB: item does not match the correct type");
     }
 
-    public ArrayList<Person> getPersons() {
+    @Override
+    public ArrayList<Person> getAll() {
         return personList;
     }
+
+    @Override
+    public Iterator<Person> getIterator() {
+        return new PersonIterator();
+    }
+
+    class PersonIterator implements Iterator<Person> {
+        int index;
+
+        @Override
+        public boolean hasNext() {
+            return index < personList.size();
+        }
+
+        @Override
+        public Person next() {
+            return this.hasNext() ? personList.get(index++) : null;
+        }
+    }
 }
+
+
