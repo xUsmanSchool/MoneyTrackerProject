@@ -39,9 +39,9 @@ public class Main {
         person2.setBirthDate(1,6,1995);                                 // update person 2
         Person person3 = new Person("Dingus", "Without Lastname");                  // create person 3
 
-        personsDBController.add(person1);                                // add person 1 to database
-        personsDBController.add(person2);                                // add person 2 to database
-        personsDBController.add(person3);                                // add person 2 to database
+        //personsDBController.add(person1);                                // add person 1 to database
+        //personsDBController.add(person2);                                // add person 2 to database
+        //personsDBController.add(person3);                                // add person 2 to database
         //--------------------------------------------------------------------------------------------------------------
         System.out.println("\nTesting iterator pattern on Person DB: ");            /** Iterator pattern through DB */
         Iterator<Person> itP = personDatabase.getIterator();                        /** Iterator pattern through DB */

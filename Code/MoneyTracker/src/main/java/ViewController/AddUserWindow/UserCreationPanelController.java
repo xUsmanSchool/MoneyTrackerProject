@@ -105,7 +105,7 @@ public class UserCreationPanelController extends ViewController {
         Person p = new Person(firstNameText, lastNameText);
         p.setPhoneNumber(phoneNumberText);
         p.setGender(genderObject);
-        p.setBirthDate(Date.getLocalDate(years, months, days));
+        p.setBirthDateLocal(Date.getLocalDate(years, months, days));
         return p;
     }
 

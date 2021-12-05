@@ -13,6 +13,11 @@ import Database.Database;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 public class ReadFromJSONFile {
     public static void readPersonFile(PersonsDB db){
@@ -39,6 +44,7 @@ public class ReadFromJSONFile {
 
         //Get person first name
         String firstName = (String) personObject.get("First_name");
+
         //Get person last name
         String lastName = (String) personObject.get("Last_name");
 
@@ -54,16 +60,9 @@ public class ReadFromJSONFile {
         tmpPerson.setIcon((String) personObject.get("Icon_url"));
 
         //Get person birth date
-        Object object = personObject.get("Birth_date");
-        JSONArray date = null;
+        int[] values = ConvertDateObject.convertDateStringToInt(personObject.get("Birth_date").toString());
+        tmpPerson.setBirthDate(values[0], values[1], values[2]);
 
-        if(object instanceof JSONArray){ date = (JSONArray) object; }
-        Local
-        tmpPerson.setBirthDate((int)date.get(0), (int)date.get(1), (int)date.get(2));
-
-        //tmpPerson.setBirthDate();
-
-        System.out.println("PRINTING READ TEMP PERSON");
-        System.out.println(personObject.get("Birth_date"));
+        db.add(tmpPerson);
     }
 }
