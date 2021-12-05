@@ -3,19 +3,27 @@ package ViewController.AddUserWindow;
 import DatabaseController.*;
 import HelperClass.*;
 import Model.*;
-import View.panels.*;
+import View.frames.IconSelectorFrame;
+import View.panels.AddUserWindow.UserCreationPanel;
 import ViewController.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Observable;
 
 public class UserCreationPanelController extends ViewController {
+    private final UserCreationPanelController userCreationPanelController;
     private final PersonsDBController personsDatabaseController;
     private final UserCreationPanel userCreationPanel;
+    public static boolean ImageSelectorFrameOpen = false;
 
     public UserCreationPanelController(PersonsDBController personsDatabaseController, UserCreationPanel userCreationPanel) {
         this.userCreationPanel = userCreationPanel;
         this.personsDatabaseController = personsDatabaseController;
+        this.userCreationPanelController = this;
     }
 
     @Override
@@ -25,12 +33,13 @@ public class UserCreationPanelController extends ViewController {
         for(String s : createMonthOptions(12)) userCreationPanel.getJComboBoxMonth().addItem(s);
         for(String s : createYearOptions(100)) userCreationPanel.getJComboBoxYear().addItem(s);
 
+        userCreationPanel.setImage("src/main/icons/add_picture.png", "Select an icon");
         userCreationPanel.getFirstNameLabel().setText("First name: ");
         userCreationPanel.getLastNameLabel().setText("Last name: ");
         userCreationPanel.getPhoneNumberLabel().setText("Phone number*: ");
         userCreationPanel.getGenderLabel().setText("Gender*: ");
         userCreationPanel.getBirthdateLabel().setText("Date of birth*: ");
-        userCreationPanel.getCreateButton().setText("Create user");
+        userCreationPanel.getCreateButton().setText("Add user");
     }
 
     @Override
@@ -38,6 +47,7 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getCreateButton().addActionListener(e -> addAccountCreatedActionListener());
         userCreationPanel.getJComboBoxMonth().addActionListener(e -> adjustDayForMonthAndYearActionListener());
         userCreationPanel.getJComboBoxYear().addActionListener(e -> adjustDayForMonthAndYearActionListener());
+        userCreationPanel.getImageLabel().addMouseListener(iconSelectorMouseListener());
     }
 
     private void addAccountCreatedActionListener() {
@@ -72,8 +82,27 @@ public class UserCreationPanelController extends ViewController {
         }
     }
 
+    private MouseListener iconSelectorMouseListener() {
+        return new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!UserCreationPanelController.ImageSelectorFrameOpen) {
+                    IconSelectorFrame iconSelectorFrame = new IconSelectorFrame(new Rectangle(userCreationPanel.getLocationOnScreen()));
+                    IconSelectorFrameController iconSelectorFrameController = new IconSelectorFrameController(iconSelectorFrame, userCreationPanelController);
+                    iconSelectorFrameController.activateActionListeners();
+                    UserCreationPanelController.ImageSelectorFrameOpen = true;
+                }
+            }
+        };
+    }
+
     @Override
-    public void update(Observable o, Object arg) {}
+    public void update(Observable o, Object arg) {
+        if (arg instanceof String) {
+            userCreationPanel.setImage((String)arg, "Image selected");
+        }
+        // todo - create an image observer entry
+    }
 
     private String[] createDayOptions(int maxDays) {
         String[] dayOptions = new String[maxDays];
@@ -98,6 +127,8 @@ public class UserCreationPanelController extends ViewController {
         String lastNameText = userCreationPanel.getLastNameTextField().getText();
         String phoneNumberText = userCreationPanel.getPhoneNumberTextField().getText();
         Gender genderObject = Gender.valueOf((String)userCreationPanel.getJComboBoxGender().getSelectedItem());
+        String iconName = userCreationPanel.getIconName().replace("src/main/icons/", ""); //lazy fix
+
         int days = readDays();
         int months = readMonths();
         int years = readYears();
@@ -105,7 +136,8 @@ public class UserCreationPanelController extends ViewController {
         Person p = new Person(firstNameText, lastNameText);
         p.setPhoneNumber(phoneNumberText);
         p.setGender(genderObject);
-        p.setBirthDateLocal(Date.getLocalDate(years, months, days));
+        p.setBirthDate(Date.getLocalDate(years, months, days));
+        p.setIcon(iconName);
         return p;
     }
 
@@ -144,5 +176,6 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getJComboBoxDay().setSelectedIndex(0);
         userCreationPanel.getJComboBoxMonth().setSelectedIndex(0);
         userCreationPanel.getJComboBoxYear().setSelectedIndex(0);
+        userCreationPanel.setImage("src/main/icons/add_picture.png", "Select an icon");
     }
 }

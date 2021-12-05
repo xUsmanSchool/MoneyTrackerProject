@@ -1,4 +1,6 @@
-package View.panels;
+package View.panels.AddUserWindow;
+
+import View.others.CustomColors;
 
 import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
@@ -6,12 +8,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UserCreationPanel extends JPanel {
-    private final JButton createButton;
+    private final JButton createButton, gotoGlobalBillButton;
     private final JLabel firstNameLabel, lastNameLabel, phoneNumberLabel, genderLabel, birthdateLabel;
     private final JTextField firstNameTextField, lastNameTextField;
     public JFormattedTextField phoneNumberTextField;
     private final JComboBox<String> jComboBoxGender, jComboBoxD, jComboBoxM, jComboBoxY;
     private final static String[] EMPTY_STRING = new String[0];
+    private ImageIcon icon;
+    private String iconName;
+    private final JButton imageButton;
 
     public UserCreationPanel() {
         // set layout
@@ -19,6 +24,13 @@ public class UserCreationPanel extends JPanel {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         this.setLayout(layout);
+
+        icon = new ImageIcon();
+        imageButton = new JButton();
+        imageButton.setBackground(CustomColors.getYellow());
+        imageButton.setIcon(icon);
+        imageButton.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        imageButton.setContentAreaFilled(true);
 
         // create fields
         firstNameLabel = new JLabel();
@@ -40,6 +52,7 @@ public class UserCreationPanel extends JPanel {
 
         // buttons
         this.createButton = new JButton();
+        this.gotoGlobalBillButton = new JButton();
 
         // more layouts, for explanation see: https://docs.oracle.com/javase/tutorial/uiswing/layout/groupExample.html
         layout.setHorizontalGroup(layout.createSequentialGroup()
@@ -51,6 +64,7 @@ public class UserCreationPanel extends JPanel {
                         .addComponent(birthdateLabel)
                 )
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(imageButton)
                         .addComponent(firstNameTextField)
                         .addComponent(lastNameTextField)
                         .addComponent(phoneNumberTextField)
@@ -59,11 +73,15 @@ public class UserCreationPanel extends JPanel {
                                 .addComponent(jComboBoxD)
                                 .addComponent(jComboBoxM)
                                 .addComponent(jComboBoxY))
-                        .addComponent(createButton)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(createButton)
+                                .addComponent(gotoGlobalBillButton)
+                        )
                 )
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
+                .addComponent(imageButton)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(firstNameLabel)
                         .addComponent(firstNameTextField)
@@ -86,7 +104,10 @@ public class UserCreationPanel extends JPanel {
                         .addComponent(jComboBoxM)
                         .addComponent(jComboBoxY)
                 )
-                .addComponent(createButton)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(createButton)
+                        .addComponent(gotoGlobalBillButton)
+                )
         );
     }
 
@@ -104,8 +125,27 @@ public class UserCreationPanel extends JPanel {
         return numberFormatter;
     }
 
+    public void setImage(String imagePath, String text) {
+        iconName = imagePath;
+        icon = new ImageIcon(imagePath);
+        imageButton.setText(text);
+        imageButton.setIcon(icon);
+    }
+
+    public JButton getImageLabel() {
+        return imageButton;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
     public DefaultComboBoxModel<String> getDefaultComboBoxModel(String[] options) {
         return new DefaultComboBoxModel<String>(options);
+    }
+
+    public JButton getGotoGlobalBillButton() {
+        return gotoGlobalBillButton;
     }
 
     public Border getRedBorder() {

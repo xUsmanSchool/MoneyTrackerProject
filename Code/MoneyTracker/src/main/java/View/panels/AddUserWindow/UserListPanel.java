@@ -1,4 +1,4 @@
-package View.panels;
+package View.panels.AddUserWindow;
 
 import Model.*;
 import View.others.*;
@@ -29,11 +29,15 @@ public class UserListPanel extends JPanel {
 
         // add items
         this.add(title);
-        add(listScrollPane, BorderLayout.CENTER);
+        this.add(listScrollPane, BorderLayout.CENTER);
     }
 
     public void setTitle(String title) {
         this.title.setText(title);
+    }
+
+    public JLabel getTitleLabel() {
+        return title;
     }
 
     public DefaultListModel<Person> getListModel() {

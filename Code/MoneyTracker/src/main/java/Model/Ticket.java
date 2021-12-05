@@ -31,7 +31,7 @@ public abstract class Ticket extends DatabaseItem {
         this.payedBy.put("Payed_by", payedBy);
         this.creationDate.put("Account_creation_date", tempTodaysDate);
         this.editDate.put("Account_edit_date", tempTodaysDate);
-        this.icon.put("Icon_url", "");
+        this.icon.put("Icon_url", forEventType.getIcon());
     }
 
     public void addPercentageSplit(Person person, Double percentage) {
