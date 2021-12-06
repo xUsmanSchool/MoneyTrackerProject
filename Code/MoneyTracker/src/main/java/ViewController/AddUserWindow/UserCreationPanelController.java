@@ -21,6 +21,8 @@ public class UserCreationPanelController extends ViewController {
     private final PersonsDBController personsDatabaseController;
     private final UserCreationPanel userCreationPanel;
     public static boolean ImageSelectorFrameOpen = false;
+    private String setImagePath;
+    private String setImageIconName;
 
     public UserCreationPanelController(PersonsDBController personsDatabaseController, UserCreationPanel userCreationPanel) {
         this.userCreationPanel = userCreationPanel;
@@ -55,6 +57,9 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getCreateButton().setBackground(CustomColors.getYellow());
         userCreationPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
         userCreationPanel.getGotoGlobalBillButton().setBackground(CustomColors.getYellow());
+
+        this.setImagePath = "src/main/icons/";
+        this.setImageIconName = "add_picture.png";
     }
 
     @Override
@@ -142,7 +147,8 @@ public class UserCreationPanelController extends ViewController {
         String lastNameText = userCreationPanel.getLastNameTextField().getText();
         String phoneNumberText = userCreationPanel.getPhoneNumberTextField().getText();
         Gender genderObject = Gender.valueOf((String)userCreationPanel.getJComboBoxGender().getSelectedItem());
-        String iconName = userCreationPanel.getIconName().replace("src/main/icons/", ""); //lazy fix
+        String tempIconName = userCreationPanel.getIconName().replace(setImagePath, "");
+        String iconName = tempIconName.equals(setImageIconName) ? "" : tempIconName; // assign icon: lazy fixes for dayz
 
         int days = readDays();
         int months = readMonths();
@@ -191,6 +197,6 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getJComboBoxDay().setSelectedIndex(0);
         userCreationPanel.getJComboBoxMonth().setSelectedIndex(0);
         userCreationPanel.getJComboBoxYear().setSelectedIndex(0);
-        userCreationPanel.setImage("src/main/icons/add_picture.png", "Select an icon");
+        userCreationPanel.setImage(setImagePath + setImageIconName, "Select an icon");
     }
 }

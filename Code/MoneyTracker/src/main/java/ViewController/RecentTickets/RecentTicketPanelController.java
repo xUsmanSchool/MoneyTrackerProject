@@ -5,7 +5,6 @@ import Model.Ticket;
 import View.others.CustomColors;
 import View.panels.RecentTickets.RecentTicketsPanel;
 import ViewController.ViewController;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;

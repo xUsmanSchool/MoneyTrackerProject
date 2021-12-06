@@ -1,19 +1,17 @@
 package View.panels.AddUserWindow;
 
 import View.others.CustomColors;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class FinalJLayeredPane extends JLayeredPane {
-    private JButton mainIcon;
-    private JLabel mainLabel;
-    private ImageIcon icon;
-    private Image image;
+    private final JButton mainIcon;
+    private final JLabel mainLabel;
+    private final Image image;
 
     public FinalJLayeredPane(JPanel layer0) {
         mainIcon = new JButton();
-        icon = new ImageIcon("src/main/icons/test.png");
+        ImageIcon icon = new ImageIcon("src/main/icons/test.png");
         image = icon.getImage();
         mainIcon.setIcon(new ImageIcon(image.getScaledInstance(70, 70,  java.awt.Image.SCALE_SMOOTH)));
         mainIcon.setBounds(35, 35, 70, 70);

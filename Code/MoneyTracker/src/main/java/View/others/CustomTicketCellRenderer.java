@@ -1,6 +1,5 @@
 package View.others;
 
-
 import Model.*;
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +22,7 @@ public class CustomTicketCellRenderer extends JLabel implements ListCellRenderer
                 textLine2 +
                 "</font></html>");
 
+        // ^ same thing on one line:
         //<html>textLine1<br/><font color=#FFD369>textLine2</font></html>
 
         // process image or set default
@@ -56,7 +56,7 @@ public class CustomTicketCellRenderer extends JLabel implements ListCellRenderer
         return this;
     }
 }
-
+    // Self made cell attempt:
 
     /*private JPanel p;
     private JPanel iconPanel;

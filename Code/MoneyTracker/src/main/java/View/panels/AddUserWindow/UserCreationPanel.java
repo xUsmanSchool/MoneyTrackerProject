@@ -1,7 +1,6 @@
 package View.panels.AddUserWindow;
 
 import View.others.CustomColors;
-
 import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
 import javax.swing.*;

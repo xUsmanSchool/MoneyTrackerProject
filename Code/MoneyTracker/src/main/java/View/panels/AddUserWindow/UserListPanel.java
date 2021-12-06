@@ -8,7 +8,7 @@ import java.awt.*;
 public class UserListPanel extends JPanel {
     private final JLabel title;
     private final DefaultListModel<Person> listModel;
-    private JList<Person> list;
+    private final JList<Person> list;
 
     public UserListPanel() {
         // set layout

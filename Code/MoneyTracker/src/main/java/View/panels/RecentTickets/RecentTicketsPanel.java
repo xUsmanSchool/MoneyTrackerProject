@@ -2,16 +2,15 @@ package View.panels.RecentTickets;
 
 import Model.Ticket;
 import View.others.CustomTicketCellRenderer;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class RecentTicketsPanel extends JPanel {
-    private JLabel title;
-    private JPanel textButtonContainer;
-    private JButton addTicketButton, checkout;
-    private DefaultListModel<Ticket> listModel;
-    private JList<Ticket> list;
+    private final JLabel title;
+    private final JPanel textButtonContainer;
+    private final JButton addTicketButton, checkout;
+    private final DefaultListModel<Ticket> listModel;
+    private final JList<Ticket> list;
 
     public RecentTicketsPanel() {
         // set layout
