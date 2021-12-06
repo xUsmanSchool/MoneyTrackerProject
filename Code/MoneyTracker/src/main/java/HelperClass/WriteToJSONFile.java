@@ -33,7 +33,7 @@ public class WriteToJSONFile {
         } catch (IOException e) { System.err.printf("Unable to create file %s%s\n", fileName, e); }
     }
 
-    public static void updatePersonFile(PersonsDB db){
+    public static void updatePersonFile(PersonsDB db) {
         System.out.println("writing changes to file: persons.json");
         try {
             FileWriter file = new FileWriter("./persons.json",false);
@@ -42,7 +42,7 @@ public class WriteToJSONFile {
         } catch (IOException e) { System.err.printf("Unable to create file %s%s person.json\n", e); }
     }
 
-    public static void updateTicketFile(TicketsDB db){
+    public static void updateTicketFile(TicketsDB db) {
         System.out.println("writing changes to file: tickets.json");
         try {
             FileWriter file = new FileWriter("./tickets.json",false);

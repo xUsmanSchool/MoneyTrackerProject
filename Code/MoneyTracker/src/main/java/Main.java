@@ -27,8 +27,7 @@ public class Main {
         EventFactory eventFactory = new EventFactory();                             /** Factory pattern: events */
         TicketFactory ticketFactory = new TicketFactory();                          /** Factory pattern: tickets */
         //--------------------------------------------------------------------------------------------------------------
-        //todo - read database.json and update the personDatabase
-        ReadFromJSONFile.readPersonFile(personDatabase);
+        ReadFromJSONFile.readPersonFile(personDatabase);                            /** Read JSON file */
         //--------------------------------------------------------------------------------------------------------------
         Person person1 = new Person("Usman", "The Admin");                          // create person 1
         person1.setGender(Gender.MALE);                                                 // update person 1
@@ -38,9 +37,9 @@ public class Main {
         Person person3 = new Person("Homeless", "Dingus");                          // create person 3
         person3.setIcon("user_icon6.png");                                              // update person 3
 
-        //personsDBController.add(person1);                                // add person 1 to database
-        //personsDBController.add(person2);                                // add person 2 to database
-        //personsDBController.add(person3);                                // add person 2 to database
+        //personsDBController.add(person1);                                         // add person 1 to database
+        //personsDBController.add(person2);                                         // add person 2 to database
+        //personsDBController.add(person3);                                         // add person 3 to database
         //--------------------------------------------------------------------------------------------------------------
         System.out.println("\nTesting iterator pattern on Person DB: ");            /** Iterator pattern through DB */
         Iterator<Person> itP = personDatabase.getIterator();                        /** Iterator pattern through DB */
@@ -73,9 +72,6 @@ public class Main {
         Iterator<Ticket> itT = ticketDatabase.getIterator();                        /** Iterator pattern through DB */
         while (itT.hasNext()) System.out.println(itT.next().getEventTypeValue().getEventName());
         System.out.println();                                                       /** Iterator pattern through DB */
-        //--------------------------------------------------------------------------------------------------------------
-        // todo - better write to JSON file code
-        //WriteToJSONFile.writeMultipleObjectsToFile("database.json", JSONObjectConvert.JSONifyAllPersons(personDatabase));
         //--------------------------------------------------------------------------------------------------------------
         MainViewFrame view = new MainViewFrame("Money Tracker Application");
         view.initialize();

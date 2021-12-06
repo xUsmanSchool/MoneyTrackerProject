@@ -7,9 +7,6 @@ import Database.PersonsDB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class JSONObjectConvert {
     public static JSONObject JSONifyPerson(Person person) {
