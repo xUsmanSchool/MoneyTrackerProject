@@ -4,8 +4,10 @@ import DatabaseController.*;
 import HelperClass.*;
 import Model.*;
 import View.frames.IconSelectorFrame;
+import View.others.CustomColors;
 import View.panels.AddUserWindow.UserCreationPanel;
 import ViewController.*;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,6 +35,7 @@ public class UserCreationPanelController extends ViewController {
         for(String s : createMonthOptions(12)) userCreationPanel.getJComboBoxMonth().addItem(s);
         for(String s : createYearOptions(100)) userCreationPanel.getJComboBoxYear().addItem(s);
 
+        // text
         userCreationPanel.setImage("src/main/icons/add_picture.png", "Select an icon");
         userCreationPanel.getFirstNameLabel().setText("First name: ");
         userCreationPanel.getLastNameLabel().setText("Last name: ");
@@ -40,6 +43,18 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getGenderLabel().setText("Gender*: ");
         userCreationPanel.getBirthdateLabel().setText("Date of birth*: ");
         userCreationPanel.getCreateButton().setText("Add user");
+        userCreationPanel.getGotoGlobalBillButton().setText("View tickets");
+
+        // layout
+        userCreationPanel.setBackground(CustomColors.getMidGrey());
+        userCreationPanel.getFirstNameLabel().setForeground(Color.WHITE);
+        userCreationPanel.getLastNameLabel().setForeground(Color.WHITE);
+        userCreationPanel.getPhoneNumberLabel().setForeground(Color.WHITE);
+        userCreationPanel.getGenderLabel().setForeground(Color.WHITE);
+        userCreationPanel.getBirthdateLabel().setForeground(Color.WHITE);
+        userCreationPanel.getCreateButton().setBackground(CustomColors.getYellow());
+        userCreationPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
+        userCreationPanel.getGotoGlobalBillButton().setBackground(CustomColors.getYellow());
     }
 
     @Override
