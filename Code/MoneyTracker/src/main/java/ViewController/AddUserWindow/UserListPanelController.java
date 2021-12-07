@@ -1,6 +1,7 @@
 package ViewController.AddUserWindow;
 
 import DatabaseController.*;
+import HelperClass.Paths;
 import Observers.*;
 import Model.*;
 import View.others.CustomColors;
@@ -53,7 +54,7 @@ public class UserListPanelController extends ViewController {
                     System.out.println(userListPanel.getJList().getSelectedValue().getFirstNameValue() + " double clicked.");
 
                     // Prep
-                    ImageIcon icon = new ImageIcon("src/main/icons/" + userListPanel.getJList().getSelectedValue().getIconValue());
+                    ImageIcon icon = new ImageIcon(Paths.iconPath + userListPanel.getJList().getSelectedValue().getIconValue());
                     String username = userListPanel.getJList().getSelectedValue().getFirstNameValue() + " " + userListPanel.getJList().getSelectedValue().getLastNameValue();
                     String title = "Delete?";
                     String text = "Would you like to delete " + username + " ?";

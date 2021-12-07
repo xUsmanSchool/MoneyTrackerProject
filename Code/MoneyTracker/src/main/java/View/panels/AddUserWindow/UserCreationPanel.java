@@ -1,6 +1,5 @@
 package View.panels.AddUserWindow;
 
-import View.others.CustomColors;
 import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
 import javax.swing.*;
@@ -24,12 +23,8 @@ public class UserCreationPanel extends JPanel {
         layout.setAutoCreateContainerGaps(true);
         this.setLayout(layout);
 
+        // icons
         icon = new ImageIcon();
-        imageButton = new JButton();
-        imageButton.setBackground(CustomColors.getYellow());
-        imageButton.setIcon(icon);
-        imageButton.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        imageButton.setContentAreaFilled(true);
 
         // create fields
         firstNameLabel = new JLabel();
@@ -50,6 +45,8 @@ public class UserCreationPanel extends JPanel {
         jComboBoxY = new JComboBox<>(EMPTY_STRING);
 
         // buttons
+        this.imageButton = new JButton();
+        this.imageButton.setIcon(icon);
         this.createButton = new JButton();
         this.gotoGlobalBillButton = new JButton();
 
@@ -119,6 +116,7 @@ public class UserCreationPanel extends JPanel {
             numberFormatter.setPlaceholderCharacter('#');
             numberFormatter.setValidCharacters("0123456789");
             numberFormatter.setOverwriteMode(true);
+            numberFormatter.setValueContainsLiteralCharacters(false);
         } catch (Exception e) { System.err.println(e.toString()); }
 
         return numberFormatter;
@@ -131,7 +129,7 @@ public class UserCreationPanel extends JPanel {
         imageButton.setIcon(icon);
     }
 
-    public JButton getImageLabel() {
+    public JButton getImageButton() {
         return imageButton;
     }
 

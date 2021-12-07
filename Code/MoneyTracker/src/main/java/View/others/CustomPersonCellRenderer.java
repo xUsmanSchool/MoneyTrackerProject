@@ -1,5 +1,6 @@
 package View.others;
 
+import HelperClass.Paths;
 import Model.Person;
 import javax.swing.*;
 import java.awt.*;
@@ -15,10 +16,10 @@ public class CustomPersonCellRenderer extends JLabel implements ListCellRenderer
 
         // process image or set default
         if (value.getIconValue().length() == 0) {
-            ImageIcon imageIcon = new ImageIcon("src/main/icons/user_icon_small.png");
+            ImageIcon imageIcon = new ImageIcon(Paths.iconPath + "user_icon_small.png");
             setIcon(imageIcon);
         } else {
-            ImageIcon imageIcon = new ImageIcon("src/main/icons/" + value.getIconValue());
+            ImageIcon imageIcon = new ImageIcon(Paths.iconPath + value.getIconValue());
             Image image = imageIcon.getImage();
             Image newImg = image.getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(newImg);

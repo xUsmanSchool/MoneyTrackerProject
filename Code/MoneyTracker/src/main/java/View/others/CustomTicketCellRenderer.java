@@ -1,5 +1,6 @@
 package View.others;
 
+import HelperClass.Paths;
 import Model.*;
 import javax.swing.*;
 import java.awt.*;
@@ -27,10 +28,10 @@ public class CustomTicketCellRenderer extends JLabel implements ListCellRenderer
 
         // process image or set default
         if (value.getIconValue().length() == 0) {
-            ImageIcon imageIcon = new ImageIcon("src/main/icons/user_icon_small.png");
+            ImageIcon imageIcon = new ImageIcon(Paths.iconPath + "add_picture.png");
             setIcon(imageIcon);
         } else {
-            ImageIcon imageIcon = new ImageIcon("src/main/eventIcons/" + value.getIconValue());
+            ImageIcon imageIcon = new ImageIcon(Paths.eventPath + value.getIconValue());
             Image image = imageIcon.getImage();
             Image newImg = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
             imageIcon = new ImageIcon(newImg);

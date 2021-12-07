@@ -3,9 +3,11 @@ package View.frames;
 import Database.*;
 import DatabaseController.*;
 import View.others.CustomColors;
+import View.panels.AddTicketsPanel.AddTicketsPanel;
 import View.panels.AddUserWindow.*;
 import View.panels.RecentTickets.RecentTicketsPanel;
 import ViewController.*;
+import ViewController.AddTicketsPanel.AddTicketsViewController;
 import ViewController.AddUserWindow.UserCreationPanelController;
 import ViewController.AddUserWindow.UserListPanelController;
 import ViewController.RecentTickets.RecentTicketPanelController;
@@ -16,6 +18,7 @@ import java.awt.event.ComponentEvent;
 
 public class MainViewFrame extends JFrame {
     private FinalJLayeredPane finalUserCreationPanel, finalRecentTicketPanel;
+    private JPanel activePanel;
 
     public MainViewFrame(String title) {
         super(title);
@@ -79,10 +82,22 @@ public class MainViewFrame extends JFrame {
         CombineJPanelGridLayoutPanel combinedRecentTicket_and_userCreationPanel = new CombineJPanelGridLayoutPanel(recentTicketsPanel, alignPanelSouth_RecentTicketsPanel);
         CombineBannerPanel combinedRecentTicketUserCreationWithBanner = new CombineBannerPanel(combinedRecentTicket_and_userCreationPanel);
 
+        //////////////////////////////////////////// ADD TICKET PANEL //////////////////////////////////////////////////
+        AddTicketsPanel addTicketsPanel = new AddTicketsPanel();
+        AddTicketsViewController addTicketsViewController = new AddTicketsViewController(personDatabaseController, ticketDatabaseController, addTicketsPanel);
+        addTicketsViewController.init();
+        addTicketsViewController.activateActionListeners();
+
+        ////////////////////////////////////////// SPLIT SELECTION PANEL ///////////////////////////////////////////////
+        // todo
+
+        /////////////////////////////////////////// GLOBAL BILL PANEL //////////////////////////////////////////////////
+        // todo
 
         /////////////////////////////////////// PANEL SWITCHING LISTENERS //////////////////////////////////////////////
-        recentTicketsPanel.getAddTicketButton().addActionListener(e -> goToUserCreationPanelActionListener(combinedUserList_and_userCreationPanelWithBanner));
         userCreationPanel.getGotoGlobalBillButton().addActionListener(e -> goToRecentTicketsActionListener(combinedRecentTicketUserCreationWithBanner));
+        recentTicketsPanel.getAddTicketButton().addActionListener(e -> goToTicketCreationPanelActionListener(addTicketsPanel));
+        recentTicketsPanel.getCheckoutButton().addActionListener(e -> goToUserCreationPanelActionListener(combinedUserList_and_userCreationPanelWithBanner));
 
         // add observers
         personsDB.addObserver(userListPanelController_UserCreationPanel);
@@ -91,6 +106,9 @@ public class MainViewFrame extends JFrame {
 
         // start with user creation panel
         goToUserCreationPanelActionListener(combinedUserList_and_userCreationPanelWithBanner);
+
+        // todo - temp testing new panel
+        //this.add(addTicketsPanel);
 
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -103,6 +121,20 @@ public class MainViewFrame extends JFrame {
                 //finalJLayeredPaneWithSomePanel.setBoundsMainLabel(45, 30, 200, 50);
             }
         });
+    }
+
+    private void goToTicketCreationPanelActionListener(JPanel panel) {
+        if (finalRecentTicketPanel != null) {
+            this.remove(finalRecentTicketPanel);
+            finalRecentTicketPanel = null;
+        }
+
+        JPanel p = new JPanel();
+        p.add(panel);
+        this.add(p);
+
+        this.validate();
+        this.repaint();
     }
 
     private void goToUserCreationPanelActionListener(JPanel panel) {

@@ -5,5 +5,6 @@ public enum Events {
     CINEMA,
     RESTAURANT,
     TAXI,
-    THEATRE
+    THEATRE,
+    OTHER
 }

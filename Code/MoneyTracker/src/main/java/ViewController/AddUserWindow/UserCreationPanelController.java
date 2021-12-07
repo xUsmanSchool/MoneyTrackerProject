@@ -21,8 +21,7 @@ public class UserCreationPanelController extends ViewController {
     private final PersonsDBController personsDatabaseController;
     private final UserCreationPanel userCreationPanel;
     public static boolean ImageSelectorFrameOpen = false;
-    private String setImagePath;
-    private String setImageIconName;
+    private String setImageIconName, setImageButtonText;
 
     public UserCreationPanelController(PersonsDBController personsDatabaseController, UserCreationPanel userCreationPanel) {
         this.userCreationPanel = userCreationPanel;
@@ -32,13 +31,17 @@ public class UserCreationPanelController extends ViewController {
 
     @Override
     public void init() {
+        this.setImageIconName = "add_picture.png";
+        this.setImageButtonText = "Select an icon";
+
+        // JComboBox
         for(String s : EnumConverter.enumToString(Gender.values())) userCreationPanel.getJComboBoxGender().addItem(s);
         for(String s : createDayOptions(31)) userCreationPanel.getJComboBoxDay().addItem(s);
         for(String s : createMonthOptions(12)) userCreationPanel.getJComboBoxMonth().addItem(s);
         for(String s : createYearOptions(100)) userCreationPanel.getJComboBoxYear().addItem(s);
 
         // text
-        userCreationPanel.setImage("src/main/icons/add_picture.png", "Select an icon");
+        userCreationPanel.setImage(Paths.iconPath + setImageIconName, setImageButtonText);
         userCreationPanel.getFirstNameLabel().setText("First name: ");
         userCreationPanel.getLastNameLabel().setText("Last name: ");
         userCreationPanel.getPhoneNumberLabel().setText("Phone number*: ");
@@ -47,7 +50,7 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getCreateButton().setText("Add user");
         userCreationPanel.getGotoGlobalBillButton().setText("View tickets");
 
-        // layout
+        // styling
         userCreationPanel.setBackground(CustomColors.getMidGrey());
         userCreationPanel.getFirstNameLabel().setForeground(Color.WHITE);
         userCreationPanel.getLastNameLabel().setForeground(Color.WHITE);
@@ -57,9 +60,9 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getCreateButton().setBackground(CustomColors.getYellow());
         userCreationPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
         userCreationPanel.getGotoGlobalBillButton().setBackground(CustomColors.getYellow());
-
-        this.setImagePath = "src/main/icons/";
-        this.setImageIconName = "add_picture.png";
+        userCreationPanel.getImageButton().setBackground(CustomColors.getYellow());
+        userCreationPanel.getImageButton().setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        userCreationPanel.getImageButton().setContentAreaFilled(true);
     }
 
     @Override
@@ -67,7 +70,7 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getCreateButton().addActionListener(e -> addAccountCreatedActionListener());
         userCreationPanel.getJComboBoxMonth().addActionListener(e -> adjustDayForMonthAndYearActionListener());
         userCreationPanel.getJComboBoxYear().addActionListener(e -> adjustDayForMonthAndYearActionListener());
-        userCreationPanel.getImageLabel().addMouseListener(iconSelectorMouseListener());
+        userCreationPanel.getImageButton().addMouseListener(iconSelectorMouseListener());
     }
 
     private void addAccountCreatedActionListener() {
@@ -147,7 +150,7 @@ public class UserCreationPanelController extends ViewController {
         String lastNameText = userCreationPanel.getLastNameTextField().getText();
         String phoneNumberText = userCreationPanel.getPhoneNumberTextField().getText();
         Gender genderObject = Gender.valueOf((String)userCreationPanel.getJComboBoxGender().getSelectedItem());
-        String tempIconName = userCreationPanel.getIconName().replace(setImagePath, "");
+        String tempIconName = userCreationPanel.getIconName().replace(Paths.iconPath, "");
         String iconName = tempIconName.equals(setImageIconName) ? "" : tempIconName; // assign icon: lazy fixes for dayz
 
         int days = readDays();
@@ -197,6 +200,6 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getJComboBoxDay().setSelectedIndex(0);
         userCreationPanel.getJComboBoxMonth().setSelectedIndex(0);
         userCreationPanel.getJComboBoxYear().setSelectedIndex(0);
-        userCreationPanel.setImage(setImagePath + setImageIconName, "Select an icon");
+        userCreationPanel.setImage(Paths.iconPath + setImageIconName, setImageButtonText);
     }
 }

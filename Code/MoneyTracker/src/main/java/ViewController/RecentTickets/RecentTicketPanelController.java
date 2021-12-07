@@ -22,9 +22,11 @@ public class RecentTicketPanelController extends ViewController {
 
     @Override
     public void init() {
+        // text
         recentTicketsPanel.setTitle("Recent ticket list");
         addTicketListToListModel(ticketsDBController.getAll());
 
+        // styling
         recentTicketsPanel.setBorder(BorderFactory.createEmptyBorder(80, 20, 15, 5));
         recentTicketsPanel.getTextButtonContainer().setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         recentTicketsPanel.getTitleLabel().setForeground(Color.WHITE);
