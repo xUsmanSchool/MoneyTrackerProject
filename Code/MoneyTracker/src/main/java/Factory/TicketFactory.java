@@ -5,10 +5,10 @@ import Model.*;
 import HelperClass.*;
 
 public class TicketFactory {
-    public Ticket getTicket(Person createdBy, Double totalSum, Event eventType, SplitType splitType) {
+    public Ticket getTicket(Person payedBy, Double totalSum, Event eventType, SplitType splitType) {
         switch (splitType) {
-            case EQUAL: return new EqualTicket(createdBy, totalSum, eventType);
-            case UNEQUAL: return new UnEqualTicket(createdBy, totalSum, eventType);
+            case EQUAL: return new EqualTicket(payedBy, totalSum, eventType);
+            case UNEQUAL: return new UnEqualTicket(payedBy, totalSum, eventType);
             default: return null;
         }
     };

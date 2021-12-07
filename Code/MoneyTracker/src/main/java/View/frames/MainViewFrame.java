@@ -123,14 +123,31 @@ public class MainViewFrame extends JFrame {
         });
     }
 
-    private void goToTicketCreationPanelActionListener(JPanel panel) {
+    private void goToTicketCreationPanelActionListener(AddTicketsPanel panel) {
         if (finalRecentTicketPanel != null) {
             this.remove(finalRecentTicketPanel);
             finalRecentTicketPanel = null;
         }
 
-        JPanel p = new JPanel();
-        p.add(panel);
+        // create new panel
+        AlignPanelCenter p = new AlignPanelCenter(panel);
+
+        // get panel info
+        int frameWidth = this.getWidth();
+        int frameHeight = this.getHeight();
+        int panelWidth = panel.getPreferredSize().width;
+        int panelHeight = panel.getPreferredSize().height;
+
+        // change this if needed, value 0->1
+        double leftRightPercentage = 0.40;
+        double topDownPercentage = 0.65;
+
+        // do not change
+        int frameMarginLeftRight = (int) Math.floor((((double) frameWidth - panelWidth) / 2) * leftRightPercentage);
+        int frameMarginUpDown = (int) Math.floor((((double) frameHeight - panelHeight) / 2) * topDownPercentage);
+
+        panel.setBorder(BorderFactory.createEmptyBorder(frameMarginUpDown, 50, frameMarginUpDown, 50));
+        p.setBorder(BorderFactory.createEmptyBorder(0, frameMarginLeftRight, 0, frameMarginLeftRight));
         this.add(p);
 
         this.validate();

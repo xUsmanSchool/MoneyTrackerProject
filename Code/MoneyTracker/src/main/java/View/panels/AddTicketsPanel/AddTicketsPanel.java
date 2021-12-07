@@ -2,6 +2,8 @@ package View.panels.AddTicketsPanel;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -142,6 +144,14 @@ public class AddTicketsPanel extends JPanel {
 
     public void setPayedAmountLabelText(String payedAmountLabelText) {
         this.payedAmountLabel.setText(payedAmountLabelText);
+    }
+
+    public Double getPayedAmountTextFieldValue() {
+        return (Double)payedAmountTextField.getValue();
+    }
+
+    public JFormattedTextField getPayedAmountTextField() {
+        return payedAmountTextField;
     }
 
     public JLabel getPayedByLabel() {

@@ -11,7 +11,7 @@ public class PrintInfo {
     }
 
     public static void printTicketInfo(Ticket t) {
-        System.out.println("Ticket (Type - " + t.getSplitTypeValue().toString() + "): created by " + t.getPayedByValue().getFirstNameValue() + " on " + t.getCreationDateValue().getDayOfMonth() + "/" + t.getCreationDateValue().getMonth());
+        System.out.println("Ticket (Type - " + t.getSplitTypeValue().toString() + "): created by " + t.getPayedByValue().getFirstNameValue() + " on " + t.getCreationDateValue().getDayOfMonth() + "/" + t.getCreationDateValue().getMonthValue());
         System.out.println("This ticket is for the " + t.getEventTypeValue().getEventName() + " with a total sum of " + t.getTotalSum() + " which was payed by " + t.getPayedByValue().getFirstNameValue());
         System.out.print("In detail: ");
         for (Person p:t.getPersonArrayList()) System.out.print(
