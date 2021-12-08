@@ -7,6 +7,7 @@ import Factory.EventFactory;
 import Factory.TicketFactory;
 import HelperClass.EnumConverter;
 import HelperClass.Events;
+import HelperClass.Paths;
 import HelperClass.SplitType;
 import Model.*;
 import Observers.TicketDBObservableEntry;
@@ -18,8 +19,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Observable;
@@ -65,7 +64,7 @@ public class AddTicketsViewController extends ViewController {
 
         // set icon
         Event selectedEvent = getSelectedEvent();
-        Icon icon = new ImageIcon(selectedEvent.getIcon());
+        Icon icon = new ImageIcon(Paths.eventPath + selectedEvent.getIcon());
         addTicketsPanel.setIconLabelImage(icon);
 
         // button
@@ -84,8 +83,20 @@ public class AddTicketsViewController extends ViewController {
     }
 
     private void changeEventsIconActionListener() {
-        System.out.println("Changing icon to: " + addTicketsPanel.getEventsJComboBox().getSelectedItem());
-        // todo - update icon
+        Event selectedEvent = getSelectedEvent();
+        Icon icon = new ImageIcon(Paths.eventPath + selectedEvent.getIcon());
+        addTicketsPanel.setIconLabelImage(icon);
+
+        /*
+        ImageIcon imageIcon = new ImageIcon("src/main/banners/banner_plane.png");
+        Image image = imageIcon.getImage();
+        System.out.println(addTicketsPanel.getWidth());
+        System.out.println(addTicketsPanel.getHeight());
+        Image newImg = image.getScaledInstance((int)(addTicketsPanel.getWidth()*0.8), (int)(imageIcon.getIconHeight()*addTicketsPanel.getWidth()/imageIcon.getIconWidth()*0.8),  java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(newImg);
+        addTicketsPanel.setIconLabelImage(imageIcon);
+        addTicketsPanel.getIconLabel().setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        */
     }
 
     private void splitTypeButtonRenameActionListener() {
@@ -100,10 +111,7 @@ public class AddTicketsViewController extends ViewController {
     }
 
     private void addTicketOrContinueActionListener(String text) {
-        if (text.equals(buttonCreateNowText)) {
-            addTicketToDB();
-            // todo - auto-exit page or add etc exit, or button exit
-        }
+        if (text.equals(buttonCreateNowText)) addTicketToDB();
         else if (text.equals(buttonContinueText)) {
             System.out.println("Button clicked - continuing to split payment panel...but not really");
 

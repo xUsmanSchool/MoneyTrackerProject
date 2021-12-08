@@ -11,6 +11,7 @@ public class EventFactory {
             case RESTAURANT: return new RestaurantEvent();
             case TAXI: return new TaxiEvent();
             case THEATRE: return new TheatreEvent();
+            case OTHER: return new OtherEvent();
             default: return null;
         }
     }

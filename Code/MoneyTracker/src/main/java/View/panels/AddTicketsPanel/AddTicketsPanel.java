@@ -47,6 +47,7 @@ public class AddTicketsPanel extends JPanel {
         // more layouts, for explanation see: https://docs.oracle.com/javase/tutorial/uiswing/layout/groupExample.html
         layout.setHorizontalGroup(
                 layout.createParallelGroup()
+                        .addComponent(iconLabel, GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(descriptionLabel)
@@ -68,6 +69,7 @@ public class AddTicketsPanel extends JPanel {
 
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
+                        .addComponent(iconLabel)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(descriptionLabel)
                                 .addComponent(descriptionTextField)

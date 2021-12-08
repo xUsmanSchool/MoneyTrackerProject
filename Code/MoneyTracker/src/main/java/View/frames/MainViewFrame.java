@@ -112,7 +112,7 @@ public class MainViewFrame extends JFrame {
         int panelWidth = addTicketsPanel.getPreferredSize().width;
         int panelHeight = addTicketsPanel.getPreferredSize().height;
 
-        // change this if needed, value 0->1
+        // change this if needed, value between 0-1
         double leftRightPercentage = 0.40;
         double topDownPercentage = 0.65;
 
