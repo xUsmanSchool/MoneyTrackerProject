@@ -1,5 +1,8 @@
 package ViewController.AddUserWindow;
 
+import Model.Person;
+import Observers.ImageFrameIconObservableEntry;
+import Observers.PersonDBObservableEntry;
 import View.frames.IconSelectorFrame;
 import javax.swing.*;
 import java.awt.event.*;
@@ -23,7 +26,8 @@ public class IconSelectorFrameController extends Observable {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setChanged();
-                notifyObservers(l.getIcon().toString());
+                //notifyObservers(l.getIcon().toString());
+                notifyObservers(new ImageFrameIconObservableEntry((Icon) l.getIcon(), true));
                 UserCreationPanelController.ImageSelectorFrameOpen = false;
                 iconSelectorFrame.dispose();
             }

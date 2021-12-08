@@ -9,7 +9,9 @@ import HelperClass.EnumConverter;
 import HelperClass.Events;
 import HelperClass.SplitType;
 import Model.*;
+import Observers.TicketDBObservableEntry;
 import View.others.CustomColors;
+import View.others.Router;
 import View.panels.AddTicketsPanel.AddTicketsPanel;
 import ViewController.ViewController;
 import javax.swing.*;
@@ -58,7 +60,6 @@ public class AddTicketsViewController extends ViewController {
         addTicketsPanel.getSplitTypeLabel().setForeground(Color.WHITE);
         addTicketsPanel.setBackground(CustomColors.getDarkGrey());
         addTicketsPanel.getCreateOrContinueTicketButton().setBackground(CustomColors.getYellow());
-        //todo add margin offset
 
         // set icon
         Event selectedEvent = getSelectedEvent();
@@ -66,7 +67,6 @@ public class AddTicketsViewController extends ViewController {
         addTicketsPanel.setIconLabelImage(icon);
 
         // button
-        // todo - escape to quit and go to previous panel
         changeButtonVisibility();
     }
 
@@ -75,7 +75,6 @@ public class AddTicketsViewController extends ViewController {
         addTicketsPanel.getEventsJComboBox().addActionListener(e -> changeEventsIconActionListener());
         addTicketsPanel.getSplitTypeJComboBox().addActionListener(e -> splitTypeButtonRenameActionListener());
         addTicketsPanel.getCreateOrContinueTicketButton().addActionListener(e -> addTicketOrContinueActionListener(addTicketsPanel.getCreateOrContinueTicketButton().getText()));
-        //addTicketsPanel.getPayedAmountTextField().addActionListener(e -> checkPayedAmountTextFieldValidActionListener(addTicketsPanel.getPayedAmountTextFieldValue()));
         addTicketsPanel.getPayedAmountTextField().getDocument().addDocumentListener(checkPayedAmountTextFieldValidDocumentListener());
     }
 
@@ -175,9 +174,22 @@ public class AddTicketsViewController extends ViewController {
         addTicketsPanel.getCreateOrContinueTicketButton().setEnabled(addTicketsPanel.getPayedAmountTextFieldValue() > 0);
     }
 
+    private void clearForm() {
+        addTicketsPanel.getDescriptionTextField().setText("");
+        addTicketsPanel.getPayedAmountTextField().setValue(0.00);
+        addTicketsPanel.getEventsJComboBox().setSelectedIndex(0);
+        addTicketsPanel.getPersonJComboBox().setSelectedIndex(0);
+        addTicketsPanel.getSplitTypeJComboBox().setSelectedIndex(0);
+        // todo - set image?
+    }
+
 
     @Override
     public void update(Observable o, Object arg) {
-        // todo - clear form when an update is received
+        if (arg instanceof TicketDBObservableEntry) {
+            clearForm();
+
+            Router.getInstance().goBack();
+        }
     }
 }

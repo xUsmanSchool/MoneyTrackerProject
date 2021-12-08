@@ -30,6 +30,7 @@ public class Router {
         panelStack.push(p);
         this.frame.add(p);
         p.setVisible(true);
+        // todo - fix request focus bug otherwise esc doesnt work on startup
 
         repaint();
     }

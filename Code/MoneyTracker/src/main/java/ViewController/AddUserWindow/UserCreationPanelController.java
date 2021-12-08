@@ -3,6 +3,8 @@ package ViewController.AddUserWindow;
 import DatabaseController.*;
 import HelperClass.*;
 import Model.*;
+import Observers.ImageFrameIconObservableEntry;
+import Observers.PersonDBObservableEntry;
 import View.frames.IconSelectorFrame;
 import View.others.CustomColors;
 import View.panels.AddUserWindow.UserCreationPanel;
@@ -74,10 +76,7 @@ public class UserCreationPanelController extends ViewController {
     }
 
     private void addAccountCreatedActionListener() {
-        if (checkFieldsForValidity()) {
-            personsDatabaseController.add(readFormAndCreateUser());
-            clearForm();
-        }
+        if (checkFieldsForValidity()) personsDatabaseController.add(readFormAndCreateUser());
     }
 
     private void adjustDayForMonthAndYearActionListener() {
@@ -121,10 +120,14 @@ public class UserCreationPanelController extends ViewController {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof String) {
-            userCreationPanel.setImage((String)arg, "Image selected");
+        if (arg instanceof ImageFrameIconObservableEntry) {
+            userCreationPanel.setImage(((ImageFrameIconObservableEntry) arg).getIcon().toString(), "Image selected");
         }
-        // todo - create an image observer entry
+
+        // if we received something from Person DB, this means our query was successful
+        if (arg instanceof PersonDBObservableEntry) {
+            clearForm();
+        }
     }
 
     private String[] createDayOptions(int maxDays) {

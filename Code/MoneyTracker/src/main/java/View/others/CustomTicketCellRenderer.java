@@ -15,7 +15,8 @@ public class CustomTicketCellRenderer extends JLabel implements ListCellRenderer
         // fill in text in cell
         setVerticalTextPosition(CENTER);
         String textLine1 = value.getEventTypeValue().getEventName();
-        String textLine2 = value.getTotalSum() + "$ was payed by " + value.getPayedByValue().getFirstNameValue() + " on " + value.getCreationDateValue().getDayOfMonth() + "/" + value.getCreationDateValue().getMonthValue();
+        String payedSumFormatted = String.format("%.2f", value.getTotalSum());
+        String textLine2 = payedSumFormatted + "$ was payed by " + value.getPayedByValue().getFirstNameValue() + " on " + value.getCreationDateValue().getDayOfMonth() + "/" + value.getCreationDateValue().getMonthValue();
         setText("<html><b><font size=+1>" +
                 textLine1 +
                 "</font></b><br/>" +

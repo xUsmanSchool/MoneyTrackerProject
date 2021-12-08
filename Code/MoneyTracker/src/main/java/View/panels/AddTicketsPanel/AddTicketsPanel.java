@@ -128,6 +128,10 @@ public class AddTicketsPanel extends JPanel {
         this.descriptionLabel.setText(descriptionLabelText);
     }
 
+    public JTextField getDescriptionTextField() {
+        return descriptionTextField;
+    }
+
     public JLabel getTicketTypeLabel() {
         return ticketTypeLabel;
     }
