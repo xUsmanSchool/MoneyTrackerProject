@@ -2,7 +2,6 @@ package View.others;
 
 import View.panels.AddTicketsPanel.AddTicketsPanel;
 import javax.swing.*;
-import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
@@ -11,7 +10,7 @@ public class TicketPanelAction extends AbstractAction {
     private final AddTicketsPanel panel;
     private String prevText;
 
-    public TicketPanelAction(AddTicketsPanel panel, JPanel goToPanel){
+    public TicketPanelAction(AddTicketsPanel panel){
         super();
 
         this.prevText = "";

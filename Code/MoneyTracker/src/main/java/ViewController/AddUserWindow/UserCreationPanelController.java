@@ -65,6 +65,9 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getImageButton().setBackground(CustomColors.getYellow());
         userCreationPanel.getImageButton().setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         userCreationPanel.getImageButton().setContentAreaFilled(true);
+
+        // focus
+        userCreationPanel.getFirstNameTextField().setFocusable(true);
     }
 
     @Override

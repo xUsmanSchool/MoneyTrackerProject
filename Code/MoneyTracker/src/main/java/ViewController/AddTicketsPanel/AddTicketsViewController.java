@@ -18,6 +18,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Observable;
@@ -68,6 +70,9 @@ public class AddTicketsViewController extends ViewController {
 
         // button
         changeButtonVisibility();
+
+        // focus
+        addTicketsPanel.getDescriptionTextField().setFocusable(true);
     }
 
     @Override

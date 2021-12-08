@@ -61,9 +61,9 @@ public class MainViewFrame extends JFrame {
         userListPanelController_UserCreationPanel.activateActionListeners();
 
         // Combine sub-panels
-        AlignPanelSouth alignPanelSouth_UserCreationPanel = new AlignPanelSouth(userListPanel_UserCreationPanel);
+        AlignPanelSouth alignPanelSouth_UserListPanel = new AlignPanelSouth(userListPanel_UserCreationPanel);
         AlignPanelCenter alignPanelCenter_UserCreationPanel = new AlignPanelCenter(userCreationPanel);
-        CombineJPanelGridLayoutPanel combinedUserList_and_userCreationPanel = new CombineJPanelGridLayoutPanel(alignPanelCenter_UserCreationPanel, alignPanelSouth_UserCreationPanel);
+        CombineJPanelGridLayoutPanel combinedUserList_and_userCreationPanel = new CombineJPanelGridLayoutPanel(alignPanelCenter_UserCreationPanel, alignPanelSouth_UserListPanel);
         CombineBannerPanel combinedUserList_and_userCreationPanelWithBanner = new CombineBannerPanel(combinedUserList_and_userCreationPanel);
 
         FinalJLayeredPane finalUserCreationPanel = new FinalJLayeredPane(combinedUserList_and_userCreationPanelWithBanner);
@@ -104,7 +104,7 @@ public class MainViewFrame extends JFrame {
         // Activate keybindings
         InputMap inMap = singleAlignedPanelCenter.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearOrGoBack");
-        singleAlignedPanelCenter.getActionMap().put("clearOrGoBack", new TicketPanelAction(addTicketsPanel, combinedRecentTicketUserCreationWithBanner));
+        singleAlignedPanelCenter.getActionMap().put("clearOrGoBack", new TicketPanelAction(addTicketsPanel));
 
         // get panel info
         int frameWidth = this.getWidth();
@@ -134,7 +134,7 @@ public class MainViewFrame extends JFrame {
 
         /////////////////////////////////////// PANEL SWITCHING LISTENERS //////////////////////////////////////////////
         userCreationPanel.getGotoGlobalBillButton().addActionListener(e -> router.gotToPanel(finalRecentTicketPanel));
-        recentTicketsPanel.getAddTicketButton().addActionListener(e -> router.gotToPanel(singleAlignedPanelCenter));
+        recentTicketsPanel.getAddTicketButton().addActionListener(e -> router.gotToPanel(singleAlignedPanelCenter, addTicketsPanel.getDescriptionTextField()));
         recentTicketsPanel.getCheckoutButton().addActionListener(e -> router.goBack()); // todo - temp
 
         // add observers
@@ -145,10 +145,10 @@ public class MainViewFrame extends JFrame {
         ticketsDB.addObserver(addTicketsViewController);                    // reset form and stuff
 
         // start with user creation panel
-        router.gotToPanel(finalUserCreationPanel);
+        // focus doesn't work for some reason
+        router.gotToPanel(finalUserCreationPanel, userCreationPanel.getFirstNameTextField());
 
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent evt) {

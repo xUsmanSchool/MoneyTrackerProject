@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class Router {
     private static Router instance;
-    private Stack<JComponent> panelStack;
+    private final Stack<JComponent> panelStack;
     private JFrame frame;
 
     public static Router getInstance() {
@@ -30,7 +30,26 @@ public class Router {
         panelStack.push(p);
         this.frame.add(p);
         p.setVisible(true);
-        // todo - fix request focus bug otherwise esc doesnt work on startup
+
+        repaint();
+    }
+
+    public void gotToPanel(JComponent p, JTextField field) {
+        if (!panelStack.isEmpty()) {
+            JComponent lastPanel = panelStack.peek();
+            this.frame.remove(lastPanel);
+        }
+
+        panelStack.push(p);
+        this.frame.add(p);
+
+        // set both to visible otherwise focus will not work
+        p.setVisible(true);
+        this.frame.setVisible(true);
+
+        // set focus
+        field.grabFocus();
+        field.requestFocusInWindow();
 
         repaint();
     }
