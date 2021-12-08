@@ -8,12 +8,10 @@ import java.util.Objects;
 
 public class TicketPanelAction extends AbstractAction {
     private final AddTicketsPanel panel;
-    private String prevText;
 
     public TicketPanelAction(AddTicketsPanel panel){
         super();
 
-        this.prevText = "";
         this.panel = panel;
     }
 
@@ -21,27 +19,33 @@ public class TicketPanelAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         Component[] components = panel.getComponents();
         boolean canGoBack = false;
+        boolean underTookAction = false;
+
         for (Component c:components) {
             if (c.hasFocus()) {
                 // for description textfield
                 if (c instanceof JTextField) {
                     JTextField t = (JTextField) c;
 
-                    if (Objects.equals(prevText, t.getText())) canGoBack = true;
-
-                    this.prevText = "";
-                    t.setText(prevText);
+                    if (Objects.equals("", t.getText())) canGoBack = true;
+                    else {
+                        t.setText("");
+                        underTookAction = true;
+                    }
                 }
 
                 // for payment amount textfield
                 if (c instanceof JFormattedTextField) {
                     JFormattedTextField t = (JFormattedTextField) c;
 
-                    if (Objects.equals(prevText, t.getText())) canGoBack = true;
-
-                    this.prevText = "0.00";
-                    t.setText(prevText);
+                    if (Objects.equals("0.00", t.getText())) canGoBack = true;
+                    else {
+                        t.setText("0.00");
+                        underTookAction = true;
+                    }
                 }
+
+                if (!underTookAction) canGoBack = true;
             }
         }
         if (canGoBack) {
