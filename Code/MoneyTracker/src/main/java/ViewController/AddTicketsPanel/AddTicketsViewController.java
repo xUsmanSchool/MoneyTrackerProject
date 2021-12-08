@@ -177,5 +177,7 @@ public class AddTicketsViewController extends ViewController {
 
 
     @Override
-    public void update(Observable o, Object arg) {}
+    public void update(Observable o, Object arg) {
+        // todo - clear form when an update is received
+    }
 }

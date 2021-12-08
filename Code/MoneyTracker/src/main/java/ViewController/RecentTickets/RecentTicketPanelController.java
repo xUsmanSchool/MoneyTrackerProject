@@ -2,6 +2,7 @@ package ViewController.RecentTickets;
 
 import DatabaseController.TicketsDBController;
 import Model.Ticket;
+import Observers.TicketDBObservableEntry;
 import View.others.CustomColors;
 import View.panels.RecentTickets.RecentTicketsPanel;
 import ViewController.ViewController;
@@ -56,10 +57,29 @@ public class RecentTicketPanelController extends ViewController {
 
     @Override
     public void update(Observable o, Object arg) {
+        // get current position
+        int currentIndex = recentTicketsPanel.getJList().getSelectedIndex();
+        // todo - currentIndex can be -1
 
+        // DB update
+        TicketDBObservableEntry e = (TicketDBObservableEntry) arg;
+        if (e.isAdded()) addTicketToListModel(e.getTicket());
+        else removeTicketFromListModel(e.getTicket());
+
+        // visual update
+        if (e.isAdded()) recentTicketsPanel.getJList().ensureIndexIsVisible(recentTicketsPanel.getListModel().getSize()-1);
+        //else recentTicketsPanel.getJList().ensureIndexIsVisible(currentIndex-1);
     }
 
     private void addTicketListToListModel(ArrayList<Ticket> ticketList) {
-        for (Ticket ticket : ticketList) this.recentTicketsPanel.getListModel().addElement(ticket);
+        for (Ticket ticket : ticketList) addTicketToListModel(ticket);
+    }
+
+    private void addTicketToListModel(Ticket ticket) {
+        this.recentTicketsPanel.getListModel().addElement(ticket);
+    }
+
+    private void removeTicketFromListModel(Ticket ticket) {
+        this.recentTicketsPanel.getListModel().removeElement(ticket);
     }
 }

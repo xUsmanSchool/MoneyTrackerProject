@@ -3,6 +3,8 @@ package View.frames;
 import Database.*;
 import DatabaseController.*;
 import View.others.CustomColors;
+import View.others.Router;
+import View.others.TicketPanelAction;
 import View.panels.AddTicketsPanel.AddTicketsPanel;
 import View.panels.AddUserWindow.*;
 import View.panels.RecentTickets.RecentTicketsPanel;
@@ -13,13 +15,9 @@ import ViewController.AddUserWindow.UserListPanelController;
 import ViewController.RecentTickets.RecentTicketPanelController;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 
 public class MainViewFrame extends JFrame {
-    private FinalJLayeredPane finalUserCreationPanel, finalRecentTicketPanel;
-    private JPanel activePanel;
-
     public MainViewFrame(String title) {
         super(title);
     }
@@ -41,8 +39,12 @@ public class MainViewFrame extends JFrame {
         PersonsDBController personDatabaseController = new PersonsDBController(personsDB);
         TicketsDBController ticketDatabaseController = new TicketsDBController(ticketsDB);
 
-        // add extra styling
+        // Add extra styling
         this.getContentPane().setBackground(CustomColors.getMidGrey());
+
+        // Router
+        Router router = Router.getInstance();
+        router.setFrame(this);
 
 
         /////////////////////////////////////////// USER CREATION PANEL ////////////////////////////////////////////////
@@ -64,6 +66,8 @@ public class MainViewFrame extends JFrame {
         CombineJPanelGridLayoutPanel combinedUserList_and_userCreationPanel = new CombineJPanelGridLayoutPanel(alignPanelCenter_UserCreationPanel, alignPanelSouth_UserCreationPanel);
         CombineBannerPanel combinedUserList_and_userCreationPanelWithBanner = new CombineBannerPanel(combinedUserList_and_userCreationPanel);
 
+        FinalJLayeredPane finalUserCreationPanel = new FinalJLayeredPane(combinedUserList_and_userCreationPanelWithBanner);
+
 
         ////////////////////////////////////////// RECENT TICKETS PANEL ////////////////////////////////////////////////
         // Sub panel 1
@@ -82,33 +86,65 @@ public class MainViewFrame extends JFrame {
         CombineJPanelGridLayoutPanel combinedRecentTicket_and_userCreationPanel = new CombineJPanelGridLayoutPanel(recentTicketsPanel, alignPanelSouth_RecentTicketsPanel);
         CombineBannerPanel combinedRecentTicketUserCreationWithBanner = new CombineBannerPanel(combinedRecentTicket_and_userCreationPanel);
 
+        FinalJLayeredPane finalRecentTicketPanel = new FinalJLayeredPane(combinedRecentTicketUserCreationWithBanner);
+
+
         //////////////////////////////////////////// ADD TICKET PANEL //////////////////////////////////////////////////
+        // Panel 1
         AddTicketsPanel addTicketsPanel = new AddTicketsPanel();
         AddTicketsViewController addTicketsViewController = new AddTicketsViewController(personDatabaseController, ticketDatabaseController, addTicketsPanel);
         addTicketsViewController.init();
         addTicketsViewController.activateActionListeners();
 
+        // Center panel
+        AlignPanelCenter singleAlignedPanelCenter = new AlignPanelCenter(addTicketsPanel);
+        //doubleAlignedTicketCreationPanel = new AlignPanelCenter(singleAlignedPanelCenter);    // possible UI consideration
+        //doubleAlignedPanelCenter.setBackground(CustomColors.getYellow());                     // possible UI consideration
+
+        // Activate keybindings
+        InputMap inMap = singleAlignedPanelCenter.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearOrGoBack");
+        singleAlignedPanelCenter.getActionMap().put("clearOrGoBack", new TicketPanelAction(addTicketsPanel, combinedRecentTicketUserCreationWithBanner));
+
+        // get panel info
+        int frameWidth = this.getWidth();
+        int frameHeight = this.getHeight();
+        int panelWidth = addTicketsPanel.getPreferredSize().width;
+        int panelHeight = addTicketsPanel.getPreferredSize().height;
+
+        // change this if needed, value 0->1
+        double leftRightPercentage = 0.40;
+        double topDownPercentage = 0.65;
+
+        // do not change
+        int frameMarginLeftRight = (int) Math.floor((((double) frameWidth - panelWidth) / 2) * leftRightPercentage);
+        int frameMarginUpDown = (int) Math.floor((((double) frameHeight - panelHeight) / 2) * topDownPercentage);
+
+        addTicketsPanel.setBorder(BorderFactory.createEmptyBorder(frameMarginUpDown, 50, frameMarginUpDown, 50));
+        singleAlignedPanelCenter.setBorder(BorderFactory.createEmptyBorder(0, frameMarginLeftRight, 0, frameMarginLeftRight));
+
+
         ////////////////////////////////////////// SPLIT SELECTION PANEL ///////////////////////////////////////////////
         // todo
+
 
         /////////////////////////////////////////// GLOBAL BILL PANEL //////////////////////////////////////////////////
         // todo
 
+
         /////////////////////////////////////// PANEL SWITCHING LISTENERS //////////////////////////////////////////////
-        userCreationPanel.getGotoGlobalBillButton().addActionListener(e -> goToRecentTicketsActionListener(combinedRecentTicketUserCreationWithBanner));
-        recentTicketsPanel.getAddTicketButton().addActionListener(e -> goToTicketCreationPanelActionListener(addTicketsPanel));
-        recentTicketsPanel.getCheckoutButton().addActionListener(e -> goToUserCreationPanelActionListener(combinedUserList_and_userCreationPanelWithBanner));
+        userCreationPanel.getGotoGlobalBillButton().addActionListener(e -> router.gotToPanel(finalRecentTicketPanel));
+        recentTicketsPanel.getAddTicketButton().addActionListener(e -> router.gotToPanel(singleAlignedPanelCenter));
+        recentTicketsPanel.getCheckoutButton().addActionListener(e -> router.goBack()); // todo - temp
 
         // add observers
-        personsDB.addObserver(userListPanelController_UserCreationPanel);
-        personsDB.addObserver(userListPanelController_RecentTicketsPanel);
-        personsDB.addObserver(userCreationPanelController);
+        personsDB.addObserver(userListPanelController_UserCreationPanel);   // pop up in the list when user is created
+        personsDB.addObserver(userListPanelController_RecentTicketsPanel);  // update list when panel is switched
+        personsDB.addObserver(userCreationPanelController);                 // reset form and stuff
+        ticketsDB.addObserver(recentTicketPanelController);                 // adds a new ticket in the list
 
         // start with user creation panel
-        goToUserCreationPanelActionListener(combinedUserList_and_userCreationPanelWithBanner);
-
-        // todo - temp testing new panel
-        //this.add(addTicketsPanel);
+        router.gotToPanel(finalUserCreationPanel);
 
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -121,62 +157,5 @@ public class MainViewFrame extends JFrame {
                 //finalJLayeredPaneWithSomePanel.setBoundsMainLabel(45, 30, 200, 50);
             }
         });
-    }
-
-    private void goToTicketCreationPanelActionListener(AddTicketsPanel panel) {
-        if (finalRecentTicketPanel != null) {
-            this.remove(finalRecentTicketPanel);
-            finalRecentTicketPanel = null;
-        }
-
-        // create new panel
-        AlignPanelCenter p = new AlignPanelCenter(panel);
-
-        // get panel info
-        int frameWidth = this.getWidth();
-        int frameHeight = this.getHeight();
-        int panelWidth = panel.getPreferredSize().width;
-        int panelHeight = panel.getPreferredSize().height;
-
-        // change this if needed, value 0->1
-        double leftRightPercentage = 0.40;
-        double topDownPercentage = 0.65;
-
-        // do not change
-        int frameMarginLeftRight = (int) Math.floor((((double) frameWidth - panelWidth) / 2) * leftRightPercentage);
-        int frameMarginUpDown = (int) Math.floor((((double) frameHeight - panelHeight) / 2) * topDownPercentage);
-
-        panel.setBorder(BorderFactory.createEmptyBorder(frameMarginUpDown, 50, frameMarginUpDown, 50));
-        p.setBorder(BorderFactory.createEmptyBorder(0, frameMarginLeftRight, 0, frameMarginLeftRight));
-        this.add(p);
-
-        this.validate();
-        this.repaint();
-    }
-
-    private void goToUserCreationPanelActionListener(JPanel panel) {
-        if (finalRecentTicketPanel != null) {
-            this.remove(finalRecentTicketPanel);
-            finalRecentTicketPanel = null;
-        }
-
-        finalUserCreationPanel = new FinalJLayeredPane(panel);
-        this.add(finalUserCreationPanel);
-
-        this.validate();
-        this.repaint();
-    }
-
-    private void goToRecentTicketsActionListener(JPanel panel) {
-        if (finalUserCreationPanel != null) {
-            this.remove(finalUserCreationPanel);
-            finalUserCreationPanel = null;
-        }
-
-        finalRecentTicketPanel = new FinalJLayeredPane(panel);
-        this.add(finalRecentTicketPanel);
-
-        this.validate();
-        this.repaint();
     }
 }

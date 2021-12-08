@@ -94,6 +94,7 @@ public class UserListPanelController extends ViewController {
     public void update(Observable o, Object arg) {
         // get current position
         int currentIndex = userListPanel.getJList().getSelectedIndex();
+        // todo - currentIndex can be -1
 
         // DB update
         PersonDBObservableEntry e = (PersonDBObservableEntry) arg;

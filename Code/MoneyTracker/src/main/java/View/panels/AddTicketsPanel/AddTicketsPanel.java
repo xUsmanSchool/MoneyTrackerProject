@@ -2,8 +2,6 @@ package View.panels.AddTicketsPanel;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
