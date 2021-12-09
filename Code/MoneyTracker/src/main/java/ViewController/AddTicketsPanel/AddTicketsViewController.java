@@ -15,6 +15,8 @@ import View.others.CustomColors;
 import View.others.Router;
 import View.panels.AddTicketsPanel.AddTicketsPanel;
 import View.panels.PaymentSplits.PaymentSplitPanel;
+import View.panels.PaymentSplits.PaymentSplitPanelWithBorder;
+import ViewController.PaymentSplits.PaymentSplitPanelController;
 import ViewController.ViewController;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -87,17 +89,6 @@ public class AddTicketsViewController extends ViewController {
         Event selectedEvent = getSelectedEvent();
         Icon icon = new ImageIcon(Paths.eventPath + selectedEvent.getIcon());
         addTicketsPanel.setIconLabelImage(icon);
-
-        /*
-        ImageIcon imageIcon = new ImageIcon("src/main/banners/banner_plane.png");
-        Image image = imageIcon.getImage();
-        System.out.println(addTicketsPanel.getWidth());
-        System.out.println(addTicketsPanel.getHeight());
-        Image newImg = image.getScaledInstance((int)(addTicketsPanel.getWidth()*0.8), (int)(imageIcon.getIconHeight()*addTicketsPanel.getWidth()/imageIcon.getIconWidth()*0.8),  java.awt.Image.SCALE_SMOOTH);
-        imageIcon = new ImageIcon(newImg);
-        addTicketsPanel.setIconLabelImage(imageIcon);
-        addTicketsPanel.getIconLabel().setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
-        */
     }
 
     private void splitTypeButtonRenameActionListener() {
@@ -113,9 +104,7 @@ public class AddTicketsViewController extends ViewController {
 
     private void addTicketOrContinueActionListener(String text) {
         if (text.equals(buttonCreateNowText)) addTicketToDB();
-        else if (text.equals(buttonContinueText)) {
-            openPaymentSplitScreen();
-        }
+        else if (text.equals(buttonContinueText)) openPaymentSplitScreen();
         else System.err.println("addTicketOrContinueActionListener - wrong text format");
     }
 
@@ -127,15 +116,11 @@ public class AddTicketsViewController extends ViewController {
     }
 
     private void openPaymentSplitScreen() {
-        PaymentSplitPanel paymentSplitPanel = new PaymentSplitPanel();
-
-        JPanel paymentSplitPanelWithBorder = new JPanel();
-        paymentSplitPanelWithBorder.setLayout(new BoxLayout(paymentSplitPanelWithBorder, BoxLayout.Y_AXIS));
-        paymentSplitPanel.setBackground(CustomColors.getMidGrey());
-        paymentSplitPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        paymentSplitPanel.setBorder(BorderFactory.createEmptyBorder(40,100,40,100));
-        paymentSplitPanelWithBorder.add(paymentSplitPanel);
-
+        PaymentSplitPanelWithBorder paymentSplitPanelWithBorder = new PaymentSplitPanelWithBorder();
+        PaymentSplitPanelController paymentSplitPanelController = new PaymentSplitPanelController(personsDBController, ticketsDBController, paymentSplitPanelWithBorder);
+        paymentSplitPanelController.init();
+        // todo - TRANSFER INFO OF WHO PAYED WHAT + WHOLE FORM
+        //paymentSplitPanelController.activateActionListeners();
         Router.getInstance().gotToPanel(paymentSplitPanelWithBorder);
     }
 

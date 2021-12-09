@@ -57,9 +57,9 @@ public class MainViewFrame extends JFrame {
 
         // Sub panel 2
         UserListPanel userListPanel_UserCreationPanel = new UserListPanel();
-        ViewController userListPanelController_UserCreationPanel = new UserListPanelController(personDatabaseController, userListPanel_UserCreationPanel);
-        userListPanelController_UserCreationPanel.init();
-        userListPanelController_UserCreationPanel.activateActionListeners();
+        ViewController userListPanelController_inUserCreationPanel = new UserListPanelController(personDatabaseController, userListPanel_UserCreationPanel);
+        userListPanelController_inUserCreationPanel.init();
+        userListPanelController_inUserCreationPanel.activateActionListeners();
 
         // Combine sub-panels
         AlignPanelSouth alignPanelSouth_UserListPanel = new AlignPanelSouth(userListPanel_UserCreationPanel);
@@ -79,8 +79,8 @@ public class MainViewFrame extends JFrame {
 
         // Sub panel 2
         UserListPanel userListPanel_RecentTicketsPanel = new UserListPanel();
-        UserListPanelController userListPanelController_RecentTicketsPanel = new UserListPanelController(personDatabaseController, userListPanel_RecentTicketsPanel);
-        userListPanelController_RecentTicketsPanel.init();
+        UserListPanelController userListPanelController_inRecentTicketsPanel = new UserListPanelController(personDatabaseController, userListPanel_RecentTicketsPanel);
+        userListPanelController_inRecentTicketsPanel.init();
 
         // Combine panels
         AlignPanelSouth alignPanelSouth_RecentTicketsPanel = new AlignPanelSouth(userListPanel_RecentTicketsPanel);
@@ -147,8 +147,8 @@ public class MainViewFrame extends JFrame {
         recentTicketsPanel.getCheckoutButton().addActionListener(e -> router.goBack()); // todo - temp
 
         // add observers
-        personsDB.addObserver(userListPanelController_UserCreationPanel);   // pop up in the list when user is created
-        personsDB.addObserver(userListPanelController_RecentTicketsPanel);  // update list when panel is switched
+        personsDB.addObserver(userListPanelController_inUserCreationPanel);   // pop up in the list when user is created
+        personsDB.addObserver(userListPanelController_inRecentTicketsPanel);  // update list when panel is switched
         personsDB.addObserver(userCreationPanelController);                 // reset form and receive updated Icon
         ticketsDB.addObserver(recentTicketPanelController);                 // adds a new ticket in the list
         ticketsDB.addObserver(addTicketsViewController);                    // reset form and stuff

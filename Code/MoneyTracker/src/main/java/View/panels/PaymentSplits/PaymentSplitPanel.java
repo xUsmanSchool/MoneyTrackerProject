@@ -8,8 +8,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class PaymentSplitPanel extends JPanel {
-    JLabel tabObject1, tabObject2;
-    JTabbedPane tabbedPane;
+    private JLabel tabObject1, tabObject2;
+    public JTabbedPane tabbedPane;
+    private JPanel contentPanel1, contentPanel2;
 
     public PaymentSplitPanel() {
         GridLayout layout = new GridLayout(1, 1);
@@ -34,13 +35,16 @@ public class PaymentSplitPanel extends JPanel {
         // UIManager styling
         UIManager.put("TabbedPane.selected", CustomColors.getDarkGrey());
 
-        // init tab content panels
-        PaymentSplitSubPanelCASH contentPanel1 = new PaymentSplitSubPanelCASH();
+        // init empty tab panels
+        contentPanel1 = new JPanel();
+        contentPanel1.setLayout(new BoxLayout(contentPanel1, BoxLayout.Y_AXIS));
         contentPanel1.setBackground(CustomColors.getDarkGrey());
-        contentPanel1.setBorder(BorderFactory.createEmptyBorder(15,15,15,50));
+        contentPanel1.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
-        PaymentSplitSubPanelPERCENTAGE contentPanel2 = new PaymentSplitSubPanelPERCENTAGE();
+        contentPanel2 = new JPanel();
+        contentPanel2.setLayout(new BoxLayout(contentPanel2, BoxLayout.Y_AXIS));
         contentPanel2.setBackground(CustomColors.getDarkGrey());
+        contentPanel2.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         // auto-create rest
         tabbedPane = new JTabbedPane();
@@ -78,5 +82,25 @@ public class PaymentSplitPanel extends JPanel {
 
         if (selectedIndex == 1) tabObject2.setForeground(CustomColors.getYellow());
         else tabObject2.setForeground(Color.WHITE);
+    }
+
+    public void setContentPanel(int tabNumber, JPanel toAdd, boolean hasScrollbar) {
+        JPanel contentPanel = (tabNumber == 0 ? contentPanel1 : contentPanel2);
+        if (hasScrollbar) {
+            toAdd.setBackground(CustomColors.getDarkGrey());
+            JScrollPane scrollPane = new JScrollPane(toAdd);
+            contentPanel.setBackground(CustomColors.getDarkGrey());
+            contentPanel.setBorder(BorderFactory.createEmptyBorder(15,15,15,50));
+            scrollPane.setBackground(CustomColors.getDarkGrey());
+            contentPanel.add(scrollPane);
+        } else {
+            contentPanel.setBackground(CustomColors.getDarkGrey());
+            contentPanel.setBorder(BorderFactory.createEmptyBorder(15,15,15,50));
+            toAdd.setBackground(CustomColors.getDarkGrey());
+            contentPanel.add(toAdd);
+        }
+
+        validate();
+        repaint();
     }
 }
