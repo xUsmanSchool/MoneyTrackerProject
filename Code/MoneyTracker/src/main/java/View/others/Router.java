@@ -1,5 +1,7 @@
 package View.others;
 
+import View.panels.PaymentSplits.PaymentSplitPanel;
+
 import javax.swing.*;
 import java.util.Stack;
 
@@ -21,24 +23,26 @@ public class Router {
         this.frame = frame;
     }
 
-    public void gotToPanel(JComponent p) {
+    private void removePanelFromStack() {
         if (!panelStack.isEmpty()) {
             JComponent lastPanel = panelStack.peek();
             this.frame.remove(lastPanel);
         }
+    }
+
+    public void gotToPanel(JComponent p) {
+        removePanelFromStack();
 
         panelStack.push(p);
         this.frame.add(p);
         p.setVisible(true);
+        this.frame.setVisible(true);
 
         repaint();
     }
 
     public void gotToPanel(JComponent p, JTextField field) {
-        if (!panelStack.isEmpty()) {
-            JComponent lastPanel = panelStack.peek();
-            this.frame.remove(lastPanel);
-        }
+        removePanelFromStack();
 
         panelStack.push(p);
         this.frame.add(p);

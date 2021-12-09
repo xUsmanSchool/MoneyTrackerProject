@@ -4,7 +4,7 @@ import View.others.CustomColors;
 import javax.swing.*;
 
 public class AlignPanelCenter extends JPanel {
-    public AlignPanelCenter(JPanel p1) {
+    public AlignPanelCenter(JComponent p1) {
         // set layout
         BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(boxlayout);

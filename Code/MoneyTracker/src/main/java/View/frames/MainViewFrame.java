@@ -7,6 +7,7 @@ import View.others.Router;
 import View.others.TicketPanelAction;
 import View.panels.AddTicketsPanel.AddTicketsPanel;
 import View.panels.AddUserWindow.*;
+import View.panels.PaymentSplits.PaymentSplitPanel;
 import View.panels.RecentTickets.RecentTicketsPanel;
 import ViewController.*;
 import ViewController.AddTicketsPanel.AddTicketsViewController;
@@ -125,7 +126,15 @@ public class MainViewFrame extends JFrame {
 
 
         ////////////////////////////////////////// SPLIT SELECTION PANEL ///////////////////////////////////////////////
-        // todo
+        PaymentSplitPanel paymentSplitPanel = new PaymentSplitPanel();
+
+        JPanel paymentSplitPanelWithBorder = new JPanel();
+        paymentSplitPanelWithBorder.setLayout(new BoxLayout(paymentSplitPanelWithBorder, BoxLayout.Y_AXIS));
+        paymentSplitPanel.setBackground(CustomColors.getMidGrey());
+        paymentSplitPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        paymentSplitPanel.setBorder(BorderFactory.createEmptyBorder(40,100,40,100));
+        paymentSplitPanelWithBorder.add(paymentSplitPanel);
+
 
 
         /////////////////////////////////////////// GLOBAL BILL PANEL //////////////////////////////////////////////////
@@ -145,8 +154,10 @@ public class MainViewFrame extends JFrame {
         ticketsDB.addObserver(addTicketsViewController);                    // reset form and stuff
 
         // start with user creation panel
-        // focus doesn't work for some reason
         router.gotToPanel(finalUserCreationPanel, userCreationPanel.getFirstNameTextField());
+
+        //WIP
+        //router.gotToPanel(paymentSplitPanelWithBorder);
 
         this.setLocationRelativeTo(null);
 
@@ -158,5 +169,9 @@ public class MainViewFrame extends JFrame {
                 //finalJLayeredPaneWithSomePanel.setBoundsMainLabel(45, 30, 200, 50);
             }
         });
+
+        // EXTRA
+        // should remove list & tab margins
+        // UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(0,0,0,0));
     }
 }
