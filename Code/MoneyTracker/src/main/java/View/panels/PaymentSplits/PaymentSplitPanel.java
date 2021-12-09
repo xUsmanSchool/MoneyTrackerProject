@@ -1,7 +1,6 @@
 package View.panels.PaymentSplits;
 
 import View.others.CustomColors;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -36,12 +35,11 @@ public class PaymentSplitPanel extends JPanel {
         UIManager.put("TabbedPane.selected", CustomColors.getDarkGrey());
 
         // init tab content panels
-        JPanel contentPanel1 = new JPanel();
-        contentPanel1.add(new JLabel("PLACEHOLDER FOR PANEL 1"));
+        PaymentSplitSubPanelCASH contentPanel1 = new PaymentSplitSubPanelCASH();
         contentPanel1.setBackground(CustomColors.getDarkGrey());
+        contentPanel1.setBorder(BorderFactory.createEmptyBorder(15,15,15,50));
 
-        JPanel contentPanel2 = new JPanel();
-        contentPanel2.add(new JLabel("PLACEHOLDER FOR PANEL 2"));
+        PaymentSplitSubPanelPERCENTAGE contentPanel2 = new PaymentSplitSubPanelPERCENTAGE();
         contentPanel2.setBackground(CustomColors.getDarkGrey());
 
         // auto-create rest
@@ -64,7 +62,6 @@ public class PaymentSplitPanel extends JPanel {
         tabbedPane.addChangeListener( new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 int selectedIndex = tabbedPane.getSelectedIndex();
-                System.out.println("selectedIndex" + selectedIndex);
                 setSelectedColors(selectedIndex);
             }
         });

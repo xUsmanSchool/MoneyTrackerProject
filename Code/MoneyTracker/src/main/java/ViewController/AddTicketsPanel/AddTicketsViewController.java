@@ -14,6 +14,7 @@ import Observers.TicketDBObservableEntry;
 import View.others.CustomColors;
 import View.others.Router;
 import View.panels.AddTicketsPanel.AddTicketsPanel;
+import View.panels.PaymentSplits.PaymentSplitPanel;
 import ViewController.ViewController;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -113,9 +114,7 @@ public class AddTicketsViewController extends ViewController {
     private void addTicketOrContinueActionListener(String text) {
         if (text.equals(buttonCreateNowText)) addTicketToDB();
         else if (text.equals(buttonContinueText)) {
-            System.out.println("Button clicked - continuing to split payment panel...but not really");
-
-            // todo - missing action
+            openPaymentSplitScreen();
         }
         else System.err.println("addTicketOrContinueActionListener - wrong text format");
     }
@@ -125,6 +124,19 @@ public class AddTicketsViewController extends ViewController {
         ticketsDBController.add(t);
 
         System.out.println("Ticket successfully added");
+    }
+
+    private void openPaymentSplitScreen() {
+        PaymentSplitPanel paymentSplitPanel = new PaymentSplitPanel();
+
+        JPanel paymentSplitPanelWithBorder = new JPanel();
+        paymentSplitPanelWithBorder.setLayout(new BoxLayout(paymentSplitPanelWithBorder, BoxLayout.Y_AXIS));
+        paymentSplitPanel.setBackground(CustomColors.getMidGrey());
+        paymentSplitPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        paymentSplitPanel.setBorder(BorderFactory.createEmptyBorder(40,100,40,100));
+        paymentSplitPanelWithBorder.add(paymentSplitPanel);
+
+        Router.getInstance().gotToPanel(paymentSplitPanelWithBorder);
     }
 
     private SplitType getSplitType() {
