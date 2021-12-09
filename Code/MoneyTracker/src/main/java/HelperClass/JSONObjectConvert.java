@@ -29,12 +29,12 @@ public class JSONObjectConvert {
     }
 
     public static JSONObject JSONifyTicket(Ticket ticket) {
-
+        System.out.println("JSONify ticket objects");
         JSONObject jsonMap = new JSONObject();
         //Event type
         jsonMap.put(ticket.getEventTypeKey(), ticket.getEventTypeValue().getEventName());
         //Payed by - shows person object
-        jsonMap.put(ticket.getPayedByKey(), JSONifyPerson(ticket.getPayedByValue()));
+        jsonMap.put(ticket.getPayedByKey(), ticket.getPayedByValue().toString());
         //split type
         jsonMap.put(ticket.getSplitTypeKey(), ticket.getSplitTypeValue().toString());
         //total sum
