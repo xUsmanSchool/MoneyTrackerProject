@@ -5,18 +5,17 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class PaymentSplitSubPanelCASH extends JPanel {
-    private JButton doneButton;
+    private final JButton doneButton;
     public ArrayList<JLabel> iconLabels;
     public ArrayList<JLabel> userNames;
     public ArrayList<JLabel> moneyIcons;
-    public ArrayList<JTextField> amounts;
+    public ArrayList<JFormattedTextField> amounts;
 
-    private GroupLayout layout;
+    private final GroupLayout layout;
     private GroupLayout.ParallelGroup parallel;
     private GroupLayout.SequentialGroup sequential;
 
-
-    public PaymentSplitSubPanelCASH(ArrayList<JLabel> iconLabels, ArrayList<JLabel> userNames, ArrayList<JLabel> moneyIcons, ArrayList<JTextField> amounts) {
+    public PaymentSplitSubPanelCASH(ArrayList<JLabel> iconLabels, ArrayList<JLabel> userNames, ArrayList<JLabel> moneyIcons, ArrayList<JFormattedTextField> amounts) {
         // set layout
         layout = new GroupLayout(this);
         layout.setAutoCreateGaps(true);

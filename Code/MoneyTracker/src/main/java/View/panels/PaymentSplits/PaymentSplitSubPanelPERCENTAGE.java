@@ -1,15 +1,14 @@
 package View.panels.PaymentSplits;
 
 import View.others.CustomColors;
-
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class PaymentSplitSubPanelPERCENTAGE extends JPanel {
-    private JButton doneButton;
+    private final JButton doneButton;
     public ArrayList<JLabel> iconLabels;
     public ArrayList<JLabel> userNames;
-    public ArrayList<JTextField> percentages_toPay;
+    public ArrayList<JFormattedTextField> percentages_toPay;
     public ArrayList<JLabel> percentageIcons;
     public ArrayList<JLabel> amounts_converted;
 
@@ -17,7 +16,7 @@ public class PaymentSplitSubPanelPERCENTAGE extends JPanel {
     private GroupLayout.ParallelGroup parallel;
     private GroupLayout.SequentialGroup sequential;
 
-    public PaymentSplitSubPanelPERCENTAGE(ArrayList<JLabel> iconLabels, ArrayList<JLabel> userNames, ArrayList<JTextField> percentages_toPay, ArrayList<JLabel> percentageIcons, ArrayList<JLabel> amounts_converted) {
+    public PaymentSplitSubPanelPERCENTAGE(ArrayList<JLabel> iconLabels, ArrayList<JLabel> userNames, ArrayList<JFormattedTextField> percentages_toPay, ArrayList<JLabel> percentageIcons, ArrayList<JLabel> amounts_converted) {
         // set layout
         layout = new GroupLayout(this);
         layout.setAutoCreateGaps(true);

@@ -146,7 +146,7 @@ public class AddTicketsViewController extends ViewController {
 
         return eventFactory.getEvent(selectedEvents);
     }
-    
+
     private Person getSelectedPerson() {
         // get person
         ArrayList<Person> personList = personsDBController.getAll();
@@ -202,7 +202,6 @@ public class AddTicketsViewController extends ViewController {
         addTicketsPanel.getEventsJComboBox().setSelectedIndex(0);
         addTicketsPanel.getPersonJComboBox().setSelectedIndex(0);
         addTicketsPanel.getSplitTypeJComboBox().setSelectedIndex(0);
-        // todo - set image?
     }
 
 

@@ -11,7 +11,10 @@ import View.panels.PaymentSplits.PaymentSplitSubPanelCASH;
 import View.panels.PaymentSplits.PaymentSplitSubPanelPERCENTAGE;
 import ViewController.ViewController;
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -36,13 +39,13 @@ public class PaymentSplitPanelController extends ViewController {
         ArrayList<JLabel> iconLabels1 = new ArrayList<>();
         ArrayList<JLabel> userNames1 = new ArrayList<>();
         ArrayList<JLabel> moneyIcons1 = new ArrayList<>();
-        ArrayList<JTextField> amounts_toPay1 = new ArrayList<>();
+        ArrayList<JFormattedTextField> amounts_toPay1 = new ArrayList<>();
 
         // right
         ArrayList<JLabel> iconLabels2 = new ArrayList<>();
         ArrayList<JLabel> userNames2 = new ArrayList<>();
         ArrayList<JLabel> percentageIcons2 = new ArrayList<>();
-        ArrayList<JTextField> percentages_toPay2 = new ArrayList<>();
+        ArrayList<JFormattedTextField> percentages_toPay2 = new ArrayList<>();
         ArrayList<JLabel> amounts_converted2 = new ArrayList<>();
 
         Person payedBy = currentTicket.getPayedByValue();
@@ -57,8 +60,11 @@ public class PaymentSplitPanelController extends ViewController {
 
             JLabel moneyIcon = new JLabel("$");
             JLabel percentageIcon = new JLabel("%");
-            JTextField amount_toPay = new JTextField("0.00");
-            JTextField percentage_toPay = new JTextField("0");
+            
+            JFormattedTextField amount_toPay = new JFormattedTextField(createValueMaskFormatter());
+            amount_toPay.setValue(0.00);
+            JFormattedTextField percentage_toPay = new JFormattedTextField(createIntegerMaskFormatter());
+            percentage_toPay.setValue(0);
             JLabel amount_converted = new JLabel("$0.00");
 
             // style
@@ -105,5 +111,40 @@ public class PaymentSplitPanelController extends ViewController {
 
     public void setTicket(Ticket t) {
         this.currentTicket = t;
+    }
+
+    private NumberFormatter createValueMaskFormatter() {
+        // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        String pattern = ((DecimalFormat) format).toPattern();
+        String newPattern = pattern.replace("\u00A4", "").trim();
+        NumberFormat newFormat = new DecimalFormat(newPattern);
+
+        NumberFormatter numberFormatter1 = null;
+        try {
+            numberFormatter1 = new NumberFormatter(newFormat);
+            numberFormatter1.setAllowsInvalid(false);
+            numberFormatter1.setOverwriteMode(true);
+            numberFormatter1.setCommitsOnValidEdit(true);
+            numberFormatter1.setMaximum(9999.99);
+        } catch (Exception e) { System.err.println(e.toString()); }
+
+        return numberFormatter1;
+    }
+
+    private NumberFormatter createIntegerMaskFormatter() {
+        // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
+        NumberFormat format = NumberFormat.getNumberInstance();
+
+        NumberFormatter numberFormatter1 = null;
+        try {
+            numberFormatter1 = new NumberFormatter(format);
+            numberFormatter1.setAllowsInvalid(false);
+            numberFormatter1.setOverwriteMode(true);
+            numberFormatter1.setCommitsOnValidEdit(true);
+            numberFormatter1.setMaximum(100);
+        } catch (Exception e) { System.err.println(e.toString()); }
+
+        return numberFormatter1;
     }
 }
