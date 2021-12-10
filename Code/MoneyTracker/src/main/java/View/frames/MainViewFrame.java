@@ -147,11 +147,12 @@ public class MainViewFrame extends JFrame {
         recentTicketsPanel.getCheckoutButton().addActionListener(e -> router.goBack()); // todo - temp
 
         // add observers
-        personsDB.addObserver(userListPanelController_inUserCreationPanel);   // pop up in the list when user is created
-        personsDB.addObserver(userListPanelController_inRecentTicketsPanel);  // update list when panel is switched
-        personsDB.addObserver(userCreationPanelController);                 // reset form and receive updated Icon
-        ticketsDB.addObserver(recentTicketPanelController);                 // adds a new ticket in the list
-        ticketsDB.addObserver(addTicketsViewController);                    // reset form and stuff
+        personsDB.addObserver(userListPanelController_inUserCreationPanel);     // pop up in the list when user is created
+        personsDB.addObserver(userListPanelController_inRecentTicketsPanel);    // update list when panel is switched
+        personsDB.addObserver(userCreationPanelController);                     // reset form and receive updated Icon
+        personsDB.addObserver(addTicketsViewController);                        // update dropdown user list
+        ticketsDB.addObserver(recentTicketPanelController);                     // adds a new ticket in the list
+        ticketsDB.addObserver(addTicketsViewController);                        // reset form and stuff
 
         // start with user creation panel
         router.gotToPanel(finalUserCreationPanel, userCreationPanel.getFirstNameTextField());

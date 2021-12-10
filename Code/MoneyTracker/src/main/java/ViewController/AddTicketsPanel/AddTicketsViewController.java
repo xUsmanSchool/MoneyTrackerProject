@@ -10,6 +10,7 @@ import HelperClass.Events;
 import HelperClass.Paths;
 import HelperClass.SplitType;
 import Model.*;
+import Observers.PersonDBObservableEntry;
 import Observers.TicketDBObservableEntry;
 import View.others.CustomColors;
 import View.others.Router;
@@ -116,11 +117,22 @@ public class AddTicketsViewController extends ViewController {
     }
 
     private void openPaymentSplitScreen() {
+        // get ticket
+        Ticket t = getTicket(getSplitType());
+
+        // create tabs
         PaymentSplitPanelWithBorder paymentSplitPanelWithBorder = new PaymentSplitPanelWithBorder();
+
+        // do nothing yet with controller - watch order!
         PaymentSplitPanelController paymentSplitPanelController = new PaymentSplitPanelController(personsDBController, ticketsDBController, paymentSplitPanelWithBorder);
+
+        // set the current state of the ticket - which isn't ready yet
+        paymentSplitPanelController.setTicket(t);
+
+        // fill up tabs and transfer this ticket to another inner controller
         paymentSplitPanelController.init();
-        // todo - TRANSFER INFO OF WHO PAYED WHAT + WHOLE FORM
-        //paymentSplitPanelController.activateActionListeners();
+
+
         Router.getInstance().gotToPanel(paymentSplitPanelWithBorder);
     }
 
@@ -134,7 +146,7 @@ public class AddTicketsViewController extends ViewController {
 
         return eventFactory.getEvent(selectedEvents);
     }
-
+    
     private Person getSelectedPerson() {
         // get person
         ArrayList<Person> personList = personsDBController.getAll();
@@ -200,6 +212,12 @@ public class AddTicketsViewController extends ViewController {
             clearForm();
 
             Router.getInstance().goBack();
+        }
+
+        if (arg instanceof PersonDBObservableEntry) {
+            // clear and update the dropdown list
+            addTicketsPanel.getPersonJComboBox().removeAllItems();
+            for(Person p : personsDBController.getAll()) addTicketsPanel.getPersonJComboBox().addItem(p.getFirstNameValue() + " " + p.getLastNameValue());
         }
     }
 }

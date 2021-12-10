@@ -4,12 +4,12 @@ import DatabaseController.PersonsDBController;
 import DatabaseController.TicketsDBController;
 import HelperClass.Paths;
 import Model.Person;
+import Model.Ticket;
 import View.others.CustomColors;
 import View.panels.PaymentSplits.PaymentSplitPanelWithBorder;
 import View.panels.PaymentSplits.PaymentSplitSubPanelCASH;
 import View.panels.PaymentSplits.PaymentSplitSubPanelPERCENTAGE;
 import ViewController.ViewController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ public class PaymentSplitPanelController extends ViewController {
     private final TicketsDBController ticketsDBController;
     private final PersonsDBController personsDBController;
     private final PaymentSplitPanelWithBorder paymentSplitPanel;
+    private Ticket currentTicket;
 
     public PaymentSplitPanelController(PersonsDBController personsDBController, TicketsDBController ticketsDBController, PaymentSplitPanelWithBorder paymentSplitPanel) {
         this.paymentSplitPanel = paymentSplitPanel;
@@ -44,9 +45,10 @@ public class PaymentSplitPanelController extends ViewController {
         ArrayList<JTextField> percentages_toPay2 = new ArrayList<>();
         ArrayList<JLabel> amounts_converted2 = new ArrayList<>();
 
+        Person payedBy = currentTicket.getPayedByValue();
+
         for (Person person : persons) {
             // create
-            // todo - color person that payed in green?
             JLabel iconLabel1 = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
             JLabel iconLabel2 = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
 
@@ -63,8 +65,8 @@ public class PaymentSplitPanelController extends ViewController {
             iconLabel1.setForeground(Color.WHITE);
             iconLabel2.setForeground(Color.WHITE);
 
-            userName1.setForeground(Color.WHITE);
-            userName2.setForeground(Color.WHITE);
+            userName1.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
+            userName2.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
 
             moneyIcon.setForeground(Color.WHITE);
             percentageIcon.setForeground(Color.WHITE);
@@ -100,4 +102,8 @@ public class PaymentSplitPanelController extends ViewController {
 
     @Override
     public void update(Observable o, Object arg) {}
+
+    public void setTicket(Ticket t) {
+        this.currentTicket = t;
+    }
 }

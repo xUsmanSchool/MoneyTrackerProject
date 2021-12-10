@@ -1,7 +1,6 @@
 package ViewController.PaymentSplits;
 
 import ViewController.ViewController;
-
 import java.util.Observable;
 
 public class PaymentSplitSubPanelCASHController extends ViewController {
