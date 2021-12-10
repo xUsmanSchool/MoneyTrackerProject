@@ -1,7 +1,6 @@
 package View.panels.PaymentSplits;
 
 import View.others.CustomColors;
-
 import javax.swing.*;
 
 public class PaymentSplitPanelWithBorder extends PaymentSplitPanel {

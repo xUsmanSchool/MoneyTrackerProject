@@ -45,7 +45,7 @@ public class PaymentSplitPanelController extends ViewController {
         ArrayList<JLabel> iconLabels2 = new ArrayList<>();
         ArrayList<JLabel> userNames2 = new ArrayList<>();
         ArrayList<JLabel> percentageIcons2 = new ArrayList<>();
-        ArrayList<JFormattedTextField> percentages_toPay2 = new ArrayList<>();
+        ArrayList<JSpinner> percentages_toPay2 = new ArrayList<>();
         ArrayList<JLabel> amounts_converted2 = new ArrayList<>();
 
         Person payedBy = currentTicket.getPayedByValue();
@@ -63,8 +63,21 @@ public class PaymentSplitPanelController extends ViewController {
             
             JFormattedTextField amount_toPay = new JFormattedTextField(createValueMaskFormatter());
             amount_toPay.setValue(0.00);
-            JFormattedTextField percentage_toPay = new JFormattedTextField(createIntegerMaskFormatter());
-            percentage_toPay.setValue(0);
+
+            SpinnerModel model = new SpinnerNumberModel(
+                    0,        //initial value
+                    0,              //min
+                    100,            //max
+                    1);             //step
+
+            JSpinner percentage_toPay = new JSpinner(model);
+            percentage_toPay.setEditor(new JSpinner.NumberEditor(percentage_toPay,"0"));
+            JFormattedTextField txt = getTextField(percentage_toPay);
+            NumberFormatter nf = (NumberFormatter) txt.getFormatter();
+            nf.setAllowsInvalid(false);
+            nf.setOverwriteMode(true);
+            nf.setCommitsOnValidEdit(true);
+
             JLabel amount_converted = new JLabel("$0.00");
 
             // style
@@ -78,7 +91,7 @@ public class PaymentSplitPanelController extends ViewController {
             percentageIcon.setForeground(Color.WHITE);
             amount_converted.setForeground(CustomColors.getYellow());
             userName1.setMinimumSize(new Dimension(300,30));
-            userName2.setMinimumSize(new Dimension(270,30));
+            userName2.setMinimumSize(new Dimension(255,30));
 
             // add to list
             iconLabels1.add(iconLabel1);
@@ -113,8 +126,8 @@ public class PaymentSplitPanelController extends ViewController {
         this.currentTicket = t;
     }
 
+    // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
     private NumberFormatter createValueMaskFormatter() {
-        // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
         NumberFormat format = NumberFormat.getCurrencyInstance();
         String pattern = ((DecimalFormat) format).toPattern();
         String newPattern = pattern.replace("\u00A4", "").trim();
@@ -132,8 +145,8 @@ public class PaymentSplitPanelController extends ViewController {
         return numberFormatter1;
     }
 
+    // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
     private NumberFormatter createIntegerMaskFormatter() {
-        // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
         NumberFormat format = NumberFormat.getNumberInstance();
 
         NumberFormatter numberFormatter1 = null;
@@ -146,5 +159,18 @@ public class PaymentSplitPanelController extends ViewController {
         } catch (Exception e) { System.err.println(e.toString()); }
 
         return numberFormatter1;
+    }
+
+    // https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html
+    private JFormattedTextField getTextField(JSpinner spinner) {
+        JComponent editor = spinner.getEditor();
+        if (editor instanceof JSpinner.DefaultEditor) {
+            return ((JSpinner.DefaultEditor)editor).getTextField();
+        } else {
+            System.err.println("Unexpected editor type: "
+                    + spinner.getEditor().getClass()
+                    + " isn't a descendant of DefaultEditor");
+            return null;
+        }
     }
 }

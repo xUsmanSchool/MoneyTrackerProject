@@ -8,7 +8,7 @@ public class PaymentSplitSubPanelPERCENTAGE extends JPanel {
     private final JButton doneButton;
     public ArrayList<JLabel> iconLabels;
     public ArrayList<JLabel> userNames;
-    public ArrayList<JFormattedTextField> percentages_toPay;
+    public ArrayList<JSpinner> percentages_toPay;
     public ArrayList<JLabel> percentageIcons;
     public ArrayList<JLabel> amounts_converted;
 
@@ -16,7 +16,7 @@ public class PaymentSplitSubPanelPERCENTAGE extends JPanel {
     private GroupLayout.ParallelGroup parallel;
     private GroupLayout.SequentialGroup sequential;
 
-    public PaymentSplitSubPanelPERCENTAGE(ArrayList<JLabel> iconLabels, ArrayList<JLabel> userNames, ArrayList<JFormattedTextField> percentages_toPay, ArrayList<JLabel> percentageIcons, ArrayList<JLabel> amounts_converted) {
+    public PaymentSplitSubPanelPERCENTAGE(ArrayList<JLabel> iconLabels, ArrayList<JLabel> userNames, ArrayList<JSpinner> percentages_toPay, ArrayList<JLabel> percentageIcons, ArrayList<JLabel> amounts_converted) {
         // set layout
         layout = new GroupLayout(this);
         layout.setAutoCreateGaps(true);

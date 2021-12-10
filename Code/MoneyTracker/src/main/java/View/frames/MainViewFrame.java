@@ -157,9 +157,6 @@ public class MainViewFrame extends JFrame {
         // start with user creation panel
         router.gotToPanel(finalUserCreationPanel, userCreationPanel.getFirstNameTextField());
 
-        //WIP
-        //router.gotToPanel(paymentSplitPanelWithBorder);
-
         this.setLocationRelativeTo(null);
 
         this.addComponentListener(new ComponentAdapter() {

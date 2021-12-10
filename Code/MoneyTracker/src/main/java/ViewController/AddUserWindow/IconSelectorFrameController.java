@@ -1,8 +1,6 @@
 package ViewController.AddUserWindow;
 
-import Model.Person;
 import Observers.ImageFrameIconObservableEntry;
-import Observers.PersonDBObservableEntry;
 import View.frames.IconSelectorFrame;
 import javax.swing.*;
 import java.awt.event.*;
