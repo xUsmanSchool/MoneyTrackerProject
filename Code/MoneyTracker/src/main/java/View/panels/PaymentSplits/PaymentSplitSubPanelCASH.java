@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class PaymentSplitSubPanelCASH extends JPanel {
     private final JButton doneButton;
-    public ArrayList<JLabel> iconLabels;
-    public ArrayList<JLabel> userNames;
-    public ArrayList<JLabel> moneyIcons;
-    public ArrayList<JFormattedTextField> amounts;
+    private ArrayList<JLabel> iconLabels;
+    private ArrayList<JLabel> userNames;
+    private ArrayList<JLabel> moneyIcons;
+    private ArrayList<JFormattedTextField> amounts;
 
     private final GroupLayout layout;
     private GroupLayout.ParallelGroup parallel;
@@ -77,5 +77,17 @@ public class PaymentSplitSubPanelCASH extends JPanel {
 
     public JButton getDoneButton() {
         return doneButton;
+    }
+
+    public ArrayList<JLabel> getIconLabels() {
+        return iconLabels;
+    }
+
+    public ArrayList<JLabel> getUserNames() {
+        return userNames;
+    }
+
+    public ArrayList<JFormattedTextField> getAmounts() {
+        return amounts;
     }
 }

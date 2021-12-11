@@ -129,9 +129,11 @@ public class AddTicketsViewController extends ViewController {
         // set the current state of the ticket - which isn't ready yet
         paymentSplitPanelController.setTicket(t);
 
-        // fill up tabs and transfer this ticket to another inner controller
+        // fill up tabs and process ticket
         paymentSplitPanelController.init();
 
+        // activate done-button action listeners
+        paymentSplitPanelController.activateActionListeners();
 
         Router.getInstance().gotToPanel(paymentSplitPanelWithBorder);
     }

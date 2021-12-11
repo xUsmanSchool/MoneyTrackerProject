@@ -103,4 +103,12 @@ public class PaymentSplitPanel extends JPanel {
         validate();
         repaint();
     }
+
+    public void removeContentPanel(int tabNumber) {
+        if (tabNumber == 0) contentPanel1.removeAll();
+        else contentPanel2.removeAll();
+
+        validate();
+        repaint();
+    }
 }
