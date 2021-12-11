@@ -11,8 +11,14 @@ import View.panels.PaymentSplits.PaymentSplitSubPanelCASH;
 import View.panels.PaymentSplits.PaymentSplitSubPanelPERCENTAGE;
 import ViewController.ViewController;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -91,9 +97,8 @@ public class PaymentSplitPanelController extends ViewController {
             JLabel userName1 = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
             JLabel moneyIcon = new JLabel("$");
 
-            JFormattedTextField amount_toPay = new JFormattedTextField();
-            ((AbstractDocument) amount_toPay.getDocument()).setDocumentFilter(new MyDocumentFilter());
-            amount_toPay.setText("0.00");
+            JFormattedTextField amount_toPay = new JFormattedTextField(createMaskFormatter());
+            amount_toPay.setValue(0.00);
 
             // style
             iconLabel1.setForeground(Color.WHITE);
@@ -126,6 +131,7 @@ public class PaymentSplitPanelController extends ViewController {
 
         Person payedBy = currentTicket.getPayedByValue();
 
+        int i = 0;
         for (Person person : persons) {
             // create
             JLabel iconLabel2 = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
@@ -139,12 +145,34 @@ public class PaymentSplitPanelController extends ViewController {
                     1);             //step
 
             JSpinner percentage_toPay = new JSpinner(model);
-            percentage_toPay.setEditor(new JSpinner.NumberEditor(percentage_toPay,"0"));
+            percentage_toPay.setEditor(new JSpinner.NumberEditor(percentage_toPay,""));
             JFormattedTextField txt = getTextField(percentage_toPay);
+
             NumberFormatter nf = (NumberFormatter) txt.getFormatter();
             nf.setAllowsInvalid(false);
             nf.setOverwriteMode(true);
             nf.setCommitsOnValidEdit(true);
+            nf.setMaximum(100);
+
+            txt.addPropertyChangeListener(new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    System.out.println("addPropertyChangeListener: current text is " + txt.getText());
+                    calculateShareForPercentage(0);
+                }
+            });
+
+
+            /*int finalI = i;
+            txt.setFormatterFactory(
+                    new DefaultFormatterFactory (
+                            new InternationalFormatter(NumberFormat.getIntegerInstance()) {
+                                @Override
+                                protected DocumentFilter getDocumentFilter() {
+                                    return getCustomDocumentFilter(finalI, txt);
+                                }
+                            })
+            );*/
 
             JLabel amount_converted = new JLabel("$0.00");
 
@@ -162,6 +190,8 @@ public class PaymentSplitPanelController extends ViewController {
             percentageIcons2.add(percentageIcon);
             percentages_toPay2.add(percentage_toPay);
             amounts_converted2.add(amount_converted);
+
+            i++;
         }
 
         // add sub panel 2
@@ -173,25 +203,6 @@ public class PaymentSplitPanelController extends ViewController {
         this.currentTicket = t;
     }
 
-    // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
-    /*private NumberFormatter createValueMaskFormatter(Double limit) {
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        String pattern = ((DecimalFormat) format).toPattern();
-        String newPattern = pattern.replace("\u00A4", "").trim();
-        NumberFormat newFormat = new DecimalFormat(newPattern);
-
-        NumberFormatter numberFormatter1 = null;
-        try {
-            numberFormatter1 = new NumberFormatter(newFormat);
-            numberFormatter1.setAllowsInvalid(false);
-            numberFormatter1.setOverwriteMode(true);
-            numberFormatter1.setCommitsOnValidEdit(true);
-            numberFormatter1.setMaximum(100.05);
-        } catch (Exception e) { System.err.println(e.toString()); }
-
-        return numberFormatter1;
-    }*/
-
     private NumberFormatter createMaskFormatter() {
         // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
         // https://stackoverflow.com/questions/12806278/double-decimal-formatting-in-java
@@ -200,19 +211,6 @@ public class PaymentSplitPanelController extends ViewController {
         NumberFormatter numberFormatter1 = null;
         try {
             numberFormatter1 = new NumberFormatter(formatter);
-            numberFormatter1.setAllowsInvalid(false);
-            numberFormatter1.setOverwriteMode(true);
-            numberFormatter1.setCommitsOnValidEdit(true);
-            numberFormatter1.setMaximum(99.99);
-        } catch (Exception e) { System.err.println(e.toString()); }
-
-        return numberFormatter1;
-    }
-
-    private NumberFormatter test1() {
-        NumberFormatter numberFormatter1 = null;
-        try {
-            numberFormatter1 = new NumberFormatter(new DecimalFormat());
             numberFormatter1.setAllowsInvalid(false);
             numberFormatter1.setOverwriteMode(true);
             numberFormatter1.setCommitsOnValidEdit(true);
@@ -235,122 +233,82 @@ public class PaymentSplitPanelController extends ViewController {
         }
     }
 
-        /*private void reCreateFields() {
-        // get info for panel generation
-        ArrayList<Person> persons = personsDBController.getAll();
+    private void calculateShareForPercentage(int i) {
+        System.out.println("Calculating for " + i);
 
-        // left
-        ArrayList<JLabel> iconLabels1 = new ArrayList<>();
-        ArrayList<JLabel> userNames1 = new ArrayList<>();
-        ArrayList<JLabel> moneyIcons1 = new ArrayList<>();
-        ArrayList<JFormattedTextField> amounts_toPay1 = new ArrayList<>();
+        // get Spinner info
+        ArrayList<JLabel> amounts_converted_list = paymentSplitSubPanelPERCENTAGE.amounts_converted;
+        ArrayList<JSpinner> percentages_list = paymentSplitSubPanelPERCENTAGE.percentages_toPay;
+        JSpinner selectedSpinner = percentages_list.get(i);
 
-        // right
-        ArrayList<JLabel> iconLabels2 = new ArrayList<>();
-        ArrayList<JLabel> userNames2 = new ArrayList<>();
-        ArrayList<JLabel> percentageIcons2 = new ArrayList<>();
-        ArrayList<JSpinner> percentages_toPay2 = new ArrayList<>();
-        ArrayList<JLabel> amounts_converted2 = new ArrayList<>();
+        // commitEdit
+        try { selectedSpinner.commitEdit(); }
+        catch (Exception e) {}
 
-        Person payedBy = currentTicket.getPayedByValue();
+        // display
+        Integer spinnerValue = (Integer)selectedSpinner.getValue();
+        Double spinnerValueDouble = Double.valueOf(spinnerValue);
+        Double calculation = spinnerValueDouble / 100 * currentTicket.getTotalSum();
+        String showValue = String. format("%.2f", calculation);
+        amounts_converted_list.get(i).setText("$" + showValue);
+    }
 
-        for (Person person : persons) {
-            // create
-            JLabel iconLabel1 = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
-            JLabel iconLabel2 = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
-
-            JLabel userName1 = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
-            JLabel userName2 = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
-
-            JLabel moneyIcon = new JLabel("$");
-            JLabel percentageIcon = new JLabel("%");
-
-            JFormattedTextField amount_toPay = new JFormattedTextField(createValueMaskFormatter());
-            amount_toPay.setValue(0.00);
-
-            SpinnerModel model = new SpinnerNumberModel(
-                    0,        //initial value
-                    0,              //min
-                    100,            //max
-                    1);             //step
-
-            JSpinner percentage_toPay = new JSpinner(model);
-            percentage_toPay.setEditor(new JSpinner.NumberEditor(percentage_toPay,"0"));
-            JFormattedTextField txt = getTextField(percentage_toPay);
-            NumberFormatter nf = (NumberFormatter) txt.getFormatter();
-            nf.setAllowsInvalid(false);
-            nf.setOverwriteMode(true);
-            nf.setCommitsOnValidEdit(true);
-
-            JLabel amount_converted = new JLabel("$0.00");
-
-            // style
-            iconLabel1.setForeground(Color.WHITE);
-            iconLabel2.setForeground(Color.WHITE);
-
-            userName1.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
-            userName2.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
-
-            moneyIcon.setForeground(Color.WHITE);
-            percentageIcon.setForeground(Color.WHITE);
-            amount_converted.setForeground(CustomColors.getYellow());
-            userName1.setMinimumSize(new Dimension(300,30));
-            userName2.setMinimumSize(new Dimension(255,30));
-
-            // add to list
-            iconLabels1.add(iconLabel1);
-            iconLabels2.add(iconLabel2);
-
-            userNames1.add(userName1);
-            userNames2.add(userName2);
-
-            moneyIcons1.add(moneyIcon);
-            percentageIcons2.add(percentageIcon);
-            amounts_toPay1.add(amount_toPay);
-            percentages_toPay2.add(percentage_toPay);
-            amounts_converted2.add(amount_converted);
-        }
-
-        // add sub panel 1
-        paymentSplitSubPanelCASH = new PaymentSplitSubPanelCASH(iconLabels1, userNames1, moneyIcons1, amounts_toPay1);
-        paymentSplitPanel.setContentPanel(0, paymentSplitSubPanelCASH, iconLabels1.size() > 5);
-
-        // add sub panel 2
-        paymentSplitSubPanelPERCENTAGE = new PaymentSplitSubPanelPERCENTAGE(iconLabels2, userNames2, percentages_toPay2, percentageIcons2, amounts_converted2);
-        paymentSplitPanel.setContentPanel(1, paymentSplitSubPanelPERCENTAGE, iconLabels2.size() > 5);
-    }*/
-}
-
-class MyDocumentFilter extends DocumentFilter {
-
-    @Override
-    public void replace(FilterBypass fb, int i, int i1, String string, AttributeSet as) throws BadLocationException {
-        // don't allow pasting
-        if (string.length() > 1) return;
-
-        // get a single character of the string
-        char c = string.charAt(0);
-
-        System.out.println("Character: " + c + "; offset/position: " + i + "; length: " + i1 + "; full string: " + string);
-
-        // if its a numetic character or a dot
-        if (Character.isDigit(c) || c == '.') {
-
-
-            // allow update to take place for the given character
-            super.replace(fb, i, i1, String.valueOf(c), as);
-        } else { // it not
-            System.out.println("Not allowed");
+    private void checkCaret(JFormattedTextField textField) {
+        Integer pos = textField.getCaretPosition();
+        if (pos != null) {
+            System.out.println("Pos: " + pos + "; total chars: " + textField.getText() + " with length " + textField.getText().length());
+            System.out.println("Setting caret pos to: " + textField.getText().length());
+            textField.setCaretPosition(textField.getText().length());
+            System.out.println("Actual caret pos is: " + textField.getCaretPosition());
         }
     }
 
-    @Override
-    public void remove(FilterBypass fb, int i, int i1) throws BadLocationException {
-        super.remove(fb, i, i1);
-    }
+    private DocumentFilter getCustomDocumentFilter(int index, JFormattedTextField textField) {
+        return new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int i, String string, AttributeSet as) throws BadLocationException {
+                // don't allow pasting
+                if (string.length() > 1) return;
 
-    @Override
-    public void insertString(FilterBypass fb, int i, String string, AttributeSet as) throws BadLocationException {
-        super.insertString(fb, i, string, as);
+                // get a single character of the string
+                char c = string.charAt(0);
+
+                if (Character.isDigit(c)) {
+                    System.out.println("Inserting");
+                    calculateShareForPercentage(index);
+                    super.insertString(fb, i, string, as);
+                }
+            }
+
+            @Override
+            public void remove(FilterBypass fb, int i, int i1) throws BadLocationException {
+                System.out.println("Removing");
+
+                super.remove(fb, i, i1);
+
+                super.replace(fb, textField.getText().length(), i1, "0", null);
+                super.remove(fb, textField.getText().length()-1, i1);
+
+                if (textField.getText().length() == 0) super.replace(fb, textField.getText().length(), i1, "0", null);
+
+                calculateShareForPercentage(index);
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int i, int i1, String string, AttributeSet as) throws BadLocationException {
+                // don't allow pasting
+                if (string.length() > 1) return;
+
+                // get a single character of the string
+                char c = string.charAt(0);
+
+                if (Character.isDigit(c)) {
+                    System.out.println(as);
+                    System.out.println("Replacing");
+                    super.replace(fb, textField.getText().length(), i1, string, as);
+                    calculateShareForPercentage(index);
+                }
+            }
+        };
     }
 }
