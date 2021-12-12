@@ -55,6 +55,10 @@ public abstract class Ticket extends DatabaseItem {
         return new ArrayList<Person>(paymentSplits.getValue().keySet());
     }
 
+    public void setPersonArrayList(ArrayList<Person> personArrayList) {
+        for (Person person : personArrayList) updatePaymentSplitsHashMap(paymentSplits.getKey(), person, null);
+    }
+
     public Double getAmountForPerson(Person person) {
         return paymentSplits.getValue().get(person);
     }

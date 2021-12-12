@@ -14,10 +14,15 @@ public class PrintInfo {
         System.out.println("Ticket (Type - " + t.getSplitTypeValue().toString() + "): created by " + t.getPayedByValue().getFirstNameValue() + " on " + t.getCreationDateValue().getDayOfMonth() + "/" + t.getCreationDateValue().getMonthValue());
         System.out.println("This ticket is for the " + t.getEventTypeValue().getEventName() + " with a total sum of " + t.getTotalSum() + " which was payed by " + t.getPayedByValue().getFirstNameValue());
         System.out.print("In detail: ");
-        for (Person p:t.getPersonArrayList()) System.out.print(
-                p.getFirstNameValue() +
-                        (t.getAmountForPerson(p) > 0 ? " needs to get back " : " owes " + t.getPayedByValue().getFirstNameValue() + " ") +
-                        t.getAmountForPerson(p) + ", ");
+        for (Person p:t.getPersonArrayList()) if (t.getAmountForPerson(p) == 0) System.out.print(p.getFirstNameValue() + " payed nothing. ");
+        System.out.println();
+        Double sum = 0.00;
+        for (Person p:t.getPersonArrayList()) if (t.getAmountForPerson(p) < 0) {
+            System.out.print(p.getFirstNameValue() + " owes " + t.getPayedByValue().getFirstNameValue() + " " + String.format("%.2f", t.getAmountForPerson(p)) + ", ");
+            sum += t.getAmountForPerson(p);
+        }
+        System.out.println();
+        for (Person p:t.getPersonArrayList()) if (t.getAmountForPerson(p) > 0) System.out.print("Because " + p.getFirstNameValue() + " payed " + t.getTotalSum() + " in total and " + String.format("%.2f", t.getAmountForPerson(p)) + " was for his own expenses, he only needs to get back $ " + String.format("%.2f", sum) + "");
         System.out.println("\n");
     }
 }

@@ -53,11 +53,11 @@ public class Main {
         ticket1.addSCashSplit(null, 0.00);                    // fake add
         ticket1.addSCashSplit(null, 0.00);                    // fake add
 
-        Ticket ticket2 = ticketFactory.getTicket(person2, 10.00, eventFactory.getEvent(Events.AIRPLANE), SplitType.UNEQUAL);
+        Ticket ticket2 = ticketFactory.getTicket(person2, 100.00, eventFactory.getEvent(Events.AIRPLANE), SplitType.UNEQUAL);
         ticket2.autoCalculate(null);                           // fake add
-        ticket2.addSCashSplit(person1, 1.50);                       // create ticket 2
-        ticket2.addSCashSplit(person2, 2.00);                       // create ticket 2
-        ticket2.addSCashSplit(person3, 8.50);                       // create ticket 2
+        ticket2.addSCashSplit(person1, 1.00);                       // create ticket 2
+        ticket2.addSCashSplit(person2, 98.00);                      // create ticket 2
+        ticket2.addSCashSplit(person3, 1.00);                       // create ticket 2
 
         Ticket ticket3 = ticketFactory.getTicket(person3, 5.00, eventFactory.getEvent(Events.TAXI), SplitType.UNEQUAL);
         ticket3.autoCalculate(null);                             // fake add

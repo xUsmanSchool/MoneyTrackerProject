@@ -2,10 +2,12 @@ package ViewController.PaymentSplits;
 
 import DatabaseController.PersonsDBController;
 import DatabaseController.TicketsDBController;
+import Factory.TicketFactory;
 import HelperClass.Paths;
 import Model.Person;
 import Model.Ticket;
 import View.others.CustomColors;
+import View.others.Router;
 import View.panels.PaymentSplits.PaymentSplitPanelWithBorder;
 import View.panels.PaymentSplits.PaymentSplitSubPanelCASH;
 import View.panels.PaymentSplits.PaymentSplitSubPanelPERCENTAGE;
@@ -74,7 +76,18 @@ public class PaymentSplitPanelController extends ViewController {
     }
 
     private void percentageDoneButtonActionListener() {
-        System.out.println("Percentage done button pressed but nuffing happened... #magic");
+        // get field values
+        ArrayList<Integer> valueList = getOldPercentageSpinnerFields();
+        ArrayList<Person> personList = currentTicket.getPersonArrayList();
+
+        // update ticket
+        if (valueList.size() == personList.size()) {
+            for (int i = 0; i < valueList.size(); i++) currentTicket.addPercentageSplit(personList.get(i), Double.valueOf(valueList.get(i))/100);
+            ticketsDBController.add(currentTicket);
+
+            // go back
+            Router.getInstance().goBack();
+        }
     }
 
     private void fullRedrawPercentagePanel() {
@@ -241,9 +254,6 @@ public class PaymentSplitPanelController extends ViewController {
     }
 
     private void createPercentagePanelFields() {
-        // get info for panel generation
-        ArrayList<Person> persons = personsDBController.getAll();
-
         // right
         ArrayList<JLabel> iconLabels2 = new ArrayList<>();
         ArrayList<JLabel> userNames2 = new ArrayList<>();
@@ -252,6 +262,7 @@ public class PaymentSplitPanelController extends ViewController {
         ArrayList<JLabel> amounts_converted2 = new ArrayList<>();
 
         Person payedBy = currentTicket.getPayedByValue();
+        ArrayList<Person> persons = currentTicket.getPersonArrayList();
 
         int i = 0;
         for (Person person : persons) {

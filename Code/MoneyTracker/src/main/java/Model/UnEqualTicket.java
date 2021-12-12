@@ -11,6 +11,7 @@ public class UnEqualTicket extends Ticket {
 
     @Override
     public void autoCalculate(ArrayList<Person> personArrayList) {
+        if (personArrayList != null) setPersonArrayList(personArrayList);
         // autoCalculate cannot be applied to this type of ticket
     }
 
