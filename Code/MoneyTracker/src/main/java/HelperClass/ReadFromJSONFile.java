@@ -89,7 +89,10 @@ public class ReadFromJSONFile {
         System.out.println("==========STARTING FOR LOOP=========");
         for (int i = 0; i < personsList.size(); i++){
             System.out.println("==========STARTING IF STATEMENT=========");
-            if (payed_by == personsList.get(i).toString()){
+            String testString = String.format("%s;%s", personsList.get(i).getFirstNameValue(), personsList.get(i).getLastNameValue());
+            System.out.println("testString: " + testString);
+            System.out.println("payed_by: " + payed_by);
+            if (payed_by.toString() == testString){
                 System.out.println("==========FOUND MATCH=========");
             }
         }
