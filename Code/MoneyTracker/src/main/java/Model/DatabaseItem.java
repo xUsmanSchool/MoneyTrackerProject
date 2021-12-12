@@ -21,6 +21,9 @@ public abstract class DatabaseItem {
     public LocalDate getCreationDateValue() {
         return this.creationDate.getValue();
     }
+    public void setCreationDateValue(LocalDate date){
+        this.creationDate.put(getCreationDateKey(), date);
+    }
 
     public String getEditDateKey() {
         return this.editDate.getKey();

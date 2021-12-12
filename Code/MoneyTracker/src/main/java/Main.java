@@ -28,7 +28,7 @@ public class Main {
         TicketFactory ticketFactory = new TicketFactory();                          /** Factory pattern: tickets */
         //--------------------------------------------------------------------------------------------------------------
         ReadFromJSONFile.readPersonFile(personDatabase);                           /** Read JSON file */
-        ReadFromJSONFile.readTicketFile(ticketDatabase);
+        //ReadFromJSONFile.readTicketFile(ticketDatabase);
         //--------------------------------------------------------------------------------------------------------------
         Person person1 = new Person("Usman", "The Admin");                          // create person 1
         person1.setGender(Gender.MALE);                                                 // update person 1
@@ -60,7 +60,7 @@ public class Main {
         ticket2.addSCashSplit(person3, 1.00);                       // create ticket 2
 
         Ticket ticket3 = ticketFactory.getTicket(person3, 5.00, eventFactory.getEvent(Events.TAXI), SplitType.UNEQUAL);
-        ticket3.autoCalculate(null);                             // fake add
+        ticket3.autoCalculate(null);                           // fake add
         ticket3.addPercentageSplit(person1, 0.10);                  // create ticket 3
         ticket3.addPercentageSplit(person2, 0.10);                  // create ticket 3
         ticket3.addPercentageSplit(person3, 0.80);                  // create ticket 3
