@@ -17,13 +17,13 @@ public class UnEqualTicket extends Ticket {
 
     @Override
     public void addSCashSplit(Person person, Double amount) {
-        if (person.equals(getPayedByValue())) super.addSCashSplit(person, amount);
+        if (person.equals(getPayedByValue())) super.addSCashSplit(person, getTotalSum()-amount);
         else super.addSCashSplit(person, amount*-1);
     }
 
     @Override
     public void addPercentageSplit(Person person, Double amount) {
-        if (person.equals(getPayedByValue())) super.addPercentageSplit(person, getTotalSum()-getTotalSum()*amount);
+        if (person.equals(getPayedByValue())) super.addPercentageSplit(person, getTotalSum()*amount);
         else super.addPercentageSplit(person, getTotalSum()*amount);
     }
 

@@ -57,23 +57,18 @@ public class PaymentSplitPanelController extends ViewController {
     }
 
     private void cashDoneButtonActionListener() {
-        System.out.println("Cash done button pressed");
+        // get field values
+        ArrayList<Double> valueList = getOldCashAmountValues();
+        ArrayList<Person> personList = currentTicket.getPersonArrayList();
 
-        for (JFormattedTextField f:paymentSplitSubPanelCASH.getAmounts()) {
-            Double value = (Double) f.getValue();
-            System.out.println(value);
+        // update ticket
+        if (valueList.size() == personList.size()) {
+            for (int i = 0; i < valueList.size(); i++) currentTicket.addSCashSplit(personList.get(i), valueList.get(i));
+            ticketsDBController.add(currentTicket);
+
+            // go back
+            Router.getInstance().goBack();
         }
-
-        System.out.println("Redrawing...");
-
-        // remove all, recreate and add that single action listener (todo - separate out)
-        paymentSplitPanel.removeContentPanel(0);
-        createCashPanelFields();
-        paymentSplitSubPanelCASH.getDoneButton().addActionListener(e -> cashDoneButtonActionListener());
-
-        // todo: read all fields
-        // todo: validate fields on change and change button to unavailable
-        // todo: add label with remaining amount/percentage
     }
 
     private void percentageDoneButtonActionListener() {
@@ -189,6 +184,20 @@ public class PaymentSplitPanelController extends ViewController {
         }
     }
 
+    private ArrayList<Double> getOldCashAmountValues() {
+        // return null if non existent
+        if (paymentSplitSubPanelCASH == null) return null;
+
+        // get old fields
+        ArrayList<JFormattedTextField> oldTextFields = paymentSplitSubPanelCASH.getAmounts();
+        ArrayList<Double> oldValues = new ArrayList<>();
+
+        // save the old field values as doubles
+        for (JFormattedTextField textField : oldTextFields) oldValues.add((Double)textField.getValue());
+
+        return oldValues;
+    }
+
     private ArrayList<Integer> getOldPercentageSpinnerFields() {
         // return null if non existent
         if (paymentSplitSubPanelPERCENTAGE == null) return null;
@@ -214,6 +223,13 @@ public class PaymentSplitPanelController extends ViewController {
         return sum;
     }
 
+    private Double getDoubleArraySum(ArrayList<Double> list) {
+        double sum = 0;
+        for (Double d:list) sum += d;
+
+        return sum;
+    }
+
     private void createCashPanelFields() {
         // left
         ArrayList<JLabel> iconLabels1 = new ArrayList<>();
@@ -231,27 +247,16 @@ public class PaymentSplitPanelController extends ViewController {
             JLabel userName1 = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
             JLabel moneyIcon = new JLabel("$");
 
-            //JFormattedTextField amount_toPay = new JFormattedTextField(createMaskFormatter());
-            //amount_toPay.setValue(0.00);
-
-            NumberFormat format = NumberFormat.getCurrencyInstance();
-            String pattern = ((DecimalFormat) format).toPattern();
-            String newPattern = pattern.replace("\u00A4", "").trim();
-            NumberFormat newFormat = new DecimalFormat(newPattern);
-            NumberFormatter formatter = new NumberFormatter(newFormat);
-            formatter.setValueClass(Double.class);
-            formatter.setMinimum(0.00);
-            formatter.setMaximum(100.00);
-            formatter.setAllowsInvalid(false);
-            formatter.setCommitsOnValidEdit(true);
-            JFormattedTextField amount_toPay = new JFormattedTextField(formatter);
+            JFormattedTextField amount_toPay = new JFormattedTextField(createFormatter2(1000.00));
             amount_toPay.setValue(0.00);
-            //JFormattedTextField amount_toPay = new JFormattedTextField(createFormatter("##.##"));
+
+            // todo - could update limiter
+            // amount_toPay.setFormatterFactory(new DefaultFormatterFactory(createFormatter2(50.00)));
 
             amount_toPay.addPropertyChangeListener(new PropertyChangeListener() {
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
-                    System.out.println("amount to pay changed to " + amount_toPay.getText());
+                    paymentSplitSubPanelCASH.setRemainingAmount(currentTicket.getTotalSum()-getDoubleArraySum(Objects.requireNonNull(getOldCashAmountValues())));
                 }
             });
 
@@ -271,6 +276,7 @@ public class PaymentSplitPanelController extends ViewController {
         // add sub panel 1
         paymentSplitSubPanelCASH = new PaymentSplitSubPanelCASH(iconLabels1, userNames1, moneyIcons1, amounts_toPay1);
         paymentSplitPanel.setContentPanel(0, paymentSplitSubPanelCASH, iconLabels1.size() > 5);
+        paymentSplitSubPanelCASH.setRemainingAmount(currentTicket.getTotalSum());
     }
 
     private void createPercentagePanelFields() {
@@ -391,7 +397,7 @@ public class PaymentSplitPanelController extends ViewController {
         };
     }
 
-    private NumberFormatter createMaskFormatter() {
+    private NumberFormatter createFormatter1() {
         // https://stackoverflow.com/questions/8658205/format-currency-without-currency-symbol
         // https://stackoverflow.com/questions/12806278/double-decimal-formatting-in-java
 
@@ -402,26 +408,26 @@ public class PaymentSplitPanelController extends ViewController {
             numberFormatter1.setAllowsInvalid(false);
             numberFormatter1.setOverwriteMode(true);
             numberFormatter1.setCommitsOnValidEdit(true);
-            numberFormatter1.setMinimum(10.00);
+            numberFormatter1.setMinimum(0.00);
             numberFormatter1.setMaximum(100.00);
         } catch (Exception e) { System.err.println(e.toString()); }
 
         return numberFormatter1;
     }
 
-    private MaskFormatter createFormatter(String s) {
-        MaskFormatter formatter = null;
-        try {
-            formatter = new MaskFormatter(s);
-            formatter.setAllowsInvalid(false);
-            formatter.setOverwriteMode(true);
-            formatter.setCommitsOnValidEdit(true);
-            formatter.setValidCharacters("0123456789");
-            formatter.setPlaceholderCharacter('0');
-        } catch (java.text.ParseException exc) {
-            System.err.println("formatter is bad: " + exc.getMessage());
-            System.exit(-1);
-        }
+    private NumberFormatter createFormatter2(Double maximum) {
+        //https://www.tabnine.com/code/java/classes/javax.swing.text.NumberFormatter
+
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        String pattern = ((DecimalFormat) format).toPattern();
+        String newPattern = pattern.replace("\u00A4", "").trim();
+        NumberFormat newFormat = new DecimalFormat(newPattern);
+        NumberFormatter formatter = new NumberFormatter(newFormat);
+        formatter.setValueClass(Double.class);
+        formatter.setMinimum(0.00);
+        formatter.setMaximum(maximum);
+        formatter.setAllowsInvalid(false);
+        formatter.setCommitsOnValidEdit(true);
         return formatter;
     }
 

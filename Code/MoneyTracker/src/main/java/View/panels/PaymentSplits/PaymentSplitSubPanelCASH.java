@@ -2,7 +2,9 @@ package View.panels.PaymentSplits;
 
 import View.others.CustomColors;
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PaymentSplitSubPanelCASH extends JPanel {
     private final JButton doneButton;
@@ -10,6 +12,7 @@ public class PaymentSplitSubPanelCASH extends JPanel {
     private ArrayList<JLabel> userNames;
     private ArrayList<JLabel> moneyIcons;
     private ArrayList<JFormattedTextField> amounts;
+    private JLabel remainingAmount;
 
     private final GroupLayout layout;
     private GroupLayout.ParallelGroup parallel;
@@ -27,6 +30,7 @@ public class PaymentSplitSubPanelCASH extends JPanel {
         this.userNames = userNames;
         this.moneyIcons = moneyIcons;
         this.amounts = amounts;
+        this.remainingAmount = new JLabel();
 
         // auto-generate row layout
         generateLayout();
@@ -34,13 +38,17 @@ public class PaymentSplitSubPanelCASH extends JPanel {
         // buttons
         doneButton = new JButton();
 
-        // button style
+        // style
         doneButton.setText("DONE");
         doneButton.setBackground(CustomColors.getYellow());
+        remainingAmount.setForeground(Color.WHITE);
 
-        // add button to layout
+        // add button and "remaining amount" to layout
         parallel.addComponent(doneButton, GroupLayout.Alignment.CENTER);
+        parallel.addComponent(remainingAmount, GroupLayout.Alignment.TRAILING);
+
         sequential.addComponent(doneButton);
+        sequential.addComponent(remainingAmount);
 
         layout.setHorizontalGroup(parallel);
         layout.setVerticalGroup(sequential);
@@ -89,5 +97,17 @@ public class PaymentSplitSubPanelCASH extends JPanel {
 
     public ArrayList<JFormattedTextField> getAmounts() {
         return amounts;
+    }
+
+    public void setRemainingAmount(Double remainingAmount) {
+        this.remainingAmount.setText("Remaining: $" + String. format("%.2f", remainingAmount));
+        if (remainingAmount == 0.00)  {
+            this.remainingAmount.setForeground(Color.GREEN);
+            this.doneButton.setEnabled(true);
+        }
+        else {
+            this.remainingAmount.setForeground(Color.RED);
+            this.doneButton.setEnabled(false);
+        }
     }
 }
