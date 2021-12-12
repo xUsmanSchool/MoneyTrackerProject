@@ -19,6 +19,8 @@ import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Observable;
@@ -213,16 +215,14 @@ public class PaymentSplitPanelController extends ViewController {
     }
 
     private void createCashPanelFields() {
-        // get info for panel generation
-        ArrayList<Person> persons = personsDBController.getAll();
-
         // left
         ArrayList<JLabel> iconLabels1 = new ArrayList<>();
         ArrayList<JLabel> userNames1 = new ArrayList<>();
         ArrayList<JLabel> moneyIcons1 = new ArrayList<>();
         ArrayList<JFormattedTextField> amounts_toPay1 = new ArrayList<>();
 
-        Person ticketPayedBy = currentTicket.getPayedByValue();
+        ArrayList<Person> persons = currentTicket.getPersonArrayList();
+        Person payedBy = currentTicket.getPayedByValue();
         Double ticketValueToPay = currentTicket.getTotalSum();
 
         for (Person person : persons) {
@@ -231,12 +231,33 @@ public class PaymentSplitPanelController extends ViewController {
             JLabel userName1 = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
             JLabel moneyIcon = new JLabel("$");
 
-            JFormattedTextField amount_toPay = new JFormattedTextField(createMaskFormatter());
+            //JFormattedTextField amount_toPay = new JFormattedTextField(createMaskFormatter());
+            //amount_toPay.setValue(0.00);
+
+            NumberFormat format = NumberFormat.getCurrencyInstance();
+            String pattern = ((DecimalFormat) format).toPattern();
+            String newPattern = pattern.replace("\u00A4", "").trim();
+            NumberFormat newFormat = new DecimalFormat(newPattern);
+            NumberFormatter formatter = new NumberFormatter(newFormat);
+            formatter.setValueClass(Double.class);
+            formatter.setMinimum(0.00);
+            formatter.setMaximum(100.00);
+            formatter.setAllowsInvalid(false);
+            formatter.setCommitsOnValidEdit(true);
+            JFormattedTextField amount_toPay = new JFormattedTextField(formatter);
             amount_toPay.setValue(0.00);
+            //JFormattedTextField amount_toPay = new JFormattedTextField(createFormatter("##.##"));
+
+            amount_toPay.addPropertyChangeListener(new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    System.out.println("amount to pay changed to " + amount_toPay.getText());
+                }
+            });
 
             // style
             iconLabel1.setForeground(Color.WHITE);
-            userName1.setForeground(person == ticketPayedBy ? CustomColors.getYellow() : Color.WHITE);
+            userName1.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
             moneyIcon.setForeground(Color.WHITE);
             userName1.setMinimumSize(new Dimension(300,30));
 
@@ -381,10 +402,27 @@ public class PaymentSplitPanelController extends ViewController {
             numberFormatter1.setAllowsInvalid(false);
             numberFormatter1.setOverwriteMode(true);
             numberFormatter1.setCommitsOnValidEdit(true);
-            numberFormatter1.setMaximum(99.99);
+            numberFormatter1.setMinimum(10.00);
+            numberFormatter1.setMaximum(100.00);
         } catch (Exception e) { System.err.println(e.toString()); }
 
         return numberFormatter1;
+    }
+
+    private MaskFormatter createFormatter(String s) {
+        MaskFormatter formatter = null;
+        try {
+            formatter = new MaskFormatter(s);
+            formatter.setAllowsInvalid(false);
+            formatter.setOverwriteMode(true);
+            formatter.setCommitsOnValidEdit(true);
+            formatter.setValidCharacters("0123456789");
+            formatter.setPlaceholderCharacter('0');
+        } catch (java.text.ParseException exc) {
+            System.err.println("formatter is bad: " + exc.getMessage());
+            System.exit(-1);
+        }
+        return formatter;
     }
 
     // https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html

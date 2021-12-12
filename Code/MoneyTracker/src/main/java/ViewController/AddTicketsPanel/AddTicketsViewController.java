@@ -83,7 +83,7 @@ public class AddTicketsViewController extends ViewController {
         addTicketsPanel.getEventsJComboBox().addActionListener(e -> changeEventsIconActionListener());
         addTicketsPanel.getSplitTypeJComboBox().addActionListener(e -> splitTypeButtonRenameActionListener());
         addTicketsPanel.getCreateOrContinueTicketButton().addActionListener(e -> addTicketOrContinueActionListener(addTicketsPanel.getCreateOrContinueTicketButton().getText()));
-        addTicketsPanel.getPayedAmountTextField().getDocument().addDocumentListener(checkPayedAmountTextFieldValidDocumentListener());
+        addTicketsPanel.getPayedAmountTextField().addPropertyChangeListener(e -> changeButtonVisibility());
     }
 
     private void changeEventsIconActionListener() {
@@ -178,20 +178,6 @@ public class AddTicketsViewController extends ViewController {
         Ticket t = ticketFactory.getTicket(payedBy, totalSum, event, splitType);
         t.autoCalculate(personsDBController.getAll());
         return t;
-    }
-
-    private DocumentListener checkPayedAmountTextFieldValidDocumentListener() {
-        return new DocumentListener() {
-            public void changedUpdate(DocumentEvent e) {
-                changeButtonVisibility();
-            }
-            public void removeUpdate(DocumentEvent e) {
-                changeButtonVisibility();
-            }
-            public void insertUpdate(DocumentEvent e) {
-                changeButtonVisibility();
-            }
-        };
     }
 
     private void changeButtonVisibility() {
