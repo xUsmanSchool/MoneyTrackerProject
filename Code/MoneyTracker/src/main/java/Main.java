@@ -28,7 +28,7 @@ public class Main {
         TicketFactory ticketFactory = new TicketFactory();                          /** Factory pattern: tickets */
         //--------------------------------------------------------------------------------------------------------------
         ReadFromJSONFile.readPersonFile(personDatabase);                           /** Read JSON file */
-        ReadFromJSONFile.readTicketFile(ticketDatabase);
+        //ReadFromJSONFile.readTicketFile(ticketDatabase);
         //--------------------------------------------------------------------------------------------------------------
         Person person1 = new Person("Usman", "The Admin");                          // create person 1
         person1.setGender(Gender.MALE);                                                 // update person 1
@@ -66,9 +66,9 @@ public class Main {
         ticket3.addPercentageSplit(person3, 0.80);                  // create ticket 3
         //--------------------------------------------------------------------------------------------------------------
         System.out.println("Adding in main...");
-        //ticketsDBController.add(ticket1);                                // add ticket 1 to database
-        //ticketsDBController.add(ticket2);                                // add ticket 2 to database
-        //ticketsDBController.add(ticket3);                                // add ticket 3 to database
+        ticketsDBController.add(ticket1);                                // add ticket 1 to database
+        ticketsDBController.add(ticket2);                                // add ticket 2 to database
+        ticketsDBController.add(ticket3);                                // add ticket 3 to database
         //--------------------------------------------------------------------------------------------------------------
         System.out.println("\nTesting iterator pattern on Ticket DB: ");            /** Iterator pattern through DB */
         Iterator<Ticket> itT = ticketDatabase.getIterator();                        /** Iterator pattern through DB */
