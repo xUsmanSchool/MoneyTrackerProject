@@ -16,8 +16,8 @@ public class JSONObjectConvert {
         jsonMap.put(person.getPhoneNumberKey(), person.getPhoneNumberValue());
         jsonMap.put(person.getGenderKey(), person.getGenderValue().toString());
         jsonMap.put(person.getBirthDateKey(), DateToJSONArray(person.getBirthDateValue()));
-        jsonMap.put(person.getCreationDateKey(), DateToJSONArray(person.getCreationDateValue()).toJSONString());
-        jsonMap.put(person.getEditDateKey(), DateToJSONArray(person.getEditDateValue()).toJSONString());
+        //jsonMap.put(person.getCreationDateKey(), DateToJSONArray(person.getCreationDateValue()).toJSONString());
+        //jsonMap.put(person.getEditDateKey(), DateToJSONArray(person.getEditDateValue()).toJSONString());
         jsonMap.put(person.getIconKey(), person.getIconValue());
         return new JSONObject(jsonMap);
     }
@@ -34,7 +34,7 @@ public class JSONObjectConvert {
         //Event type
         jsonMap.put(ticket.getEventTypeKey(), ticket.getEventTypeValue().getEventName());
         //Payed by - shows person object
-        jsonMap.put(ticket.getPayedByKey(), ticket.getPayedByValue().toString());
+        jsonMap.put(ticket.getPayedByKey(), String.format("%s;%s",ticket.getPayedByValue().getFirstNameValue(), ticket.getPayedByValue().getLastNameValue()));
         //split type
         jsonMap.put(ticket.getSplitTypeKey(), ticket.getSplitTypeValue().toString());
         //total sum
@@ -43,7 +43,7 @@ public class JSONObjectConvert {
         JSONArray tempJsonArray = new JSONArray();
         JSONObject tempObject = new JSONObject();
         for (Person person : ticket.getPersonArrayList()){
-            tempObject.put(person, ticket.getAmountForPerson(person));
+            tempObject.put(String.format("%s;%s", person.getFirstNameValue(), person.getLastNameValue()), ticket.getAmountForPerson(person));
         }
         tempJsonArray.add(tempObject);
 
