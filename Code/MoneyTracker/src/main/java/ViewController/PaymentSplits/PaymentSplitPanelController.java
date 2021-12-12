@@ -22,7 +22,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Observable;
@@ -161,8 +160,6 @@ public class PaymentSplitPanelController extends ViewController {
 
             // set model on spinner
             oldjSpinners.get(i).setModel(model);
-
-            System.out.println("Spinner maximum with current value " + initialValue + " has max of " + spinnerMaximum + ". ");
         }
 
         // reset focus so that the user doesn't notice anything
