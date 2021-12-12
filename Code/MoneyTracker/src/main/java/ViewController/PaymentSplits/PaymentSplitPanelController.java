@@ -81,6 +81,9 @@ public class PaymentSplitPanelController extends ViewController {
         // !!! prevent endless looping
         justRefreshed = true;
 
+        // not sure if needed or if they are automatically removed when panel is cleared
+        // disactivatePercentageFocusListeners();
+
         // get old fields and save the old field values
         ArrayList<Integer> oldValues = getOldPercentageSpinnerFields();
 
@@ -95,7 +98,6 @@ public class PaymentSplitPanelController extends ViewController {
 
         // restore values to old field values
         int i = 0;
-        //for (JSpinner spinner : newjSpinners) Objects.requireNonNull(getTextField(spinner)).setText(oldValues.get(i++));
         for (JSpinner spinner : newjSpinners) spinner.setValue(Integer.valueOf(oldValues.get(i++)));
 
         // reset focus so that the user doesn't notice anything
@@ -107,6 +109,48 @@ public class PaymentSplitPanelController extends ViewController {
         // activate listeners
         paymentSplitSubPanelPERCENTAGE.getDoneButton().addActionListener(e -> percentageDoneButtonActionListener());
         activatePercentageFocusListeners();
+    }
+
+    private void updateSpinnerModels() {
+        // get info for panel generation
+        ArrayList<Person> persons = personsDBController.getAll();
+
+        // return null if non existent
+        if (paymentSplitSubPanelPERCENTAGE == null) System.out.println("is null");
+
+        // get old fields
+        ArrayList<JSpinner> oldjSpinners = paymentSplitSubPanelPERCENTAGE.getPercentages_toPay();
+        ArrayList<Integer> list = getOldPercentageSpinnerFields();
+
+        int spinnerMaximum = 100;
+        int initialValue = 0;
+
+        Integer percentageSum = getArraySum(list);
+        Integer remainingPercentage = 100 - percentageSum;
+
+        for (int i = 0; i < persons.size(); i++) {
+            if (list != null) {
+                spinnerMaximum = list.get(i) + remainingPercentage;
+                initialValue = list.get(i);
+            }
+
+            SpinnerModel model = new SpinnerNumberModel(
+                    initialValue,           //initial value
+                    0,                      //min
+                    spinnerMaximum,         //max
+                    1);                     //step
+
+            // set model on spinner
+            oldjSpinners.get(i).setModel(model);
+        }
+
+        // reset focus so that the user doesn't notice anything
+        Objects.requireNonNull(getTextField(oldjSpinners.get(lastFocusIn))).grabFocus();
+        Objects.requireNonNull(getTextField(oldjSpinners.get(lastFocusIn))).requestFocus();
+        Objects.requireNonNull(getTextField(oldjSpinners.get(lastFocusIn))).requestFocusInWindow();
+        lastFocusIn = 0;
+
+        paymentSplitSubPanelPERCENTAGE.redraw();
     }
 
     @Override
@@ -206,7 +250,6 @@ public class PaymentSplitPanelController extends ViewController {
         ArrayList<JLabel> percentageIcons2 = new ArrayList<>();
         ArrayList<JSpinner> percentages_toPay2 = new ArrayList<>();
         ArrayList<JLabel> amounts_converted2 = new ArrayList<>();
-        ArrayList<Integer> maxima2 = new ArrayList<>();
 
         Person payedBy = currentTicket.getPayedByValue();
 
@@ -216,22 +259,34 @@ public class PaymentSplitPanelController extends ViewController {
             JLabel iconLabel = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
             JLabel userName = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
             JLabel percentageIcon = new JLabel("%");
+            /*
             Integer spinnerMaximum = 100;
 
+            // spinner maximum calculations
             ArrayList<Integer> list = getOldPercentageSpinnerFields();
+            Integer percentageSum = 0;
             if (list != null) {
-                Integer percentageSum = getArraySum(list);
+                percentageSum = getArraySum(list);
                 Integer remainingPercentage = 100 - percentageSum;
                 spinnerMaximum = list.get(i) + remainingPercentage;
             }
 
+            // init spinner
             int convMaximum = spinnerMaximum.intValue();
             SpinnerModel model = new SpinnerNumberModel(
                     0,                //initial value
                     0,                      //min
                     convMaximum,            //max
                     1);                     //step
+             */
 
+            SpinnerModel model = new SpinnerNumberModel(
+                    0,                //initial value
+                    0,                      //min
+                    100,                    //max
+                    1);                     //step
+
+            // set formatters on spinner
             JSpinner percentage_toPay = new JSpinner(model);
             percentage_toPay.setEditor(new JSpinner.NumberEditor(percentage_toPay,""));
             JFormattedTextField txt = getTextField(percentage_toPay);
@@ -247,11 +302,15 @@ public class PaymentSplitPanelController extends ViewController {
             iconLabel.setForeground(Color.WHITE);
             userName.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
 
+            // propertyChange vars
             int finalI = i;
             txt.addPropertyChangeListener(new PropertyChangeListener() {
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
                     calculateShareForPercentage(finalI);
+
+                    // activate button if all percentages add up to 100
+                    paymentSplitSubPanelPERCENTAGE.getDoneButton().setEnabled(percentagesAddUptoHundred());
                 }
             });
 
@@ -267,7 +326,6 @@ public class PaymentSplitPanelController extends ViewController {
             percentageIcons2.add(percentageIcon);
             percentages_toPay2.add(percentage_toPay);
             amounts_converted2.add(amount_converted);
-            maxima2.add(spinnerMaximum);
 
             i++;
         }
@@ -285,13 +343,16 @@ public class PaymentSplitPanelController extends ViewController {
         return new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
+                /*
                 if (justRefreshed) {
                     justRefreshed = false;
                     return;
                 }
+                //fullRedrawPercentagePanel();
+                */
 
                 lastFocusIn = i;
-                fullRedrawPercentagePanel();
+                updateSpinnerModels();
             }
 
             @Override
@@ -345,5 +406,11 @@ public class PaymentSplitPanelController extends ViewController {
         Double calculation = spinnerValueDouble / 100 * currentTicket.getTotalSum();
         String showValue = String. format("%.2f", calculation);
         amounts_converted_list.get(i).setText("$" + showValue);
+    }
+
+    private boolean percentagesAddUptoHundred() {
+        ArrayList<Integer> list = getOldPercentageSpinnerFields();
+        if (list != null) return getArraySum(list) == 100;
+        else return false;
     }
 }
