@@ -12,6 +12,8 @@ import View.panels.PaymentSplits.PaymentSplitSubPanelCASH;
 import View.panels.PaymentSplits.PaymentSplitSubPanelPERCENTAGE;
 import ViewController.ViewController;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -135,13 +137,13 @@ public class PaymentSplitPanelController extends ViewController {
         int initialValue = 0;
 
         Integer percentageSum = getArraySum(list);
+        if (percentageSum > 100) percentageSum = 100; // prevent crashes, fix below in stateChanged
         Integer remainingPercentage = 100 - percentageSum;
 
         for (int i = 0; i < persons.size(); i++) {
-            if (list != null) {
-                spinnerMaximum = list.get(i) + remainingPercentage;
-                initialValue = list.get(i);
-            }
+            initialValue = list.get(i);
+            spinnerMaximum = 100;
+            spinnerMaximum = initialValue + remainingPercentage;
 
             SpinnerModel model = new SpinnerNumberModel(
                     initialValue,           //initial value
@@ -149,8 +151,18 @@ public class PaymentSplitPanelController extends ViewController {
                     spinnerMaximum,         //max
                     1);                     //step
 
+            int finalSpinnerMaximum = spinnerMaximum;
+            model.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    if ((int)((SpinnerNumberModel) e.getSource()).getValue() > finalSpinnerMaximum) ((SpinnerNumberModel) e.getSource()).setValue(finalSpinnerMaximum);
+                }
+            });
+
             // set model on spinner
             oldjSpinners.get(i).setModel(model);
+
+            System.out.println("Spinner maximum with current value " + initialValue + " has max of " + spinnerMaximum + ". ");
         }
 
         // reset focus so that the user doesn't notice anything
@@ -380,14 +392,7 @@ public class PaymentSplitPanelController extends ViewController {
         return new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                /*
-                if (justRefreshed) {
-                    justRefreshed = false;
-                    return;
-                }
-                //fullRedrawPercentagePanel();
-                */
-
+                System.out.println("Gaining focus in " + i + " & updating spinner model");
                 lastFocusIn = i;
                 updateSpinnerModels();
             }
