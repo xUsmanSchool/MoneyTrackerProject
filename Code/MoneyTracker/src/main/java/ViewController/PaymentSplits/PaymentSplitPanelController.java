@@ -28,6 +28,7 @@ public class PaymentSplitPanelController extends ViewController {
     private final PaymentSplitPanelWithBorder paymentSplitPanel;
     private Ticket currentTicket;
     private int lastFocusIn;
+    private boolean justRefreshed;
 
     private PaymentSplitSubPanelCASH paymentSplitSubPanelCASH;
     private PaymentSplitSubPanelPERCENTAGE paymentSplitSubPanelPERCENTAGE;
@@ -73,15 +74,15 @@ public class PaymentSplitPanelController extends ViewController {
     }
 
     private void percentageDoneButtonActionListener() {
-        System.out.println("Percentage done button pressed");
-        System.out.println("Redrawing...");
+        System.out.println("Percentage done button pressed but nuffing happened... #magic");
+    }
 
-        // get old fields
-        ArrayList<JSpinner> oldjSpinners = paymentSplitSubPanelPERCENTAGE.getPercentages_toPay();
-        ArrayList<String> oldValues = new ArrayList<>();
+    private void fullRedrawPercentagePanel() {
+        // !!! prevent endless looping
+        justRefreshed = true;
 
-        // save the old field values
-        for (JSpinner spinner : oldjSpinners) oldValues.add(Objects.requireNonNull(getTextField(spinner)).getText());
+        // get old fields and save the old field values
+        ArrayList<Integer> oldValues = getOldPercentageSpinnerFields();
 
         // remove panel
         paymentSplitPanel.removeContentPanel(1);
@@ -119,6 +120,40 @@ public class PaymentSplitPanelController extends ViewController {
             txt.addFocusListener(getFocusListener(i));
             i++;
         }
+    }
+
+    private void disactivatePercentageFocusListeners() {
+        ArrayList<JSpinner> jSpinners = paymentSplitSubPanelPERCENTAGE.percentages_toPay;
+        for (JSpinner spinner:jSpinners) {
+            JFormattedTextField txt = getTextField(spinner);
+            FocusListener[] fls = txt.getFocusListeners();
+            for (FocusListener fl : fls) txt.removeFocusListener(fl);
+        }
+    }
+
+    private ArrayList<Integer> getOldPercentageSpinnerFields() {
+        // return null if non existent
+        if (paymentSplitSubPanelPERCENTAGE == null) return null;
+
+        // get old fields
+        ArrayList<JSpinner> oldjSpinners = paymentSplitSubPanelPERCENTAGE.getPercentages_toPay();
+        ArrayList<String> oldValues = new ArrayList<>();
+
+        // save the old field values as strings
+        for (JSpinner spinner : oldjSpinners) oldValues.add(Objects.requireNonNull(getTextField(spinner)).getText());
+
+        // convert to ints
+        ArrayList<Integer> oldIntegerValues = new ArrayList<>();
+        for (String s: oldValues) oldIntegerValues.add(Integer.valueOf(s));
+
+        return oldIntegerValues;
+    }
+
+    private Integer getArraySum(ArrayList<Integer> list) {
+        int sum = 0;
+        for (Integer i:list) sum += i;
+
+        return sum;
     }
 
     private void createCashPanelFields() {
@@ -171,6 +206,7 @@ public class PaymentSplitPanelController extends ViewController {
         ArrayList<JLabel> percentageIcons2 = new ArrayList<>();
         ArrayList<JSpinner> percentages_toPay2 = new ArrayList<>();
         ArrayList<JLabel> amounts_converted2 = new ArrayList<>();
+        ArrayList<Integer> maxima2 = new ArrayList<>();
 
         Person payedBy = currentTicket.getPayedByValue();
 
@@ -180,12 +216,21 @@ public class PaymentSplitPanelController extends ViewController {
             JLabel iconLabel = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
             JLabel userName = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
             JLabel percentageIcon = new JLabel("%");
+            Integer spinnerMaximum = 100;
 
+            ArrayList<Integer> list = getOldPercentageSpinnerFields();
+            if (list != null) {
+                Integer percentageSum = getArraySum(list);
+                Integer remainingPercentage = 100 - percentageSum;
+                spinnerMaximum = list.get(i) + remainingPercentage;
+            }
+
+            int convMaximum = spinnerMaximum.intValue();
             SpinnerModel model = new SpinnerNumberModel(
-                    0,        //initial value
-                    0,              //min
-                    100,            //max
-                    1);             //step
+                    0,                //initial value
+                    0,                      //min
+                    convMaximum,            //max
+                    1);                     //step
 
             JSpinner percentage_toPay = new JSpinner(model);
             percentage_toPay.setEditor(new JSpinner.NumberEditor(percentage_toPay,""));
@@ -195,7 +240,6 @@ public class PaymentSplitPanelController extends ViewController {
             nf.setAllowsInvalid(false);
             nf.setOverwriteMode(true);
             nf.setCommitsOnValidEdit(true);
-            nf.setMaximum(100);
 
             JLabel amount_converted = new JLabel("$0.00");
 
@@ -214,7 +258,8 @@ public class PaymentSplitPanelController extends ViewController {
             percentageIcon.setForeground(Color.WHITE);
             amount_converted.setForeground(CustomColors.getYellow());
             amount_converted.setMinimumSize(new Dimension(70,30));
-            userName.setMinimumSize(new Dimension(240,30));
+            userName.setMinimumSize(new Dimension(230,30));
+            percentage_toPay.setMinimumSize(new Dimension(53,20));
 
             // add to list
             iconLabels2.add(iconLabel);
@@ -222,6 +267,7 @@ public class PaymentSplitPanelController extends ViewController {
             percentageIcons2.add(percentageIcon);
             percentages_toPay2.add(percentage_toPay);
             amounts_converted2.add(amount_converted);
+            maxima2.add(spinnerMaximum);
 
             i++;
         }
@@ -239,14 +285,17 @@ public class PaymentSplitPanelController extends ViewController {
         return new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                System.out.println("focus gained in " + i);
+                if (justRefreshed) {
+                    justRefreshed = false;
+                    return;
+                }
+
                 lastFocusIn = i;
+                fullRedrawPercentagePanel();
             }
 
             @Override
-            public void focusLost(FocusEvent e) {
-                System.out.println("focus lost in " + i);
-            }
+            public void focusLost(FocusEvent e) {}
         };
     }
 

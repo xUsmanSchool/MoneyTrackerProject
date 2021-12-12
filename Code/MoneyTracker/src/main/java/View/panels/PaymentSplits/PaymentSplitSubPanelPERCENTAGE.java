@@ -11,6 +11,7 @@ public class PaymentSplitSubPanelPERCENTAGE extends JPanel {
     public ArrayList<JSpinner> percentages_toPay;
     public ArrayList<JLabel> percentageIcons;
     public ArrayList<JLabel> amounts_converted;
+    public ArrayList<Integer> maxima;
 
     private GroupLayout layout;
     private GroupLayout.ParallelGroup parallel;
@@ -103,6 +104,10 @@ public class PaymentSplitSubPanelPERCENTAGE extends JPanel {
 
     public ArrayList<JSpinner> getPercentages_toPay() {
         return percentages_toPay;
+    }
+
+    public ArrayList<Integer> getMaxima() {
+        return maxima;
     }
 
     public void redraw() {
