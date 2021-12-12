@@ -17,6 +17,7 @@ public class IconSelectorFrameController extends Observable {
 
     public void activateActionListeners() {
         for (JLabel label:iconSelectorFrame.getImageList()) label.addMouseListener(test(label));
+        iconSelectorFrame.addWindowListener(windowClosingListener());
     }
 
     private MouseListener test(JLabel l) {
@@ -24,10 +25,21 @@ public class IconSelectorFrameController extends Observable {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setChanged();
-                //notifyObservers(l.getIcon().toString());
                 notifyObservers(new ImageFrameIconObservableEntry((Icon) l.getIcon(), true));
                 UserCreationPanelController.ImageSelectorFrameOpen = false;
                 iconSelectorFrame.dispose();
+            }
+        };
+    }
+
+    private WindowAdapter windowClosingListener() {
+        return new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                setChanged();
+                notifyObservers(new ImageFrameIconObservableEntry(null, false));
+                UserCreationPanelController.ImageSelectorFrameOpen = false;
+                e.getWindow().dispose();
             }
         };
     }

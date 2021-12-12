@@ -389,7 +389,6 @@ public class PaymentSplitPanelController extends ViewController {
         return new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                System.out.println("Gaining focus in " + i + " & updating spinner model");
                 lastFocusIn = i;
                 updateSpinnerModels();
             }

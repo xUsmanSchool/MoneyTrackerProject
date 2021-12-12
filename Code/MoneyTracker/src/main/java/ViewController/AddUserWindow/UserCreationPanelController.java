@@ -124,6 +124,7 @@ public class UserCreationPanelController extends ViewController {
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof ImageFrameIconObservableEntry) {
+            if (((ImageFrameIconObservableEntry) arg).isAdded())
             userCreationPanel.setImage(((ImageFrameIconObservableEntry) arg).getIcon().toString(), "Image selected");
         }
 
