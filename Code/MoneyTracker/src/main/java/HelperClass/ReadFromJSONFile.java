@@ -71,7 +71,7 @@ public class ReadFromJSONFile {
             System.out.println(ticketsList);
 
             //Iterate over tickets array
-            ticketsList.forEach(ticket -> parseTicketObject( (JSONObject) ticket , db) );
+            for (Object ticket : ticketsList) parseTicketObject((JSONObject) ticket, db);
 
         }  catch (IOException e) {
             System.err.printf("Unable to read file %s%s tickets.json\n", e);
@@ -81,25 +81,51 @@ public class ReadFromJSONFile {
     }
 
     private static void parseTicketObject(JSONObject ticketObject, TicketsDB db) {
-        String payed_by = (String) ticketObject.get("Payed_by");
+        //total sum
+        double total_sum = (double) ticketObject.get("TotalSum");
 
-        PersonsDB personsDB = PersonsDB.getInstance();
-        PersonsDBController personsDBController = new PersonsDBController(personsDB);
-        ArrayList<Person> personsList = personsDBController.getAll();
-        System.out.println("==========STARTING FOR LOOP=========");
-        for (int i = 0; i < personsList.size(); i++){
-            System.out.println("==========STARTING IF STATEMENT=========");
-            String testString = String.format("%s;%s", personsList.get(i).getFirstNameValue(), personsList.get(i).getLastNameValue());
-            System.out.println("testString: " + testString);
-            System.out.println("payed_by: " + payed_by);
-            if (payed_by.toString() == testString){
-                System.out.println("==========FOUND MATCH=========");
+        //event type
+        String event_type = (String) ticketObject.get("EventType");
+        Events event = null;
+        for (Events e : Events.values()) {
+            if (e.name().equals(event_type)) {
+                event = e;
+                break;
             }
         }
 
-        //create ticket
-        //Ticket ticket = TicketFactory.getTicket()
+        //Split type
+        String split_type = (String) ticketObject.get("SplitType");
+        SplitType splitType = null;
+        for (SplitType s : SplitType.values()) {
+            if (s.name().equals(split_type)) {
+                splitType = s;
+                break;
+            }
+        }
 
-        //db.add(tmpPerson);
+        //payed by
+        String payed_by = (String) ticketObject.get("Payed_by");
+        Person person = null;
+        PersonsDB personsDB = PersonsDB.getInstance();
+        ArrayList<Person> personsList = personsDB.getAll();
+
+        for (int i = 0; i < personsList.size(); i++){
+            String testString = String.format("%s;%s", personsList.get(i).getFirstNameValue(), personsList.get(i).getLastNameValue());
+
+            if (payed_by.equals(testString)){
+                person = personsList.get(i);
+                break;
+            }
+        }
+
+        //payment split
+
+        //create ticket
+        TicketFactory ticketFactory = new TicketFactory();
+        EventFactory eventFactory = new EventFactory();
+
+        Ticket ticket = ticketFactory.getTicket(person, total_sum, eventFactory.getEvent(event), splitType);
+        db.add(ticket);
     }
 }
