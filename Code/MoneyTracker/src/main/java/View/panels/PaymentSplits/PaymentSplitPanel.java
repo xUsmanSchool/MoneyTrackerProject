@@ -100,6 +100,9 @@ public class PaymentSplitPanel extends JPanel {
             contentPanel.add(toAdd);
         }
 
+        toAdd.setVisible(true);
+        contentPanel.setVisible(true);
+
         validate();
         repaint();
     }

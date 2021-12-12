@@ -84,4 +84,29 @@ public class PaymentSplitSubPanelPERCENTAGE extends JPanel {
     public JButton getDoneButton() {
         return doneButton;
     }
+
+    public ArrayList<JLabel> getUserNames() {
+        return userNames;
+    }
+
+    public ArrayList<JLabel> getIconLabels() {
+        return iconLabels;
+    }
+
+    public ArrayList<JLabel> getPercentageIcons() {
+        return percentageIcons;
+    }
+
+    public ArrayList<JLabel> getAmounts_converted() {
+        return amounts_converted;
+    }
+
+    public ArrayList<JSpinner> getPercentages_toPay() {
+        return percentages_toPay;
+    }
+
+    public void redraw() {
+        validate();
+        repaint();
+    }
 }

@@ -11,17 +11,15 @@ import View.panels.PaymentSplits.PaymentSplitSubPanelCASH;
 import View.panels.PaymentSplits.PaymentSplitSubPanelPERCENTAGE;
 import ViewController.ViewController;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Observable;
 
 public class PaymentSplitPanelController extends ViewController {
@@ -29,6 +27,7 @@ public class PaymentSplitPanelController extends ViewController {
     private final PersonsDBController personsDBController;
     private final PaymentSplitPanelWithBorder paymentSplitPanel;
     private Ticket currentTicket;
+    private int lastFocusIn;
 
     private PaymentSplitSubPanelCASH paymentSplitSubPanelCASH;
     private PaymentSplitSubPanelPERCENTAGE paymentSplitSubPanelPERCENTAGE;
@@ -49,6 +48,8 @@ public class PaymentSplitPanelController extends ViewController {
     public void activateActionListeners() {
         paymentSplitSubPanelCASH.getDoneButton().addActionListener(e -> cashDoneButtonActionListener());
         paymentSplitSubPanelPERCENTAGE.getDoneButton().addActionListener(e -> percentageDoneButtonActionListener());
+
+        activatePercentageFocusListeners();
     }
 
     private void cashDoneButtonActionListener() {
@@ -73,10 +74,52 @@ public class PaymentSplitPanelController extends ViewController {
 
     private void percentageDoneButtonActionListener() {
         System.out.println("Percentage done button pressed");
+        System.out.println("Redrawing...");
+
+        // get old fields
+        ArrayList<JSpinner> oldjSpinners = paymentSplitSubPanelPERCENTAGE.getPercentages_toPay();
+        ArrayList<String> oldValues = new ArrayList<>();
+
+        // save the old field values
+        for (JSpinner spinner : oldjSpinners) oldValues.add(Objects.requireNonNull(getTextField(spinner)).getText());
+
+        // remove panel
+        paymentSplitPanel.removeContentPanel(1);
+
+        // recreate panel
+        createPercentagePanelFields();
+
+        // get new fields
+        ArrayList<JSpinner> newjSpinners = paymentSplitSubPanelPERCENTAGE.getPercentages_toPay();
+
+        // restore values to old field values
+        int i = 0;
+        //for (JSpinner spinner : newjSpinners) Objects.requireNonNull(getTextField(spinner)).setText(oldValues.get(i++));
+        for (JSpinner spinner : newjSpinners) spinner.setValue(Integer.valueOf(oldValues.get(i++)));
+
+        // reset focus so that the user doesn't notice anything
+        Objects.requireNonNull(getTextField(newjSpinners.get(lastFocusIn))).grabFocus();
+        Objects.requireNonNull(getTextField(newjSpinners.get(lastFocusIn))).requestFocus();
+        Objects.requireNonNull(getTextField(newjSpinners.get(lastFocusIn))).requestFocusInWindow();
+        lastFocusIn = 0;
+
+        // activate listeners
+        paymentSplitSubPanelPERCENTAGE.getDoneButton().addActionListener(e -> percentageDoneButtonActionListener());
+        activatePercentageFocusListeners();
     }
 
     @Override
     public void update(Observable o, Object arg) {}
+
+    private void activatePercentageFocusListeners() {
+        ArrayList<JSpinner> jSpinners = paymentSplitSubPanelPERCENTAGE.percentages_toPay;
+        int i = 0;
+        for (JSpinner spinner:jSpinners) {
+            JFormattedTextField txt = getTextField(spinner);
+            txt.addFocusListener(getFocusListener(i));
+            i++;
+        }
+    }
 
     private void createCashPanelFields() {
         // get info for panel generation
@@ -134,8 +177,8 @@ public class PaymentSplitPanelController extends ViewController {
         int i = 0;
         for (Person person : persons) {
             // create
-            JLabel iconLabel2 = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
-            JLabel userName2 = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
+            JLabel iconLabel = new JLabel(new ImageIcon(Paths.iconPath + (person.getIconValue().length() == 0 ? "user_icon_small.png" : person.getIconValue())));
+            JLabel userName = new JLabel(person.getFirstNameValue() + " " + person.getLastNameValue());
             JLabel percentageIcon = new JLabel("%");
 
             SpinnerModel model = new SpinnerNumberModel(
@@ -154,39 +197,28 @@ public class PaymentSplitPanelController extends ViewController {
             nf.setCommitsOnValidEdit(true);
             nf.setMaximum(100);
 
-            txt.addPropertyChangeListener(new PropertyChangeListener() {
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    System.out.println("addPropertyChangeListener: current text is " + txt.getText());
-                    calculateShareForPercentage(0);
-                }
-            });
-
-
-            /*int finalI = i;
-            txt.setFormatterFactory(
-                    new DefaultFormatterFactory (
-                            new InternationalFormatter(NumberFormat.getIntegerInstance()) {
-                                @Override
-                                protected DocumentFilter getDocumentFilter() {
-                                    return getCustomDocumentFilter(finalI, txt);
-                                }
-                            })
-            );*/
-
             JLabel amount_converted = new JLabel("$0.00");
 
             // style
-            iconLabel2.setForeground(Color.WHITE);
-            userName2.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
+            iconLabel.setForeground(Color.WHITE);
+            userName.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
+
+            int finalI = i;
+            txt.addPropertyChangeListener(new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    calculateShareForPercentage(finalI);
+                }
+            });
 
             percentageIcon.setForeground(Color.WHITE);
             amount_converted.setForeground(CustomColors.getYellow());
-            userName2.setMinimumSize(new Dimension(255,30));
+            amount_converted.setMinimumSize(new Dimension(70,30));
+            userName.setMinimumSize(new Dimension(240,30));
 
             // add to list
-            iconLabels2.add(iconLabel2);
-            userNames2.add(userName2);
+            iconLabels2.add(iconLabel);
+            userNames2.add(userName);
             percentageIcons2.add(percentageIcon);
             percentages_toPay2.add(percentage_toPay);
             amounts_converted2.add(amount_converted);
@@ -201,6 +233,21 @@ public class PaymentSplitPanelController extends ViewController {
 
     public void setTicket(Ticket t) {
         this.currentTicket = t;
+    }
+
+    private FocusListener getFocusListener(int i) {
+        return new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                System.out.println("focus gained in " + i);
+                lastFocusIn = i;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                System.out.println("focus lost in " + i);
+            }
+        };
     }
 
     private NumberFormatter createMaskFormatter() {
@@ -234,8 +281,6 @@ public class PaymentSplitPanelController extends ViewController {
     }
 
     private void calculateShareForPercentage(int i) {
-        System.out.println("Calculating for " + i);
-
         // get Spinner info
         ArrayList<JLabel> amounts_converted_list = paymentSplitSubPanelPERCENTAGE.amounts_converted;
         ArrayList<JSpinner> percentages_list = paymentSplitSubPanelPERCENTAGE.percentages_toPay;
@@ -251,64 +296,5 @@ public class PaymentSplitPanelController extends ViewController {
         Double calculation = spinnerValueDouble / 100 * currentTicket.getTotalSum();
         String showValue = String. format("%.2f", calculation);
         amounts_converted_list.get(i).setText("$" + showValue);
-    }
-
-    private void checkCaret(JFormattedTextField textField) {
-        Integer pos = textField.getCaretPosition();
-        if (pos != null) {
-            System.out.println("Pos: " + pos + "; total chars: " + textField.getText() + " with length " + textField.getText().length());
-            System.out.println("Setting caret pos to: " + textField.getText().length());
-            textField.setCaretPosition(textField.getText().length());
-            System.out.println("Actual caret pos is: " + textField.getCaretPosition());
-        }
-    }
-
-    private DocumentFilter getCustomDocumentFilter(int index, JFormattedTextField textField) {
-        return new DocumentFilter() {
-            @Override
-            public void insertString(FilterBypass fb, int i, String string, AttributeSet as) throws BadLocationException {
-                // don't allow pasting
-                if (string.length() > 1) return;
-
-                // get a single character of the string
-                char c = string.charAt(0);
-
-                if (Character.isDigit(c)) {
-                    System.out.println("Inserting");
-                    calculateShareForPercentage(index);
-                    super.insertString(fb, i, string, as);
-                }
-            }
-
-            @Override
-            public void remove(FilterBypass fb, int i, int i1) throws BadLocationException {
-                System.out.println("Removing");
-
-                super.remove(fb, i, i1);
-
-                super.replace(fb, textField.getText().length(), i1, "0", null);
-                super.remove(fb, textField.getText().length()-1, i1);
-
-                if (textField.getText().length() == 0) super.replace(fb, textField.getText().length(), i1, "0", null);
-
-                calculateShareForPercentage(index);
-            }
-
-            @Override
-            public void replace(FilterBypass fb, int i, int i1, String string, AttributeSet as) throws BadLocationException {
-                // don't allow pasting
-                if (string.length() > 1) return;
-
-                // get a single character of the string
-                char c = string.charAt(0);
-
-                if (Character.isDigit(c)) {
-                    System.out.println(as);
-                    System.out.println("Replacing");
-                    super.replace(fb, textField.getText().length(), i1, string, as);
-                    calculateShareForPercentage(index);
-                }
-            }
-        };
     }
 }
