@@ -4,6 +4,7 @@ import Database.*;
 import DatabaseController.PersonsDBController;
 import Model.*;
 import Events.Event;
+import com.google.inject.internal.util.ObjectArrays;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.FileReader;
@@ -115,21 +116,24 @@ public class ReadFromJSONFile {
         //create ticket
         TicketFactory ticketFactory = new TicketFactory();
         EventFactory eventFactory = new EventFactory();
-
         Ticket ticket = ticketFactory.getTicket(person, total_sum, eventFactory.getEvent(event), splitType);
 
         //payment split
-        if(splitType == SplitType.EQUAL){ ticket.autoCalculate(personsList);}
-        //else if (splitType == )
+        JSONArray tmpObject = (JSONArray) ticketObject.get("Payment_splits");
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject splits = (JSONObject) parser.parse(tmpObject.get(0).toString());
+
+            for (int i = 0; i < personsList.size(); i++) {
+                String testString = String.format("%s;%s", personsList.get(i).getFirstNameValue(), personsList.get(i).getLastNameValue());
+
+                if (splits.get(testString) != null) {
+                    System.out.println("IN IF STATEMENT FOUND NOT NULL FOR " + testString + "AND ADDING AMOUNT: " + splits.get(testString).toString());
+                    ticket.addSCashSplit(personsList.get(i), (double) splits.get(testString));
+                }
+            }
+        } catch (ParseException e) { e.printStackTrace(); }
 
         db.add(ticket);
-    }
-
-    private void addCashSplitToTicket() {
-
-    }
-
-    private void addPercentageSplitToTicket() {
-
     }
 }
