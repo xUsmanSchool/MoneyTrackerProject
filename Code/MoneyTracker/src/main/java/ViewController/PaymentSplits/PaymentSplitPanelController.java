@@ -2,7 +2,6 @@ package ViewController.PaymentSplits;
 
 import DatabaseController.PersonsDBController;
 import DatabaseController.TicketsDBController;
-import Factory.TicketFactory;
 import HelperClass.Paths;
 import Model.Person;
 import Model.Ticket;

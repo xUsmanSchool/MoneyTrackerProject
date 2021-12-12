@@ -34,8 +34,8 @@ public abstract class Ticket extends DatabaseItem {
         this.icon.put("Icon_url", forEventType.getIcon());
     }
 
-    public void addPercentageSplit(Person person, Double percentage) {
-        addSCashSplit(person, totalSum*percentage);
+    public void addPercentageSplit(Person person, Double amount) {
+        addSCashSplit(person, amount);
     }
 
     // will be overridden

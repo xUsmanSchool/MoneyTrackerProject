@@ -21,8 +21,9 @@ public class PrintInfo {
             System.out.print(p.getFirstNameValue() + " owes " + t.getPayedByValue().getFirstNameValue() + " " + String.format("%.2f", t.getAmountForPerson(p)) + ", ");
             sum += t.getAmountForPerson(p);
         }
+        sum = sum + t.getTotalSum();
         System.out.println();
-        for (Person p:t.getPersonArrayList()) if (t.getAmountForPerson(p) > 0) System.out.print("Because " + p.getFirstNameValue() + " payed " + t.getTotalSum() + " in total and " + String.format("%.2f", t.getAmountForPerson(p)) + " was for his own expenses, he only needs to get back $ " + String.format("%.2f", sum) + "");
+        for (Person p:t.getPersonArrayList()) if (t.getAmountForPerson(p) > 0) System.out.print("Because " + p.getFirstNameValue() + " payed " + t.getTotalSum() + " in total and " + String.format("%.2f", sum) + " was for his own expenses, he only needs to get back $ " + String.format("%.2f", t.getAmountForPerson(p)) + "");
         System.out.println("\n");
     }
 }

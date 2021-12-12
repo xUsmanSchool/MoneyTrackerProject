@@ -23,7 +23,8 @@ public class UnEqualTicket extends Ticket {
 
     @Override
     public void addPercentageSplit(Person person, Double amount) {
-        super.addPercentageSplit(person, amount);
+        if (person.equals(getPayedByValue())) super.addPercentageSplit(person, getTotalSum()-getTotalSum()*amount);
+        else super.addPercentageSplit(person, getTotalSum()*amount);
     }
 
     @Override
