@@ -32,7 +32,7 @@ public class Main {
 
         // UI updates:
         // adding observers in mainViewFrame
-        // each controller is an Observer and has an update() method
+        // each View controller is an Observer and has an update() method
         // for example: only updating button state when an update was received from DB
 
         //--------------------------------------------------------------------------------------------------------------

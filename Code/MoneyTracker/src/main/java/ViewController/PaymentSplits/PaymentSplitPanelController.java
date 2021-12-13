@@ -273,7 +273,7 @@ public class PaymentSplitPanelController extends ViewController {
             iconLabel1.setForeground(Color.WHITE);
             userName1.setForeground(person == payedBy ? CustomColors.getYellow() : Color.WHITE);
             moneyIcon.setForeground(Color.WHITE);
-            userName1.setMinimumSize(new Dimension(300,30));
+            userName1.setMinimumSize(new Dimension(280,30));
 
             // add to list
             iconLabels1.add(iconLabel1);
