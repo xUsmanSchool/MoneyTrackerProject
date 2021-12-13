@@ -11,9 +11,7 @@ import View.panels.AddUserWindow.UserCreationPanel;
 import ViewController.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Observable;
@@ -76,6 +74,13 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getJComboBoxMonth().addActionListener(e -> adjustDayForMonthAndYearActionListener());
         userCreationPanel.getJComboBoxYear().addActionListener(e -> adjustDayForMonthAndYearActionListener());
         userCreationPanel.getImageButton().addMouseListener(iconSelectorMouseListener());
+
+        userCreationPanel.getFirstNameTextField().addFocusListener(
+                getPlaceHolderFocusListener(userCreationPanel.getFirstNameTextField(), "Type firstname here", "Dialog"));
+        userCreationPanel.getLastNameTextField().addFocusListener(
+                getPlaceHolderFocusListener(userCreationPanel.getLastNameTextField(), "Type lastname here", "Dialog"));
+        enablePlaceholder(userCreationPanel.getFirstNameTextField(), "Type firstname here", "Dialog");
+        enablePlaceholder(userCreationPanel.getLastNameTextField(), "Type lastname here", "Dialog");
     }
 
     private void addAccountCreatedActionListener() {
@@ -119,6 +124,33 @@ public class UserCreationPanelController extends ViewController {
                 }
             }
         };
+    }
+
+    private FocusListener getPlaceHolderFocusListener(JTextField component, String textToDisplay, String font) {
+         return new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(component.getText().trim().equals(textToDisplay) &&
+                        Objects.equals(component.getFont(), new Font(font, Font.ITALIC, 12))) {
+                    component.setText("");
+                }
+
+                component.setForeground(Color.BLACK);
+                component.setFont(new Font("Dialog", Font.PLAIN, 12));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                enablePlaceholder(component, textToDisplay, font);
+            }
+        };
+    }
+
+    private void enablePlaceholder(JTextField component, String textToDisplay, String font) {
+        if(component.getText().trim().equals("")) {
+            component.setText(textToDisplay);
+            component.setFont(new Font(font, Font.ITALIC, 12));
+        }
+        component.setForeground(CustomColors.getMidGrey());
     }
 
     @Override
