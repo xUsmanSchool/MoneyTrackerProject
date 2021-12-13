@@ -83,7 +83,6 @@ public class Person extends DatabaseItem {
     public LocalDate getBirthDateValue() {
         return this.birthDate.getValue();
     }
-
     public void setBirthDate(int day, int month, int year) {
         this.birthDate.put(getBirthDateKey(), Date.getLocalDate(year, month, day));
         this.updateAccountEditDate();
@@ -102,6 +101,6 @@ public class Person extends DatabaseItem {
 
     @Override
     public void updateAccountEditDate() {
-        this.creationDate.put(creationDate.getKey(), Date.getTodaysDate());
+        this.editDate.put(editDate.getKey(), Date.getTodaysDate());
     }
 }
