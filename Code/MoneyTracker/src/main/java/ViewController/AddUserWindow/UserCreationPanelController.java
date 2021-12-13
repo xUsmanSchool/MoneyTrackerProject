@@ -7,6 +7,7 @@ import Observers.ImageFrameIconObservableEntry;
 import Observers.PersonDBObservableEntry;
 import View.frames.IconSelectorFrame;
 import View.others.CustomColors;
+import View.others.Toast;
 import View.panels.AddUserWindow.UserCreationPanel;
 import ViewController.*;
 import javax.swing.*;
@@ -68,6 +69,22 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getFirstNameTextField().setFocusable(true);
     }
 
+    private Runnable runToast(String textToDisplay) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                int X = userCreationPanel.getLocationOnScreen().x;
+                int Y = userCreationPanel.getLocationOnScreen().y;
+
+                int X_offset = userCreationPanel.getWidth();
+                int Y_offset = userCreationPanel.getHeight();
+
+                Toast t = new Toast(textToDisplay, X+X_offset/2, Y+Y_offset);
+                t.showtoast();
+            }
+        };
+    }
+
     @Override
     public void activateActionListeners() {
         userCreationPanel.getCreateButton().addActionListener(e -> addAccountCreatedActionListener());
@@ -75,12 +92,11 @@ public class UserCreationPanelController extends ViewController {
         userCreationPanel.getJComboBoxYear().addActionListener(e -> adjustDayForMonthAndYearActionListener());
         userCreationPanel.getImageButton().addMouseListener(iconSelectorMouseListener());
 
-        userCreationPanel.getFirstNameTextField().addFocusListener(
-                getPlaceHolderFocusListener(userCreationPanel.getFirstNameTextField(), "Type firstname here", "Dialog"));
-        userCreationPanel.getLastNameTextField().addFocusListener(
-                getPlaceHolderFocusListener(userCreationPanel.getLastNameTextField(), "Type lastname here", "Dialog"));
-        enablePlaceholder(userCreationPanel.getFirstNameTextField(), "Type firstname here", "Dialog");
-        enablePlaceholder(userCreationPanel.getLastNameTextField(), "Type lastname here", "Dialog");
+        // placeholders
+        //userCreationPanel.getFirstNameTextField().addFocusListener(getPlaceHolderFocusListener(userCreationPanel.getFirstNameTextField(), "Type firstname here", "Dialog"));
+        //userCreationPanel.getLastNameTextField().addFocusListener(getPlaceHolderFocusListener(userCreationPanel.getLastNameTextField(), "Type lastname here", "Dialog"));
+        //enablePlaceholder(userCreationPanel.getFirstNameTextField(), "Type firstname here", "Dialog");
+        //enablePlaceholder(userCreationPanel.getLastNameTextField(), "Type lastname here", "Dialog");
     }
 
     private void addAccountCreatedActionListener() {
@@ -163,6 +179,12 @@ public class UserCreationPanelController extends ViewController {
         // if we received something from Person DB, this means our query was successful
         if (arg instanceof PersonDBObservableEntry) {
             clearForm();
+
+            // create a toast message
+            String textToDisplay = "";
+            if (((PersonDBObservableEntry) arg).isAdded()) textToDisplay = "Person added";
+            else textToDisplay = "Person removed";
+            SwingUtilities.invokeLater(runToast(textToDisplay));
         }
     }
 
