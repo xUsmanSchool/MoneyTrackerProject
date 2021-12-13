@@ -5,7 +5,7 @@ import Model.*;
 import Observers.TicketDBObservableEntry;
 import java.util.ArrayList;
 
-public class TicketsDB extends Database implements Container {
+public class TicketsDB extends Database {
     private static TicketsDB databaseInstance;
     private final ArrayList<Ticket> ticketList;
 
@@ -37,24 +37,5 @@ public class TicketsDB extends Database implements Container {
     @Override
     public ArrayList<Ticket> getAll() {
         return ticketList;
-    }
-
-    @Override
-    public Iterator<Ticket> getIterator() {
-        return new TicketIterator();
-    }
-
-    class TicketIterator implements Iterator<Ticket> {
-        int index;
-
-        @Override
-        public boolean hasNext() {
-            return index < ticketList.size();
-        }
-
-        @Override
-        public Ticket next() {
-            return this.hasNext() ? ticketList.get(index++) : null;
-        }
     }
 }

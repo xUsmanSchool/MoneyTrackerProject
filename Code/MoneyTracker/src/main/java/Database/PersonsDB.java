@@ -5,7 +5,7 @@ import Model.*;
 import Observers.PersonDBObservableEntry;
 import java.util.ArrayList;
 
-public class PersonsDB extends Database implements Container {
+public class PersonsDB extends Database  {
     private static PersonsDB databaseInstance;
     private final ArrayList<Person> personList;
 
@@ -37,25 +37,6 @@ public class PersonsDB extends Database implements Container {
     @Override
     public ArrayList<Person> getAll() {
         return personList;
-    }
-
-    @Override
-    public Iterator<Person> getIterator() {
-        return new PersonIterator();
-    }
-
-    class PersonIterator implements Iterator<Person> {
-        int index;
-
-        @Override
-        public boolean hasNext() {
-            return index < personList.size();
-        }
-
-        @Override
-        public Person next() {
-            return this.hasNext() ? personList.get(index++) : null;
-        }
     }
 }
 

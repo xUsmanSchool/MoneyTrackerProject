@@ -2,6 +2,7 @@ package ViewController.AddUserWindow;
 
 import DatabaseController.*;
 import HelperClass.Paths;
+import Iterator.Iterator;
 import Observers.*;
 import Model.*;
 import View.others.CustomColors;
@@ -14,7 +15,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Observable;
 
@@ -30,7 +30,9 @@ public class UserListPanelController extends ViewController {
     @Override
     public void init() {
         this.userListPanel.setTitle("Members");
-        addPersonListToListModel(personsDatabaseController.getAll());
+
+        Iterator<Person> iterator = personsDatabaseController.getIterator();
+        while (iterator.hasNext()) addPersonListToListModel(iterator.next());
 
         userListPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 15));
         userListPanel.getTitleLabel().setForeground(Color.WHITE);
@@ -132,8 +134,8 @@ public class UserListPanelController extends ViewController {
         else userListPanel.getJList().ensureIndexIsVisible(currentIndex-1);
     }
 
-    private void addPersonListToListModel(ArrayList<Person> personList) {
-        for (Person person : personList) userListPanel.getListModel().addElement(person);
+    private void addPersonListToListModel(Person person) {
+        userListPanel.getListModel().addElement(person);
     }
 
     private void addPersonToListModel(Person person){
