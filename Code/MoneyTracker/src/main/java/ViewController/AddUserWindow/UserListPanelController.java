@@ -5,6 +5,7 @@ import HelperClass.Paths;
 import Observers.*;
 import Model.*;
 import View.others.CustomColors;
+import View.others.DisabledItemSelectionModel;
 import View.panels.AddUserWindow.UserListPanel;
 import ViewController.ViewController;
 import javax.swing.*;
@@ -12,7 +13,9 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Observable;
 
 public class UserListPanelController extends ViewController {
@@ -55,6 +58,15 @@ public class UserListPanelController extends ViewController {
 
     private void goToUserCreationScreen() {
         System.out.println("nothing yet");
+    }
+
+    public void disableListSelection() {
+        MouseListener[] ml =  this.userListPanel.getJList().getMouseListeners();
+        for (MouseListener m: ml) if (Objects.equals(m, listSelectionMouseAdapter())) {
+            System.err.println("Configuration error: mouse listener is enabled while selection is disabled");
+            return;
+        }
+        userListPanel.getJList().setSelectionModel(new DisabledItemSelectionModel());
     }
 
     // https://stackoverflow.com/questions/4344682/double-click-event-on-jlist-element

@@ -81,6 +81,7 @@ public class MainViewFrame extends JFrame {
         UserListPanel userListPanel_RecentTicketsPanel = new UserListPanel();
         UserListPanelController userListPanelController_inRecentTicketsPanel = new UserListPanelController(personDatabaseController, userListPanel_RecentTicketsPanel);
         userListPanelController_inRecentTicketsPanel.init();
+        userListPanelController_inRecentTicketsPanel.disableListSelection();
 
         // Combine panels
         AlignPanelSouth alignPanelSouth_RecentTicketsPanel = new AlignPanelSouth(userListPanel_RecentTicketsPanel);
