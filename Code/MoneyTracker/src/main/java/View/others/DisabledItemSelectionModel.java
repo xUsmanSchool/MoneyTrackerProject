@@ -2,6 +2,7 @@ package View.others;
 
 import javax.swing.*;
 
+//https://stackoverflow.com/questions/17863780/make-jlist-values-unselectable
 public class DisabledItemSelectionModel extends DefaultListSelectionModel {
 
     @Override
