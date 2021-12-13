@@ -143,8 +143,9 @@ public class MainViewFrame extends JFrame {
 
         /////////////////////////////////////// PANEL SWITCHING LISTENERS //////////////////////////////////////////////
         userCreationPanel.getGotoGlobalBillButton().addActionListener(e -> router.gotToPanel(finalRecentTicketPanel));
+        userListPanelController_inRecentTicketsPanel.getButton().addActionListener(e -> router.goBack());
         recentTicketsPanel.getAddTicketButton().addActionListener(e -> router.gotToPanel(singleAlignedPanelCenter, addTicketsPanel.getDescriptionTextField()));
-        recentTicketsPanel.getCheckoutButton().addActionListener(e -> router.goBack()); // todo - temp
+        recentTicketsPanel.getCheckoutButton().addActionListener(e -> System.out.println("nothing atm")); // todo - temp
 
         // add observers
         personsDB.addObserver(userListPanelController_inUserCreationPanel);     // pop up in the list when user is created

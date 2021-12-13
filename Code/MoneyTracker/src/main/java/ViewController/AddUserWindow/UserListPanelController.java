@@ -43,6 +43,20 @@ public class UserListPanelController extends ViewController {
         this.userListPanel.getJList().addMouseListener(listSelectionMouseAdapter());
     }
 
+    private void activateAddButton() {
+        this.userListPanel.getButton().setText("Add users");
+        this.userListPanel.getButton().setVisible(true);
+    }
+
+    public JButton getButton() {
+        activateAddButton();
+        return this.userListPanel.getButton();
+    }
+
+    private void goToUserCreationScreen() {
+        System.out.println("nothing yet");
+    }
+
     // https://stackoverflow.com/questions/4344682/double-click-event-on-jlist-element
     private MouseAdapter listSelectionMouseAdapter() {
         return new MouseAdapter() {
