@@ -362,8 +362,9 @@ public class PaymentSplitPanelController extends ViewController {
 
             percentageIcon.setForeground(Color.WHITE);
             amount_converted.setForeground(CustomColors.getYellow());
-            amount_converted.setMinimumSize(new Dimension(70,30));
-            userName.setMinimumSize(new Dimension(230,30));
+            amount_converted.setMinimumSize(new Dimension(53,30));
+            amount_converted.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+            userName.setMinimumSize(new Dimension(210,30));
             percentage_toPay.setMinimumSize(new Dimension(53,20));
 
             // add to list
