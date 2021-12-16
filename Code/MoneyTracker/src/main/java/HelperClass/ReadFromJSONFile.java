@@ -128,8 +128,8 @@ public class ReadFromJSONFile {
                 String testString = String.format("%s;%s", personsList.get(i).getFirstNameValue(), personsList.get(i).getLastNameValue());
 
                 if (splits.get(testString) != null) {
-                    System.out.println("IN IF STATEMENT FOUND NOT NULL FOR " + testString + "AND ADDING AMOUNT: " + splits.get(testString).toString());
-                    ticket.addSCashSplit(personsList.get(i), (double) splits.get(testString));
+                    //ticket.addSCashSplit(personsList.get(i), (double) splits.get(testString));
+                    ticket.addCash(personsList.get(i), (double) splits.get(testString));
                 }
             }
         } catch (ParseException e) { e.printStackTrace(); }

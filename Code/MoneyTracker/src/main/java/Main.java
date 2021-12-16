@@ -2,8 +2,12 @@ import DatabaseController.*;
 import Database.*;
 import Factory.*;
 import HelperClass.*;
+import Model.Person;
+import Model.Ticket;
 import Observers.*;
 import View.frames.MainViewFrame;
+
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -59,6 +63,12 @@ public class Main {
         // Reading JSON files
         ReadFromJSONFile.readPersonFile(personDatabase);
         ReadFromJSONFile.readTicketFile(ticketDatabase);
+
+        ArrayList<Person> personArrayList = personsDBController.getAll();
+        ArrayList<Ticket> ticketArrayList = ticketsDBController.getAll();
+        for (Ticket t: ticketArrayList) {
+            for (Person p1: personArrayList) System.out.println(t.getAmountForPerson(p1));
+        }
 
         // Start app
         MainViewFrame view = new MainViewFrame("Money Tracker Application");

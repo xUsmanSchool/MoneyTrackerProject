@@ -44,6 +44,10 @@ public abstract class Ticket extends DatabaseItem {
         updateAccountEditDate();
     }
 
+    public void addCash(Person person, Double amount){
+        updatePaymentSplitsHashMap(paymentSplits.getKey(), person, amount);
+    }
+
     // will be overridden
     public abstract void autoCalculate(ArrayList<Person> personArrayList);
 
