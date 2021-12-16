@@ -64,12 +64,6 @@ public class Main {
         ReadFromJSONFile.readPersonFile(personDatabase);
         ReadFromJSONFile.readTicketFile(ticketDatabase);
 
-        ArrayList<Person> personArrayList = personsDBController.getAll();
-        ArrayList<Ticket> ticketArrayList = ticketsDBController.getAll();
-        for (Ticket t: ticketArrayList) {
-            for (Person p1: personArrayList) System.out.println(t.getAmountForPerson(p1));
-        }
-
         // Start app
         MainViewFrame view = new MainViewFrame("Money Tracker Application");
         view.initialize();
