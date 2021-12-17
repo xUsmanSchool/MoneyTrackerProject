@@ -34,7 +34,7 @@ public class CalculateBill {
                 if (!(p1 == p2)) combinationList.add(new modelxd(p1, p2, 0.00));
         }
 
-        // update values
+        // read tickets and update values
         for (Ticket t: ticketArrayList) {
             for (Person p1: personArrayList) {
                 Double amount = t.getAmountForPerson(p1);
@@ -70,35 +70,27 @@ public class CalculateBill {
             p = m.getPersonFrom();
             for (modelxd s: combinationList) {
                 if (s.getPersonTo() == p) {
-                    /*System.out.println("found loop with person " + s.getPersonFrom().getFirstNameValue() + " who has to pay something to "
-                            + s.getPersonTo().getFirstNameValue() + " who also has to pay " + m.getPersonTo().getFirstNameValue());*/
 
                     // remove loop
                     double missingAmount = 0.00;
                     if (s.getAmount() >= m.getAmount()) {
-                        //System.out.println("CASE 1");
                         missingAmount = m.getAmount();
                         s.setAmount(s.getAmount() - m.getAmount());
                         m.setAmount(0.00);
                     }
                     else {
-                        //System.out.println("CASE 2");
                         missingAmount = s.getAmount();
                         m.setAmount(m.getAmount() - s.getAmount());
                         s.setAmount(0.00);
                     }
 
-                    //System.out.println("missingAmount = " + missingAmount);
-
-                    // find/create a different path directly to the source and add this missing amount from the loop we removed
+                    // find a different path directly to the source and add this missing amount from the loop we removed
                     for (modelxd d: combinationList) {
                         if (d.getPersonFrom() == s.getPersonFrom() && d.getPersonTo() == m.getPersonTo()) {
-                            //System.out.println("Old amount: " + d.getAmount() + ", adding " + missingAmount + " which makes it " + d.getAmount() + missingAmount);
                             d.setAmount(d.getAmount() + missingAmount);
                             break;
                         }
                     }
-                    //System.out.println("solved\n");
                 }
             }
         }
