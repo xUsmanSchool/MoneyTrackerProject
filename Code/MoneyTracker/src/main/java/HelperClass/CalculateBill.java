@@ -54,8 +54,57 @@ public class CalculateBill {
             }
         }
 
+        // debug
+        int i = 0;
+        for (modelxd m: combinationList) {
+            System.out.println("Entry " + i + " from: " + m.getPersonFrom().getFirstNameValue() + " to " + m.getPersonTo().getFirstNameValue() + " is " + m.getAmount());
+            i++;
+        }
+
+        // remove loops
+        // time complexity of O((n*(n-1))^3) => 4 users: 1728 passes, 5 users: 8000 passes
+        System.out.println("");
+        Person p = null;
+
+        for (modelxd m: combinationList) {
+            p = m.getPersonFrom();
+            for (modelxd s: combinationList) {
+                if (s.getPersonTo() == p) {
+                    /*System.out.println("found loop with person " + s.getPersonFrom().getFirstNameValue() + " who has to pay something to "
+                            + s.getPersonTo().getFirstNameValue() + " who also has to pay " + m.getPersonTo().getFirstNameValue());*/
+
+                    // remove loop
+                    double missingAmount = 0.00;
+                    if (s.getAmount() >= m.getAmount()) {
+                        //System.out.println("CASE 1");
+                        missingAmount = m.getAmount();
+                        s.setAmount(s.getAmount() - m.getAmount());
+                        m.setAmount(0.00);
+                    }
+                    else {
+                        //System.out.println("CASE 2");
+                        missingAmount = s.getAmount();
+                        m.setAmount(m.getAmount() - s.getAmount());
+                        s.setAmount(0.00);
+                    }
+
+                    //System.out.println("missingAmount = " + missingAmount);
+
+                    // find/create a different path directly to the source and add this missing amount from the loop we removed
+                    for (modelxd d: combinationList) {
+                        if (d.getPersonFrom() == s.getPersonFrom() && d.getPersonTo() == m.getPersonTo()) {
+                            //System.out.println("Old amount: " + d.getAmount() + ", adding " + missingAmount + " which makes it " + d.getAmount() + missingAmount);
+                            d.setAmount(d.getAmount() + missingAmount);
+                            break;
+                        }
+                    }
+                    //System.out.println("solved\n");
+                }
+            }
+        }
+
         // remove duplicates
-        // (A -> B  -  B -> A)
+        // A -> B & B -> A are the same
         ArrayList<modelxd> combinationListShortened = new ArrayList<>();
         for (modelxd m: combinationList) {
             for (modelxd s: combinationList) {
@@ -73,13 +122,8 @@ public class CalculateBill {
             }
         }
 
-        int i = 0;
-        for (modelxd m: combinationList) {
-            System.out.println("Entry " + i + " from: " + m.getPersonFrom().getFirstNameValue() + " to " + m.getPersonTo().getFirstNameValue() + " is " + m.getAmount());
-            i++;
-        }
-
-        System.out.println("\nSimplified list before modification");
+        // debug
+        System.out.println("\nSimplified list after loop fixes");
         for (modelxd m: combinationListShortened) {
             System.out.println("Match from " + m.getPersonFrom().getFirstNameValue() + " owes " + m.getPersonTo().getFirstNameValue() +  " $ " + m.getAmount());
         }
@@ -92,49 +136,9 @@ public class CalculateBill {
             }
         }
 
-
-        System.out.println("\nSimplified list after modification");
+        System.out.println("\nSimplified list after negative switches & removal of 0's");
         for (modelxd m: combinationListShortened) {
-            System.out.println("Match from " + m.getPersonFrom().getFirstNameValue() + " owes " + m.getPersonTo().getFirstNameValue() +  " $ " + m.getAmount());
-        }
-
-        System.out.println("");
-        Person p = null;
-        //boolean done = false;
-        for (modelxd m: combinationListShortened) {
-            p = m.getPersonFrom();
-            for (modelxd s: combinationListShortened) {
-                if (s.getPersonTo() == p && !(s.getAmount() == 0.00)) {
-                    System.out.println("found loop with person " + s.getPersonFrom().getFirstNameValue() + " who has to pay something to "
-                            + s.getPersonTo().getFirstNameValue() + " who also has to pay " + m.getPersonTo().getFirstNameValue());
-
-                    // remove loop
-                    double missingAmount = 0.00;
-                    if (s.getAmount() >= m.getAmount()) {
-                        missingAmount = m.getAmount();
-                        s.setAmount(s.getAmount() - m.getAmount());
-                        m.setAmount(0.00);
-                    }
-                    else {
-                        missingAmount = s.getAmount();
-                        m.setAmount(m.getAmount() - s.getAmount());
-                        s.setAmount(0.00);
-                    }
-
-                    // find/create a different path directly to the source and add this missing amount from the loop we removed
-                    for (modelxd d: combinationListShortened) {
-                        if (d.getPersonFrom() == s.getPersonFrom() && d.getPersonTo() == m.getPersonTo()) {
-                            d.setAmount(d.getAmount() + missingAmount);
-                            break;
-                        }
-                    }
-                    System.out.println("solved");
-                }
-            }
-        }
-
-        System.out.println("\nSimplified list after all the loop solves");
-        for (modelxd m: combinationListShortened) {
+            if (m.getAmount() != 0.00)
             System.out.println("Match from " + m.getPersonFrom().getFirstNameValue() + " owes " + m.getPersonTo().getFirstNameValue() +  " $ " + m.getAmount());
         }
     }
