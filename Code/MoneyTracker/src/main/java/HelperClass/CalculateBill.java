@@ -16,7 +16,7 @@ public class CalculateBill {
         this.ticketsDBController = ticketsDBController;
     }
 
-    public void calculate() {
+    public ArrayList<modelxd> calculate() {
         System.out.println("WIP calculating global bill");
 
         // users * (users -1)
@@ -133,5 +133,7 @@ public class CalculateBill {
             if (m.getAmount() != 0.00)
             System.out.println("Match from " + m.getPersonFrom().getFirstNameValue() + " owes " + m.getPersonTo().getFirstNameValue() +  " $ " + m.getAmount());
         }
+
+        return combinationListShortened;
     }
 }
