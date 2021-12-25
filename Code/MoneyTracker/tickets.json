@@ -1,1 +1,1 @@
-[{"EventType":"CinemaEvent","TotalSum":100.0,"SplitType":"EQUAL","Payed_by":"Usman;The Admin","Payment_splits":[{"Vladimir;The Admin":-25.0,"Homeless;Dingus":-25.0,"Usman;The Admin":75.0,"Linda;Salami":-25.0}]},{"EventType":"AirplaneEvent","TotalSum":50.0,"SplitType":"UNEQUAL","Payed_by":"Vladimir;The Admin","Payment_splits":[{"Vladimir;The Admin":0.0,"Homeless;Dingus":-0.0,"Usman;The Admin":-0.0,"Linda;Salami":-0.0}]}]
+[]

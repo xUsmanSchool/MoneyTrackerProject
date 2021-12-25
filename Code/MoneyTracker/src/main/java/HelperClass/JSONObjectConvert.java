@@ -29,7 +29,6 @@ public class JSONObjectConvert {
     }
 
     public static JSONObject JSONifyTicket(Ticket ticket) {
-        System.out.println("JSONify ticket objects");
         JSONObject jsonMap = new JSONObject();
         //Event type
         jsonMap.put(ticket.getEventTypeKey(), ticket.getEventTypeValue().getEventName());

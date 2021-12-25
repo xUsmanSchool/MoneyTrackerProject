@@ -38,6 +38,13 @@ public class PersonsDB extends Database  {
     public ArrayList<Person> getAll() {
         return personList;
     }
+
+    public void printNames(){
+        System.out.println("STARTING PRINT");
+        for (Person p : this.personList){
+            System.out.println("PRINT: " + p.getFirstNameValue() + " " + p.getLastNameValue());
+        }
+    }
 }
 
 

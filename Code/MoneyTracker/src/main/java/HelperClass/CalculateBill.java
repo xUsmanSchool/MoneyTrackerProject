@@ -129,11 +129,14 @@ public class CalculateBill {
         }
 
         System.out.println("\nSimplified list after negative switches & removal of 0's");
+        ArrayList<modelxd> finalList = new ArrayList<>();
         for (modelxd m: combinationListShortened) {
-            if (m.getAmount() != 0.00)
-            System.out.println("Match from " + m.getPersonFrom().getFirstNameValue() + " owes " + m.getPersonTo().getFirstNameValue() +  " $ " + m.getAmount());
+            if (m.getAmount() != 0.00) {
+                System.out.println("Match from " + m.getPersonFrom().getFirstNameValue() + " owes " + m.getPersonTo().getFirstNameValue() + " $ " + m.getAmount());
+                finalList.add(m);
+            }
         }
 
-        return combinationListShortened;
+        return finalList;
     }
 }

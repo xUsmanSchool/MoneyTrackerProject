@@ -34,7 +34,6 @@ public class WriteToJSONFile {
     }
 
     public static void updatePersonFile(PersonsDB db) {
-        System.out.println("writing changes to file: persons.json");
         try {
             FileWriter file = new FileWriter("./persons.json",false);
             file.write(JSONObjectConvert.JSONifyAllPersons(db).toJSONString());
@@ -43,7 +42,6 @@ public class WriteToJSONFile {
     }
 
     public static void updateTicketFile(TicketsDB db) {
-        System.out.println("writing changes to file: tickets.json");
         try {
             FileWriter file = new FileWriter("./tickets.json",false);
             file.write(JSONObjectConvert.JSONifyAllTickets(db).toJSONString());
