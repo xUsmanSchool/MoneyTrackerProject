@@ -158,7 +158,7 @@ public class MainViewFrame extends JFrame {
         userCreationPanel.getGotoGlobalBillButton().addActionListener(e -> router.gotToPanel(finalRecentTicketPanel));
         userListPanelController_inRecentTicketsPanel.getButton().addActionListener(e -> router.goBack());
         recentTicketsPanel.getAddTicketButton().addActionListener(e -> router.gotToPanel(singleAlignedPanelCenter, addTicketsPanel.getDescriptionTextField()));
-        //recentTicketsPanel.getCheckoutButton().addActionListener(e -> new CalculateBill(personDatabaseController, ticketDatabaseController).calculate()); // todo - temp
+        recentTicketsPanel.getCheckoutButton().addActionListener(e -> globalBillPanelController.calculate());
         recentTicketsPanel.getCheckoutButton().addActionListener(e -> router.gotToPanel(finalJLayeredPane));
 
         // add observers

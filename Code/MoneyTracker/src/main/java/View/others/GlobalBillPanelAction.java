@@ -1,8 +1,6 @@
 package View.others;
 
-import View.panels.AddUserWindow.FinalJLayeredPane;
 import View.panels.GlobalBill.GlobalBillPanel;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 

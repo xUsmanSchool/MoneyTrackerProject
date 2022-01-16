@@ -3,6 +3,7 @@ package ViewController.GlobalBill;
 import DatabaseController.PersonsDBController;
 import DatabaseController.TicketsDBController;
 import HelperClass.CalculateBill;
+import Model.Ticket;
 import Model.modelxd;
 import View.others.CustomColors;
 import View.panels.GlobalBill.GlobalBillPanel;
@@ -32,14 +33,13 @@ public class GlobalBillPanelController extends ViewController {
         globalBillPanel.getTextButtonContainer().setBackground(CustomColors.getMidGrey());
         globalBillPanel.setBackground(CustomColors.getMidGrey());
 
-        CalculateBill calculateBill = new CalculateBill(personsDBController, ticketsDBController);
-        addModelxdToListToListModel(calculateBill.calculate());
-
         // title
         globalBillPanel.getTextButtonContainer().setBackground(CustomColors.getMidGrey());
         globalBillPanel.getTitleLabel().setForeground(Color.WHITE);
         globalBillPanel.setTitle("Global bill");
         globalBillPanel.getTitleLabel().setFont(new Font("", Font.PLAIN, 16));
+
+        calculate();
     }
 
     @Override
@@ -52,11 +52,21 @@ public class GlobalBillPanelController extends ViewController {
 
     }
 
+    public void calculate() {
+        clearListModel();
+        CalculateBill calculateBill = new CalculateBill(personsDBController, ticketsDBController);
+        addModelxdToListToListModel(calculateBill.calculate());
+    }
+
     private void addModelxdToListToListModel(ArrayList<modelxd> modelxdList) {
         for (modelxd m : modelxdList) addModelxd(m);
     }
 
     private void addModelxd(modelxd modelxd) {
         this.globalBillPanel.getListModel().addElement(modelxd);
+    }
+
+    private void clearListModel() {
+        this.globalBillPanel.getListModel().removeAllElements();
     }
 }
