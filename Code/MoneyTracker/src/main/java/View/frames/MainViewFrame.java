@@ -2,18 +2,20 @@ package View.frames;
 
 import Database.*;
 import DatabaseController.*;
-import HelperClass.CalculateBill;
 import View.others.CustomColors;
+import View.others.GlobalBillPanelAction;
 import View.others.Router;
 import View.others.TicketPanelAction;
 import View.panels.AddTicketsPanel.AddTicketsPanel;
 import View.panels.AddUserWindow.*;
+import View.panels.GlobalBill.GlobalBillPanel;
 import View.panels.PaymentSplits.PaymentSplitPanel;
 import View.panels.RecentTickets.RecentTicketsPanel;
 import ViewController.*;
 import ViewController.AddTicketsPanel.AddTicketsViewController;
 import ViewController.AddUserWindow.UserCreationPanelController;
 import ViewController.AddUserWindow.UserListPanelController;
+import ViewController.GlobalBill.GlobalBillPanelController;
 import ViewController.RecentTickets.RecentTicketPanelController;
 import javax.swing.*;
 import java.awt.*;
@@ -105,8 +107,8 @@ public class MainViewFrame extends JFrame {
         //doubleAlignedPanelCenter.setBackground(CustomColors.getYellow());                     // possible UI consideration
 
         // Activate keybindings
-        InputMap inMap = singleAlignedPanelCenter.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearOrGoBack");
+        InputMap ticketsPanelInputMap = singleAlignedPanelCenter.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ticketsPanelInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "clearOrGoBack");
         singleAlignedPanelCenter.getActionMap().put("clearOrGoBack", new TicketPanelAction(addTicketsPanel));
 
         // get panel info
@@ -140,14 +142,24 @@ public class MainViewFrame extends JFrame {
 
 
         /////////////////////////////////////////// GLOBAL BILL PANEL //////////////////////////////////////////////////
-        // todo
+        GlobalBillPanel globalBillPanel = new GlobalBillPanel();
+        CombineBannerPanel combineBannerPanel = new CombineBannerPanel(globalBillPanel);
+        FinalJLayeredPane finalJLayeredPane = new FinalJLayeredPane(combineBannerPanel);
+        GlobalBillPanelController globalBillPanelController = new GlobalBillPanelController(personDatabaseController, ticketDatabaseController, globalBillPanel);
+        globalBillPanelController.init();
+
+        // Activate keybindings
+        InputMap globalBillInputMap = finalJLayeredPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        globalBillInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "globalBillBack");
+        finalJLayeredPane.getActionMap().put("globalBillBack", new GlobalBillPanelAction(globalBillPanel));
 
 
         /////////////////////////////////////// PANEL SWITCHING LISTENERS //////////////////////////////////////////////
         userCreationPanel.getGotoGlobalBillButton().addActionListener(e -> router.gotToPanel(finalRecentTicketPanel));
         userListPanelController_inRecentTicketsPanel.getButton().addActionListener(e -> router.goBack());
         recentTicketsPanel.getAddTicketButton().addActionListener(e -> router.gotToPanel(singleAlignedPanelCenter, addTicketsPanel.getDescriptionTextField()));
-        recentTicketsPanel.getCheckoutButton().addActionListener(e -> new CalculateBill(personDatabaseController, ticketDatabaseController).calculate()); // todo - temp
+        //recentTicketsPanel.getCheckoutButton().addActionListener(e -> new CalculateBill(personDatabaseController, ticketDatabaseController).calculate()); // todo - temp
+        recentTicketsPanel.getCheckoutButton().addActionListener(e -> router.gotToPanel(finalJLayeredPane));
 
         // add observers
         personsDB.addObserver(userListPanelController_inUserCreationPanel);     // pop up in the list when user is created
@@ -171,8 +183,8 @@ public class MainViewFrame extends JFrame {
             }
         });
 
-        // EXTRA
-        // should remove list & tab margins
+        // EXTRA COMMANDS
+        // to remove list & tab margins:
         // UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(0,0,0,0));
     }
 }
