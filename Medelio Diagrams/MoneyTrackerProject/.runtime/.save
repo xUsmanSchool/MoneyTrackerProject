@@ -1,8 +1,0 @@
-#Mon Nov 29 18:17:16 CET 2021
-org.modelio.app.module.propertytab.JavaDesigner\ v3.10.00\ GModule\ @file\:///C\:/Users/usman/.modelio/4.1/modules/JavaDesigner_3.10.00/JavaDesigner_3.10.00.jmdac\ runtime\ module_.org.modelio.full.perspective.parentId=app.ui.ext_com.partstack.bottom
-org.modelio.app.module.propertytab.JavaDesigner\ v3.10.00\ GModule\ @file\:///C\:/Users/usman/.modelio/4.1/modules/JavaDesigner_3.10.00/JavaDesigner_3.10.00.jmdac\ runtime\ module_.org.modelio.development.perspective.parentId=app.ui.ext_com.partstack.bottom
-org.modelio.app.diagram.editor.OpenedDiagrams2='Interaction Sequence diagram' {ca752ea8-d88e-45a3-98a8-d33242d185a8} Standard.SequenceDiagram
-org.modelio.app.diagram.editor.OpenedDiagrams1='moneytrackerproject Use Case diagram' {a04b119f-8f1f-4283-8b4a-11ad1e8f9367} Standard.UseCaseDiagram
-org.modelio.app.diagram.editor.OpenedDiagrams0='moneytrackerproject Class diagram' {de82e533-7ede-40a5-9442-7f839cbe6dd9} Standard.ClassDiagram
-org.modelio.app.module.propertytab.JavaDesigner\ v3.10.00\ GModule\ @file\:///C\:/Users/usman/.modelio/4.1/modules/JavaDesigner_3.10.00/JavaDesigner_3.10.00.jmdac\ runtime\ module_.org.modelio.app.ui.model.perspective.parentId=org.modelio.app.bottom.parts
-org.modelio.app.module.propertytab.JavaDesigner\ v3.10.00\ GModule\ @file\:///C\:/Users/usman/.modelio/4.1/modules/JavaDesigner_3.10.00/JavaDesigner_3.10.00.jmdac\ runtime\ module_.org.modelio.diagram.perspective.parentId=app.ui.ext_com.partstack.right
